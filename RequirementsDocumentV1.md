@@ -6,7 +6,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 
 | Version number | Change |
 | :------------: | :----: |
-|                |        |
+|       V1.1        |    Define StakeHolders, Actors, Table of Rights, Functional requirements, Stories and Personas, Interfaces, Context Diagram, NFR   |
 
 # Contents
 
@@ -20,6 +20,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
   - [Functional Requirements](#functional-requirements)
+  - [Table of rights](#table-of-rights)
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
@@ -41,58 +42,99 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 | Stakeholder name | Description |
 | :--------------: | :---------: |
-| Stakeholder x..  |             |
+| Customer user         |  People that want to buy electronics products  |
+| Manager user |  Electronics products companies that are register in the platform|
+| Board of directors   |  All EZElectonics stakeholders|
+| Competitors       | Other online electronics component stores |
+| Payment service  | All method that allow user to pay pruducts in the cart|
+|Developer| The team in charge of developing the platform|
+
+
 
 # Context Diagram and interfaces
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
+![alt text](assets/Context_Diagram.png)
 
-\<actors are a subset of stakeholders>
+| Actor | Description |
+| :--------------: | :---------: |
+| Customer user         |  People that want to buy electronics products  |
+| Manager user |  Electronics products companies that are register in the platform|
+| Payment service  | All method that allow user to pay pruducts in the cart|
+|Developer| The team in charge of developing the platform|
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
-
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
-| Actor x.. |                   |                    |
+| Customer user |     GUI            |     PC,Smartphone|
+|Manager user| GUI              |        PC         |
+|Payment service| Internet      |     Intenet         |
+|Developer| CLI         | PC|
+
 
 # Stories and personas
 
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
-
-\<Persona is-an-instance-of actor>
-
-\<stories will be formalized later as scenarios in use cases>
+- Customer user Leonardo:  He is a regular costumer who likes to be a maker, who spends his free time in buying electronics components for his embedded systems projects. He browses around the website looking for the suitable components for his designs adding them to the cart. Once he has done with the research, he buys stuff paying online with the different offered channel.
+- Manager user Lisa: She is the sales manager of the STMicroelectronics company, who has a company profile in the website, she can upload when required new sensors and board of its company.
+- Developer Simone: He is the one in charge to manage the website databeses to ensure the correct placement of product, the list of the signed users
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
 
-\<they match to high level use cases>
 
 |  ID   | Description |
 | :---: | :---------: |
-|  FR1  |             |
-|  FR2  |             |
-| FRx.. |             |
+|FR1  |     Authorize and  Authenticate      |
+|   FR1.1|   Log in Log Out          |
+|   FR1.2 |   Manage Account    |
+|     FR1.2.1|  Create Account|
+|     FR1.2.2|  Delete Account|
+|     FR1.2.3|  Delete All Accounts|
+|FR2|Manage products|
+|   FR2.1|Add a pruduct|
+|   FR2.2|Mark a pruduct as sold|
+|   FR2.3|Delete all products|
+|FR3|Manage carts|
+|   FR3.1|Show current cart|
+|   FR3.2|Add a product to the cart|
+|   FR3.3| Remove a product from the cart|
+|   FR3.4| Revove all products in the current cart|
+|   FR3.5|Remove all existing carts|
+|   FR3.6|Show the history of paid carts|
+|F4|Manage transaction|
+|   F4.1|Pay for the current cart|
+
+
+## Table of rights
+
+|  Actor   |FR1.1|FR1.2.1|FR1.2.2|FR1.2.3|FR2.1|FR2.2|FR2.3|FR3.1|FR3.2|FR3.3|FR3.4|FR3.5|FR3.6|F4.1|
+| :---: | :--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |
+|Customer user| Y|Y|Y|N|N|N|N|Y|Y|Y|Y|N|Y|Y|
+|Manager user | Y|Y|Y|N|Y|Y|N|Y|Y|Y|Y|N|Y|Y|
+|Developer | Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
+
+
+
+
+
+
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
-| :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1   |                                    |             |           |
-|  NFR2   |                                    |             |           |
-|  NFR3   |                                    |             |           |
-| NFRx .. |                                    |             |           |
+| :-----: | :---------------------------------: | :---------: | :-------: |
+|  NFR1   | Usability                          | Website GUI should be able to adapt to both desktop (up to 30in displays) and mobile screens (down to 4in displays) | GUI |
+|  NFR2   | Efficiency                         | All back-end operations should be performed in less that 0.1s | server |
+|  NFR3   | Reliability                        | The platform should be able to perform a backup and restore it every 24h | database |
+| NFR4    | Scalability                        | The platform should be able to handle up to 1000 simultaneous users | server/database |
+| NFR5    | Scalability                        | The platform should be able to handle up to 1000000 simultaneous products | server/database |
+| NFR6    | Maintainability                    | The platform should be able to be updated without stopping the service | server |
+| NFR7    | Availability                       | The platform should be available 99.99% of the time | server |
+| NFR8    | Legal                              | The platform should be compliant with GDPR and EU laws | whole platform |
 
 # Use case diagram and use cases
 
