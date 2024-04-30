@@ -6,12 +6,9 @@ Version: V1.6
 
 | Version number | Change |
 | :------------: | :----: |
-|       V1.1        |    Define StakeHolders, actors, Functional requirements, Stories and Personas, Interfaces   |
-|       V1.2        |    Add Context Diagram |
-|       V1.3        |    Fix Context Diagram, Add NFR |
-|       V1.4        |    Fix StakeHolders, Fix interfaces, add table of rights, Fix stories and personas|
-|V1.5|Fix table of contents|
-|V1.6| Add Use Case Diagram and Use cases |
+|       V1.1        | Define StakeHolders, Actors, Table of Rights, Functional requirements, Stories and Personas, Interfaces, Context Diagram, NFR |
+|       V1.2        | Add Use Case Diagram and Use cases |
+|       V1.3        | Update Use cases, add glossary, fix FRs, format document |
 
 # Contents
 
@@ -45,38 +42,36 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 # Stakeholders
 
-| Stakeholder name | Description |
-| :--------------: | :---------: |
-| Customer user         |  People that want to buy electronics products  |
-| Manager user |  Electronics products companies that are register in the platform|
-| Board of directors   |  All EZElectonics stakeholders|
-| Competitors       | Other online electronics component stores |
-| Payment service  | All method that allow user to pay pruducts in the cart|
-|Developer| The team in charge of developing the platform|
-
-
+| Stakeholder name      | Description |
+| :--------------:      | :---------: |
+| Customer user         | People that want to buy electronics products  |
+| Manager user          | Electronics products companies that are register in the platform|
+| Board of directors    | All EZElectonics stakeholders|
+| Competitors           | Other online electronics component stores |
+| Payment service       | All method that allow user to pay products in the cart|
+| Developer             | The team in charge of developing the platform|
 
 # Context Diagram and interfaces
 
 ## Context Diagram
 
-![alt text](assets/Context_Diagram.png)
+![context diagram](assets/Context_Diagram.png)
 
-| Actor | Description |
-| :--------------: | :---------: |
-| Customer user         |  People that want to buy electronics products  |
-| Manager user |  Electronics products companies that are register in the platform|
-| Payment service  | All method that allow user to pay pruducts in the cart|
-|Developer| The team in charge of developing the platform|
+| Actor             | Description |
+| :--------------:  | :---------: |
+| Customer user     |  People that want to buy electronics products  |
+| Manager user      |  Electronics products companies that are register in the platform|
+| Payment service   | All method that allow user to pay pruducts in the cart|
+|Developer          | The team in charge of developing the platform|
 
 ## Interfaces
 
-|   Actor   | Logical Interface | Physical Interface |
-| :-------: | :---------------: | :----------------: |
-| Customer user |     GUI            |     PC,Smartphone|
-|Manager user| GUI              |        PC         |
-|Payment service| Internet      |     Intenet         |
-|Developer| CLI         | PC|
+|   Actor       | Logical Interface | Physical Interface    |
+| :-------:     | :---------------: | :----------------:    |
+|Customer user  | GUI               | PC,Smartphone         |
+|Manager user   | GUI               | PC                    |
+|Payment service| Internet          | Intenet               |
+|Developer      | CLI               | PC                    |
 
 
 # Stories and personas
@@ -89,44 +84,42 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Functional Requirements
 
-
-
 |  ID   | Description |
 | :---: | :---------: |
-|FR1  |     Authorize and  Authenticate      |
-|   FR1.1|   Log in Log Out          |
-|   FR1.2 |   Manage Account    |
-|     FR1.2.1|  Create Account|
-|     FR1.2.2|  Delete Account|
-|     FR1.2.3|  Delete All Accounts|
-|FR2|Manage products|
-|   FR2.1|Add a pruduct|
-|   FR2.2|Mark a pruduct as sold|
-|   FR2.3|Delete all products|
-|FR3|Manage carts|
-|   FR3.1|Show current cart|
-|   FR3.2|Add a product to the cart|
-|   FR3.3| Remove a product from the cart|
-|   FR3.4| Revove all products in the current cart|
-|   FR3.5|Remove all existing carts|
-|   FR3.6|Show the history of paid carts|
-|F4|Manage transaction|
-|   F4.1|Pay for the current cart|
-
+|   FR1|Authorize and Authenticate|
+|       FR1.1|Log in |
+|       FR1.2|Log Out |
+|   FR2|Manage Account |
+|       FR2.1|Get Account Information |
+|       FR2.2|Create Account|
+|       FR2.3|Delete Account|
+|   FR3|Manage products|
+|       FR3.1|Add a product|
+|       FR3.2|Add quantity to a product|
+|       FR3.3|Mark a product as sold|
+|       FR3.4|Delete a specific product|
+|   FR4|Show products|
+|       FR4.1|Show the product that matches an ID|
+|       FR4.2|Show all products of a category|
+|       FR4.3|Show all products that match a specific model|
+|       FR4.4|Show all products|
+|   FR5|Manage carts|
+|       FR5.1|Show current cart|
+|       FR5.2|Add a product to the cart|
+|       FR5.3|Remove a product from the cart|
+|       FR5.4|Delete the current cart|
+|       FR5.5|Show the history of paid carts|
+|   FR6|Manage transaction|
+|       FR6.1|Pay for the current cart|
 
 ## Table of rights
 
-|  Actor   |FR1.1|FR1.2.1|FR1.2.2|FR1.2.3|FR2.1|FR2.2|FR2.3|FR3.1|FR3.2|FR3.3|FR3.4|FR3.5|FR3.6|F4.1|
-| :---: | :--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |:--: |
-|Customer user| Y|Y|Y|N|N|N|N|Y|Y|Y|Y|N|Y|Y|
-|Manager user | Y|Y|Y|N|Y|Y|N|Y|Y|Y|Y|N|Y|Y|
-|Developer | Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
-
-
-
-
-
-
+|  Actor    | FR1.1 | FR1.2 | FR2.1 | FR2.2 | FR2.3 | FR3.1 | FR3.2 | FR3.3 | FR3.4 | FR4.1 | FR4.2 | FR4.3 | FR4.4 | FR5.1 | FR5.2 | FR5.3 | FR5.4 | FR5.5 | FR6.1 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|Non-registered user    |Y|Y|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|
+|Customer user          |Y|Y|Y|Y|Y|N|N|N|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
+|Manager user           |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|
+|Developer              |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
 
 ## Non Functional Requirements
 
@@ -145,89 +138,104 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Use case diagram
 
-![alt text](assets/UseCase_Diagram.png)
+![use case diagram](assets/UseCase_Diagram.png)
 
 |ID| Use Case  | Actor|
- |:-----:|:-----: |:-----: 
- |UC1|Authentication| Users |
- |UC2|Create new user| Non-registered users|
-  |UC3|Manage Account| Users|
-  |UC4|Manage Cart| Customer Users|
-  |UC5|Pay Current Cart| Customer Users|
-  |UC6|Show Product| Customer Users|
-  |UC7|Manage Product| Manager Users|
-  |UC8|Delete all Accounts| Developers|
-  |UC9|Delete all Products| developers|
-  |UC10|Delete all Carts| Developers|
-
+|:-----:|:-----: |:-----: 
+|UC1|Login| Users |
+|UC2|Logout| Users |
+|UC3|Create new user| Non-registered users|
+|UC4|Manage Account| Users|
+|UC5|Manage Cart| Customer Users|
+|UC6|Pay Current Cart| Customer Users|
+|UC7|Show Products| Users|
+|UC8|Manage Products| Manager Users|
 
 ### Use case 1, UC1
 
-| Actors Involved  |                                   Customer User, Manager User          |
-| :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | User has an account |
-|  Post condition  |  User is logged-in|
-| Nominal Scenario |  User insert username and password in order to authenticate him/herself (UC1.1)|
-|     Variants     |   Manager Login (UC1.2)                     |
-|    Exceptions    |   wrong credentials(UC1.3)                 |
+| Actors Involved  |  Customer User, Manager User   |
+| :--------------: | :------------------------------------------------------------------:    |
+|   Precondition   | User has an account                                |
+|  Post condition  |  User is logged-in                                 |
+| Nominal Scenario |  User insert username and password in order to authenticate himself/herself (UC1.1)|
+|     Variants     |   -  |
+|    Exceptions    |   Wrong credentials(UC1.2)                         |
 
-##### Scenario UC1.1
+#### Scenario UC1.1
 
-|  Scenario UC1.1  |                                                                            |
+|  Scenario UC1.1  |           |
+| :------------: | :------------------------------------------------------------------------:  |
+|  Precondition  | User has a Customer account                              |
+| Post condition |  User is logged-in as customer                           | 
+|     Step#      |      Description                                         |
+|       1        |     insert the username                                  |
+|       2        |     insert password                                      |
+|       3        |     click login                                          |
+
+#### Scenario UC1.2
+|  Scenario UC1.2  |                |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | User has a Customer account |
-| Post condition |  User is logged-in as customer| 
-|     Step#      |                                Description                                 |
-|       1        |     insert the username                                                  |
-|       2        |     insert password                                                 |
-|       3       |     click login                                             |
-
-##### Scenario UC1.2
-
-|  Scenario UC1.1  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | User has a Manager account |
-| Post condition |  User is logged-in as manager |
-|     Step#      |                                Description                        |
-|       1        |     insert the username                                               |
-|       2        |     insert password                                                 |
-|       3       |     click login                                             |
-##### Scenario UC1.3
-|  Scenario UC1.1  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | User has a Manager account |
-| Post condition |  User is not logged |
-|     Step#      |                                Description                        |
-|       1        |     insert the username                                               |
-|       2        |     insert password                                                 |
-|       3       |     click login                                             |
-|       4      |     System show "Incorrect username and/or password" -> go to step 1               |
+|  Precondition  | User has an account |
+| Post condition |  User is not logged in |
+|     Step#     |        Description      |
+|       1       |     insert the username               |
+|       2       |     insert password          |
+|       3       |     check "manager account" if user is logging in as manager  |
+|       3       |     click login        |
+|       4       |     System show "Incorrect username and/or password" -> go to step 1   |
 
 ### Use case 2, UC2
 
-| Actors Involved  |                     Customer User, Manager User          |
-| :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | NA |
-|  Post condition  |  Account Created|
-| Nominal Scenario |  User fill the form with all the usefull information in order to create an account|
-|     Variants     |   Manager Login (UC1.2)                     |
-|    Exceptions    |   Required fields (UC1.3)                 |
+| Actors Involved  |  Customer User, Manager User   |
+| :--------------: | :------------------------------------------------------------------:    |
+|   Precondition   | User is logged in                                |
+|  Post condition  |  User is not logged anymore                                |
+| Nominal Scenario |  User clicks on logout button to deauthenticate himself/herself (UC2.1)|
+|     Variants     |   -  |
+|    Exceptions    |   -  |
 
-### Use case x, UCx
+#### Scenario UC2.1
 
-..
+|  Scenario UC2.1  |           |
+| :------------: | :------------------------------------------------------------------------:  |
+|  Precondition  | User is logged in                                     |
+| Post condition |  User is not logged anymore                           | 
+|     Step#      |      Description                                      |
+|       1        |     click on logout button                            |
+|       2        |     click confirm                                     |
+
+### Use case 3, UC3
+
+| Actors Involved  |  User  |
+| :--------------: | :------------------------------------------------------------------:    |
+|   Precondition   | New user wants to access the platform but does not have an account |
+|  Post condition  |  New user has an account |
+| Nominal Scenario |  User clicks on signup button and fills data to create a new account (UC3.1)|
+|     Variants     |   User want to create a manager account (UC3.2)  |
+|    Exceptions    |   Username already existing (UC3.3)  |
+
+#### Scenario UC3.1
+
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
+- User
+    - Person who uses the platform and that has an account
+- Customer User
+    - User who buys products
+- Manager User
+    - User who manages products
+- Cart
+    - List of products that a customer wants to buy
+    - It has an id, it is associated to a customer user, it has a list of products, a total price and a payment date
+- Product
+    - Electronic component available for sale
+    - It can be associated to zero or more carts
+    - It has a unique code, a selling price, a model, a category, a selling date, an arrival date and details
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
+![glossary](assets/Glossary.png)
 
 # System Design
-
-\<describe here system design>
-
-\<must be consistent with Context diagram>
 
 # Deployment Diagram
 
