@@ -1,12 +1,17 @@
 # Requirements Document - current EZElectronics
 
-Date:
+Date:30/04/2024
 
-Version: V1 - description of EZElectronics in CURRENT form (as received by teachers)
+Version: V1.6
 
 | Version number | Change |
 | :------------: | :----: |
-|       V1.1        |    Define StakeHolders, Actors, Table of Rights, Functional requirements, Stories and Personas, Interfaces, Context Diagram, NFR   |
+|       V1.1        |    Define StakeHolders, actors, Functional requirements, Stories and Personas, Interfaces   |
+|       V1.2        |    Add Context Diagram |
+|       V1.3        |    Fix Context Diagram, Add NFR |
+|       V1.4        |    Fix StakeHolders, Fix interfaces, add table of rights, Fix stories and personas|
+|V1.5|Fix table of contents|
+|V1.6| Add Use Case Diagram and Use cases |
 
 # Contents
 
@@ -140,46 +145,73 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+![alt text](assets/UseCase_Diagram.png)
 
-\<next describe here each use case in the UCD>
+|ID| Use Case  | Actor|
+ |:-----:|:-----: |:-----: 
+ |UC1|Authentication| Users |
+ |UC2|Create new user| Non-registered users|
+  |UC3|Manage Account| Users|
+  |UC4|Manage Cart| Customer Users|
+  |UC5|Pay Current Cart| Customer Users|
+  |UC6|Show Product| Customer Users|
+  |UC7|Manage Product| Manager Users|
+  |UC8|Delete all Accounts| Developers|
+  |UC9|Delete all Products| developers|
+  |UC10|Delete all Carts| Developers|
+
 
 ### Use case 1, UC1
 
-| Actors Involved  |                                                                      |
+| Actors Involved  |                                   Customer User, Manager User          |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition  |  \<Boolean expression, must evaluate to true after UC is finished>   |
-| Nominal Scenario |         \<Textual description of actions executed by the UC>         |
-|     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                        \<exceptions, errors >                        |
+|   Precondition   | User has an account |
+|  Post condition  |  User is logged-in|
+| Nominal Scenario |  User insert username and password in order to authenticate him/herself (UC1.1)|
+|     Variants     |   Manager Login (UC1.2)                     |
+|    Exceptions    |   wrong credentials(UC1.3)                 |
 
-##### Scenario 1.1
+##### Scenario UC1.1
 
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
-|  Scenario 1.1  |                                                                            |
+|  Scenario UC1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | \<Boolean expression, must evaluate to true before the scenario can start> |
-| Post condition |  \<Boolean expression, must evaluate to true after scenario is finished>   |
+|  Precondition  | User has a Customer account |
+| Post condition |  User is logged-in as customer| 
 |     Step#      |                                Description                                 |
-|       1        |                                                                            |
-|       2        |                                                                            |
-|      ...       |                                                                            |
+|       1        |     insert the username                                                  |
+|       2        |     insert password                                                 |
+|       3       |     click login                                             |
 
-##### Scenario 1.2
+##### Scenario UC1.2
 
-##### Scenario 1.x
+|  Scenario UC1.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | User has a Manager account |
+| Post condition |  User is logged-in as manager |
+|     Step#      |                                Description                        |
+|       1        |     insert the username                                               |
+|       2        |     insert password                                                 |
+|       3       |     click login                                             |
+##### Scenario UC1.3
+|  Scenario UC1.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | User has a Manager account |
+| Post condition |  User is not logged |
+|     Step#      |                                Description                        |
+|       1        |     insert the username                                               |
+|       2        |     insert password                                                 |
+|       3       |     click login                                             |
+|       4      |     System show "Incorrect username and/or password" -> go to step 1               |
 
 ### Use case 2, UC2
 
-..
+| Actors Involved  |                     Customer User, Manager User          |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | NA |
+|  Post condition  |  Account Created|
+| Nominal Scenario |  User fill the form with all the usefull information in order to create an account|
+|     Variants     |   Manager Login (UC1.2)                     |
+|    Exceptions    |   Required fields (UC1.3)                 |
 
 ### Use case x, UCx
 
