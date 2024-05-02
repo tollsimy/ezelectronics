@@ -1,8 +1,8 @@
 # Requirements Document - current EZElectronics
 
-Date:30/04/2024
+Date:02/05/2024
 
-Version: V1.5
+Version: V1.6
 
 | Version number | Change |
 | :------------: | :----: |
@@ -11,6 +11,7 @@ Version: V1.5
 |       V1.3        | Update Use cases, add glossary, fix FRs, format document |
 |       V1.4        | Update Use cases, update stories and personas, update FRs, update glossary, add Deployment Diagram |
 |       V1.5        | Update Use cases |
+|       V1.6           | Review and error fixing |
 
 # Contents
 
