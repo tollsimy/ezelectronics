@@ -2,7 +2,7 @@
 
 Date:30/04/2024
 
-Version: V1.6
+Version: V1.5
 
 | Version number | Change |
 | :------------: | :----: |
@@ -29,12 +29,38 @@ Version: V1.6
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
     - [Use case 1, UC1](#use-case-1-uc1)
+      - [Scenario UC1.1](#scenario-uc11)
+      - [Scenario UC1.2](#scenario-uc12)
+      - [Scenario UC1.3](#scenario-uc13)
     - [Use case 2, UC2](#use-case-2-uc2)
+      - [Scenario UC2.1](#scenario-uc21)
+      - [Scenario UC2.2](#scenario-uc22)
+      - [Scenario UC2.3](#scenario-uc23)
     - [Use case 3, UC3](#use-case-3-uc3)
+      - [Scenario UC3.1](#scenario-uc31)
     - [Use case 4, UC4](#use-case-4-uc4)
+      - [Scenario UC4.1](#scenario-uc41)
+      - [Scenario UC4.2](#scenario-uc42)
+      - [Scenario UC4.3](#scenario-uc43)
+      - [Scenario UC4.4](#scenario-uc44)
+      - [Scenario UC4.5](#scenario-uc45)
+      - [Scenario UC4.6.1](#scenario-uc461)
+      - [Scenario UC4.6.2](#scenario-uc462)
     - [Use case 5, UC5](#use-case-5-uc5)
+      - [Scenario UC5.1](#scenario-uc51)
+      - [Scenario UC5.1.1](#scenario-uc511)
     - [Use case 6, UC6](#use-case-6-uc6)
+      - [Scenario UC6.1](#scenario-uc61)
+      - [Scenario UC6.2](#scenario-uc62)
+      - [Scenario UC6.3](#scenario-uc63)
+      - [Scenario UC6.4](#scenario-uc64)
     - [Use case 7, UC7](#use-case-7-uc7)
+      - [Scenario UC7.1](#scenario-uc71)
+      - [Scenario UC7.2](#scenario-uc72)
+      - [Scenario UC7.3](#scenario-uc73)
+      - [Scenario UC7.4](#scenario-uc74)
+      - [Scenario UC7.5.1](#scenario-uc751)
+      - [Scenario UC7.5.2](#scenario-uc752)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -79,9 +105,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 # Stories and personas
 
-Customer User: Simone: he is a 24 years old hobbyist that often buyes electronic components for his embedded systems projects. He is looking for a website where he can buy electronic components for his projects. He wants to search specific products, add them to a cart and pay for them online. He browses around the website looking for the suitable components for his designs adding them to the cart. Once he has done with the research, he buys stuff paying online with the different offered channel.
+Customer User: Simone: he is a 24 years old student that needs a PC for his university studies. He is looking for a website where he can buy a laptot at a convenient price. He wants to search specific models, add them to a cart and pay for the only one it is interested at the end. He browses around the website looking for the suitable laptop for his needs. Once he has done with the research, he buys it paying online with the different offered channel.
 
-Manager User: Lisa: she is the sales manager of the STMicroelectronics company. She wants to upload new sensors and boards of her company to the website. She wants to see the products that are already available, add new ones, and mark them as sold when they are purchased.
+Manager User: Lisa: she is the sales manager of the affiliate Samsung company. She wants to upload the new models of laptop, smartphone and air-conditioner to the website. She wants to see the products that are already available, add new ones, and mark them as sold when they are purchased.
 
 Developer: Leonardo: He is the one in charge to develop the website. He needs to have testing APIs to test the functionalities of the website. He most often uses the command line interface to test the functionalities of the website such as adding a product, deleting a product/all products, adding or deleting accounts etc.
 
@@ -216,7 +242,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Precondition  | Customer User does not have an account                |
 | Post condition |  Customer User has created an account                 | 
 |     **Step#**      |      **Description**                                      |
-|       1        |     click on signup button                     |
+|       1        |     click on sign up button                     |
 |       2        |     fills name, surname, username, password           |
 |       3        |     click next                                     |
 
@@ -227,7 +253,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Precondition  | Manager User does not have an account                |
 | Post condition |  Manager User has created an account                 | 
 |     **Step#**      |      **Description**                                      |
-|       1        |     click on signup button                     |
+|       1        |     click on sign up button                     |
 |       2        |     fills name, surname, username, password           |
 |       3        |     check "manager account"                           |
 |       4        |     click next                                     |
@@ -239,7 +265,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Precondition  | User does not have an account                         |
 | Post condition | User has not created an account                       | 
 |     **Step#**      |      **Description**                                      |
-|       1        |     click on signup button                     |
+|       1        |     click on sign up button                     |
 |       2        |     fills name, surname, username, password           |
 |       3        |     check "manager account" if manager                |
 |       4        |     click next                                     |
@@ -273,7 +299,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Post condition  | User has managed the cart |
 | Nominal Scenario | User wants to see the current cart (UC4.1), User wants to add a product to the cart (UC4.2), User wants to see the history of paid carts (UC4.3), User wants to remove a product from the cart (UC4.4), User wants to delete the current cart (UC4.5) |
 |     Variants     | - |
-|    Exceptions    | User wants to add a product that is already in another cart (UC4.2.1), User wants to add a product that has already been sold (UC4.2.2) |
+|    Exceptions    | User wants to add a product that is already in cart (UC4.6.1), User wants to add a product that has already been sold (UC4.6.2) |
 
 #### Scenario UC4.1
 
@@ -293,7 +319,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 | Post condition |  User has added the product to the cart                | 
 |     **Step#**      |      **Description**                               |
 |       1        |     click on "add to cart" button next to the product to add   |
-|       4        |     system show "Product added to cart"                |
+|       2        |     system show "Product added to cart"                |
 
 #### Scenario UC4.3
 
@@ -314,7 +340,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 | Post condition |  User has removed the product from the cart                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                                     |
-|       2        |     click on the delete button next to the product to remove      |
+|       2        |     click on the delete button       |
 |       3        |     system show "Product removed from cart"                   |
 
 #### Scenario UC4.5
@@ -326,21 +352,22 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
 |       2        |     click on delete cart button            |
-|       3        |     system show "Cart deleted"                   |
+|       3        |     select product that user wants to remove                  |
+|       4        |     system show "Cart deleted"                   |
 
-#### Scenario UC4.2.1
+#### Scenario UC4.6.1
 
-|  Scenario UC4.2.2  |           |
+|  Scenario UC4.6.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product that is already in another cart                |
+|  Precondition  | User wants to add a product that is already in the cart                |
 | Post condition |  User has not added the product to the cart                |
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on "add to cart" button next to the product to add    |
-|       2        |     system show "Product already in another cart"   |
+|       2        |     system show "Product already in the cart"   |
 
-#### Scenario UC4.2.2
+#### Scenario UC4.6.2
 
-|  Scenario UC4.2.3  |           |
+|  Scenario UC4.6.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product that has already been sold                |
 | Post condition |  User has not added the product to the cart                |
@@ -394,7 +421,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC6.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see the product that matches an ID                |
+|  Precondition  | User is logged in and wants search for a product with a specific ID              |
 | Post condition |  User has seen the product that matches the ID                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     insert the product ID into the search bar    |
@@ -405,7 +432,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC6.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see all the products of a category                |
+|  Precondition  | User is logged in and wants to see all the products of a category                |
 | Post condition |  User has seen all the products of a category                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     leave text empty in the search bar    |
@@ -443,7 +470,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Post condition  | User has managed the products |
 | Nominal Scenario | User wants to add a product (UC7.1), User wants to add quantity to a product (UC7.2), User wants to mark a product as sold (UC7.3), User wants to delete a specific product (UC7.4) |
 |     Variants     | - |
-|    Exceptions    | User wants to add a product that is already existing (UC7.1.1), User wants to mark a product as sold that is already sold (UC7.3.1) |
+|    Exceptions    | User wants to add a product that is already existing (UC7.5.1), User wants to mark a product as sold that is already sold (UC7.5.2) |
 
 #### Scenario UC7.1
 
@@ -452,9 +479,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Precondition  | User wants to add a product                |
 | Post condition |  User has added the product                | 
 |     **Step#**      |      **Description**                                      |
-|       1        |     click on add product button                           |
+|       1        |     click on mamage product button                           |
 |       2        |     fills the product information                                   |
-|       3        |     click on add product button                           |
+|       3        |     click on post product button                           |
 |       4        |     system show "Product added"                   |
 
 #### Scenario UC7.2
@@ -465,9 +492,8 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 | Post condition |  User has added quantity to the product                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on add quantity button next to the product   |
-|       2        |     fills the quantity      |
-|       3        |     click on confirm                           |
-|       4        |     system show "Quantity added"                   |
+|       2        |     fills the quantity box    |
+|       3        |     system show "Quantity added"                   |
 
 #### Scenario UC7.3
 
@@ -477,8 +503,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 | Post condition |  User has marked the product as sold                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on mark as sold button next to the product       |
-|       2        |     click confirm                           |
-|       3        |     system show "Product marked as sold"                   |
+|       2        |     system show "Product marked as sold"                   |
 
 #### Scenario UC7.4
 
@@ -491,9 +516,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click confirm                                  |
 |       3        |     system show "Product deleted"                   |
 
-#### Scenario UC7.1.1
+#### Scenario UC7.5.1
 
-|  Scenario UC7.1.1  |           |
+|  Scenario UC7.5.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product that is already existing     |
 | Post condition |  User has not added the product                | 
@@ -503,16 +528,15 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click on add product button                           |
 |       4        |     system show "Product already existing" -> return to step 2|
 
-#### Scenario UC7.3.1
+#### Scenario UC7.5.2
 
-|  Scenario UC7.3.1  |           |
+|  Scenario UC7.5.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to mark a product as sold that is already sold   |
 | Post condition |  -  | 
 |     **Step#**  |      **Description**                                      |
 |       1        |     click on mark as sold button next to the product       |
-|       2        |     click confirm                           |
-|       3        |     system show "Product already sold"                   |
+|       2        |     system show "Product already sold"                   |
 
 # Glossary
 
@@ -548,6 +572,6 @@ The deployment diagram consists of the following nodes:
  - User PC: The PC of the user that accesses the website
  - User Smartphone: The smartphone of the user that accesses the website
  - Payment Service: The service that allows the user to pay for the products in the cart
- - Developer PC: The PC of the developer that tests and develop the functionalities of the website
+ - Developer PC: The PC of the developer that tests and develops the functionalities of the website
 
 ![deployment diagram](assets/Deployment_Diagram.png)
