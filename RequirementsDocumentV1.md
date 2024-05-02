@@ -543,12 +543,8 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 - User
     - Person who has an account in the platform
-- Customer User
-    - User who buys products
-- Manager User
-    - User who sells products
 - Account
-    - It has a username, a password, a name, a surname, a role and it can be linked to one or multiple Carts
+    - It has a username, a password, a name, a surname, a role (Customer and Manager). For Customer users, it can be linked to zero or more carts. For Manager users, it is linked to the products DB since they can add, delete, and "modify" products.
 - Cart
     - List of products that a customer wants to buy
     - It has an id, it is associated to an account with role "customer", it has a list of products, a total price and it can be linked to a Payment when it is paid
@@ -560,7 +556,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
     - It can be associated to zero or one cart per user
     - It has a unique code, a selling price, a model, a category, a selling date, an arrival date, details, quantity and it can be marked as sold
 - Product DB
-    - Database that stores all the products, manager users can add, delete, modify products
+    - Database that stores all the products, Manager Users can add, delete, "modify" products.
 
 ![glossary](assets/Glossary.png)
 
