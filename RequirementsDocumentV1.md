@@ -10,6 +10,7 @@ Version: V1.6
 |       V1.2        | Add Use Case Diagram and Use cases |
 |       V1.3        | Update Use cases, add glossary, fix FRs, format document |
 |       V1.4        | Update Use cases, update stories and personas, update FRs, update glossary, add Deployment Diagram |
+|       V1.5        | Update Use cases |
 
 # Contents
 
@@ -27,43 +28,13 @@ Version: V1.6
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
-  - [Use case 1, UC1](#use-case-1-uc1)
-    - [Scenario UC1.1](#scenario-uc11)
-    - [Scenario UC1.2](#scenario-uc12)
-  - [Use case 2, UC2](#use-case-2-uc2)
-    - [Scenario UC2.1](#scenario-uc21)
-  - [Use case 3, UC3](#use-case-3-uc3)
-    - [Scenario UC3.1](#scenario-uc31)
-    - [Scenario UC3.2](#scenario-uc32)
-    - [Scenario UC3.3](#scenario-uc33)
-  - [Use case 4, UC4](#use-case-4-uc4)
-    - [Scenario UC4.1](#scenario-uc41)
-    - [Scenario UC4.2](#scenario-uc42)
-    - [Scenario UC4.3](#scenario-uc43)
-    - [Scenario UC4.4](#scenario-uc44)
-  - [Use case 5, UC5](#use-case-5-uc5)
-    - [Scenario UC5.1](#scenario-uc51)
-    - [Scenario UC5.2](#scenario-uc52)
-    - [Scenario UC5.3](#scenario-uc53)
-    - [Scenario UC5.4](#scenario-uc54)
-    - [Scenario UC5.5](#scenario-uc55)
-    - [Scenario UC5.2.1](#scenario-uc521)
-    - [Scenario UC5.2.2](#scenario-uc522)
-  - [Use case 6, UC6](#use-case-6-uc6)
-    - [Scenario UC6.1](#scenario-uc61)
-    - [Scenario UC6.1.1](#scenario-uc611)
-  - [Use case 7, UC7](#use-case-7-uc7)
-    - [Scenario UC7.1](#scenario-uc71)
-    - [Scenario UC7.2](#scenario-uc72)
-    - [Scenario UC7.3](#scenario-uc73)
-    - [Scenario UC7.4](#scenario-uc74)
-  - [Use case 8, UC8](#use-case-8-uc8)
-    - [Scenario UC8.1](#scenario-uc81)
-    - [Scenario UC8.2](#scenario-uc82)
-    - [Scenario UC8.3](#scenario-uc83)
-    - [Scenario UC8.4](#scenario-uc84)
-    - [Scenario UC8.1.1](#scenario-uc811)
-    - [Scenario UC8.3.1](#scenario-uc831)
+    - [Use case 1, UC1](#use-case-1-uc1)
+    - [Use case 2, UC2](#use-case-2-uc2)
+    - [Use case 3, UC3](#use-case-3-uc3)
+    - [Use case 4, UC4](#use-case-4-uc4)
+    - [Use case 5, UC5](#use-case-5-uc5)
+    - [Use case 6, UC6](#use-case-6-uc6)
+    - [Use case 7, UC7](#use-case-7-uc7)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -128,7 +99,6 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |   FR2|Create Account|
 |   FR3|Manage Account |
 |       FR3.1|Get Account Information |
-|       FR3.2|Delete Account|
 |   FR4|Manage products|
 |       FR4.1|Add a product|
 |       FR4.2|Add quantity to a product|
@@ -150,12 +120,12 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 ## Table of rights
 
-|  Actor    | FR1.1 | FR1.2 | FR2 | FR3.1 | FR3.2 | FR4.1 | FR4.2 | FR4.3 | FR4.4 | FR5.1 | FR5.2 | FR5.3 | FR5.4 | FR6.1 | FR6.2 | FR6.3 | FR6.4 | FR6.5 | FR7.1 |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|Non-registered user    |Y|N|Y|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|
-|Customer user          |Y|Y|Y|Y|Y|N|N|N|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
-|Manager user           |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|
-|Developer              |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
+|  Actor    | FR1.1 | FR1.2 | FR2 | FR3.1 | FR4.1 | FR4.2 | FR4.3 | FR4.4 | FR5.1 | FR5.2 | FR5.3 | FR5.4 | FR6.1 | FR6.2 | FR6.3 | FR6.4 | FR6.5 | FR7.1 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|Non-registered user    |Y|N|Y|Y|N|N|N|N|N|N|N|N|N|N|N|N|N|N|
+|Customer user          |Y|Y|Y|Y|N|N|N|N|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
+|Manager user           |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|N|N|N|N|N|N|
+|Developer              |Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|Y|
 
 ## Non Functional Requirements
 
@@ -179,24 +149,23 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |ID| Use Case  | Actor|
 |:-----:|:-----: |:-----: 
-|UC1|Login| Users |
-|UC2|Logout| Users |
-|UC3|Create new user| Non-registered users|
-|UC4|Manage Account| Users|
-|UC5|Manage Cart| Customer Users|
-|UC6|Pay Current Cart| Customer Users|
-|UC7|Show Products| Users|
-|UC8|Manage Products| Manager Users|
+|UC1|Authenticate| Users |
+|UC2|Create Account| Users|
+|UC3|Manage Account| Users|
+|UC4|Manage Cart| Customer Users|
+|UC5|Pay Current Cart| Customer Users|
+|UC6|Show Products| Users|
+|UC7|Manage Products| Manager Users|
 
 ### Use case 1, UC1
 
 | Actors Involved  |  Customer User, Manager User   |
 | :--------------: | :------------------------------------------------------------------:    |
-|   Precondition   | User has an account                                |
-|  Post condition  |  User is logged-in                                 |
-| Nominal Scenario |  User wants to authenticate himself/herself (UC1.1)|
+|   Precondition   | User wants to authenticate/deauthenticate himself/herself  |
+|  Post condition  |  User is authenticated/deauthenticated                     |
+| Nominal Scenario |  User wants to login (UC1.1), User want to logout (UC1.2)  |
 |     Variants     |   -  |
-|    Exceptions    |   User wants to authenticate with wrong credentials(UC1.2)                         |
+|    Exceptions    |   User wants to login with wrong credentials(UC1.3) |
 
 #### Scenario UC1.1
 
@@ -210,7 +179,17 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click login                                          |
 
 #### Scenario UC1.2
-|  Scenario UC1.2  |                |
+
+|  Scenario UC1.2  |           |
+| :------------: | :------------------------------------------------------------------------:  |
+|  Precondition  | User is logged in                                     |
+| Post condition |  User is not logged anymore                           | 
+|     **Step#**      |      **Description**                                      |
+|       1        |     click on logout button                            |
+|       2        |     click confirm                                     |
+
+#### Scenario UC1.3
+|  Scenario UC1.3  |                |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | User has an account |
 | Post condition |  User is not logged in |
@@ -222,37 +201,17 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 ### Use case 2, UC2
 
-| Actors Involved  |  Customer User, Manager User   |
-| :--------------: | :------------------------------------------------------------------:    |
-|   Precondition   | User is logged in                                |
-|  Post condition  |  User is not logged anymore                                |
-| Nominal Scenario |  User wants to deauthenticate himself/herself (UC2.1)|
-|     Variants     |   -  |
-|    Exceptions    |   -  |
-
-#### Scenario UC2.1
-
-|  Scenario UC2.1  |           |
-| :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User is logged in                                     |
-| Post condition |  User is not logged anymore                           | 
-|     **Step#**      |      **Description**                                      |
-|       1        |     click on logout button                            |
-|       2        |     click confirm                                     |
-
-### Use case 3, UC3
-
 | Actors Involved  |  User  |
 | :--------------: | :------------------------------------------------------------------:    |
 |   Precondition   | New user wants to access the platform but does not have an account |
 |  Post condition  |  New user has an account |
-| Nominal Scenario |  Customer User wants to create a new account (UC3.1)|
-|     Variants     |   User want to create a manager account (UC3.2)  |
-|    Exceptions    |   Username already existing (UC3.3)  |
+| Nominal Scenario |  Customer User wants to create a new account (UC2.1)|
+|     Variants     |   User want to create a manager account (UC2.2)  |
+|    Exceptions    |   Username already existing (UC2.3)  |
 
-#### Scenario UC3.1
+#### Scenario UC2.1
 
-|  Scenario UC3.1  |           |
+|  Scenario UC2.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | Customer User does not have an account                |
 | Post condition |  Customer User has created an account                 | 
@@ -261,9 +220,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     fills name, surname, username, password           |
 |       3        |     click next                                     |
 
-#### Scenario UC3.2
+#### Scenario UC2.2
 
-|  Scenario UC3.2  |           |
+|  Scenario UC2.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | Manager User does not have an account                |
 | Post condition |  Manager User has created an account                 | 
@@ -273,9 +232,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     check "manager account"                           |
 |       4        |     click next                                     |
 
-#### Scenario UC3.3
+#### Scenario UC2.3
 
-|  Scenario UC3.3  |           |
+|  Scenario UC2.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User does not have an account                         |
 | Post condition | User has not created an account                       | 
@@ -286,79 +245,39 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       4        |     click next                                     |
 |       5        |     System show "Username already existing" -> return to step 1|
 
-### Use case 4, UC4
+### Use case 3, UC3
 
 | Actors Involved  |  User  |
 | :--------------: | :------------------------------------------------------------------:                 |
-|   Precondition   | - |
+|   Precondition   | User is authenticated |
 |  Post condition  | User has managed an account |
-| Nominal Scenario | User wants to see info about an account (UC4.1) |
-|     Variants     | User wants to delete an account (UC4.2)   |
-|    Exceptions    | User wants to see info about a non existing account (UC4.3), User wants to delete a non existing account (UC4.4) |
+| Nominal Scenario | User wants to see info about its own account (UC3.1) |
+|     Variants     | - |
+|    Exceptions    | - |
 
-#### Scenario UC4.1
+#### Scenario UC3.1
 
-|  Scenario UC4.1  |           |
+|  Scenario UC3.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see info about an existing account      |
+|  Precondition  | User wants to see info about its own account          |
 | Post condition |  User has seen the account information                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on account button                           |
-|       2        |     insert username                                   |
-|       3        |     click on show account information                 |
-|       4        |     system show account information                   |
+|       2        |     system show account information                   |
 
-#### Scenario UC4.2
-
-|  Scenario UC4.2  |           |
-| :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to delete an existing account              |
-| Post condition |  User has deleted the account                         | 
-|     **Step#**      |      **Description**                                      |
-|       1        |     click on account button                           |
-|       2        |     insert username                                   |
-|       3        |     click on delete account                           |
-|       4        |     click confirm                                     |
-|       5        |     system show "Account deleted"                     |
-
-#### Scenario UC4.3
-
-|  Scenario UC4.3  |           |
-| :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see info about a non existing account   |
-| Post condition |  User has not seen the account information            | 
-|     **Step#**      |      **Description**                                      |
-|       1        |     click on account button                           |
-|       2        |     insert username                                   |
-|       3        |     click on show account information                 |
-|       4        |     system show "Account not found" -> return to step 1|
-
-#### Scenario UC4.4
-
-|  Scenario UC4.4  |           |
-| :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to delete a non existing account           |
-| Post condition |  User has not deleted the account                     |
-|     **Step#**      |      **Description**                                      |
-|       1        |     click on account button                           |
-|       2        |     insert username                                   |
-|       3        |     click on delete account                           |
-|       4        |     click confirm                                     |
-|       5        |     system show "Account not found" -> return to step 1|
-
-### Use case 5, UC5
+### Use case 4, UC4
 
 | Actors Involved  |  Customer User  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User has logged in as Customer User |
 |  Post condition  | User has managed the cart |
-| Nominal Scenario | User wants to see the current cart (UC5.1), User wants to add a product to the cart (UC5.2), User wants to see the history of paid carts (UC5.3), User wants to remove a product from the cart (UC5.4), User wants to delete the current cart (UC5.5) |
+| Nominal Scenario | User wants to see the current cart (UC4.1), User wants to add a product to the cart (UC4.2), User wants to see the history of paid carts (UC4.3), User wants to remove a product from the cart (UC4.4), User wants to delete the current cart (UC4.5) |
 |     Variants     | - |
-|    Exceptions    | User wants to add a product that is already in another cart (UC5.2.1), User wants to add a product that has already been sold (UC5.2.2) |
+|    Exceptions    | User wants to add a product that is already in another cart (UC4.2.1), User wants to add a product that has already been sold (UC4.2.2) |
 
-#### Scenario UC5.1
+#### Scenario UC4.1
 
-|  Scenario UC5.1  |           |
+|  Scenario UC4.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see the current cart |
 | Post condition |  User has seen the current cart information                | 
@@ -366,9 +285,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       1        |     click on cart button                           |
 |       2        |     system show the current cart information                   |
 
-#### Scenario UC5.2
+#### Scenario UC4.2
 
-|  Scenario UC5.2  |           |
+|  Scenario UC4.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product to the cart                |
 | Post condition |  User has added the product to the cart                | 
@@ -376,9 +295,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       1        |     click on "add to cart" button next to the product to add   |
 |       4        |     system show "Product added to cart"                |
 
-#### Scenario UC5.3
+#### Scenario UC4.3
 
-|  Scenario UC5.3  |           |
+|  Scenario UC4.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see the history of paid carts                |
 | Post condition |  User has seen the history of paid carts                | 
@@ -387,20 +306,20 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on history of paid carts button            |
 |       3        |     system show the history of paid carts                   |
 
-#### Scenario UC5.4
+#### Scenario UC4.4
 
-|  Scenario UC5.4  |           |
+|  Scenario UC4.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to remove a product from the cart |
 | Post condition |  User has removed the product from the cart                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                                     |
 |       2        |     click on the delete button next to the product to remove      |
-|       4        |     system show "Product removed from cart"                   |
+|       3        |     system show "Product removed from cart"                   |
 
-#### Scenario UC5.5
+#### Scenario UC4.5
 
-|  Scenario UC5.5 |           |
+|  Scenario UC4.5 |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to delete the current cart                |
 | Post condition |  User has deleted the current cart                | 
@@ -409,9 +328,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on delete cart button            |
 |       3        |     system show "Cart deleted"                   |
 
-#### Scenario UC5.2.1
+#### Scenario UC4.2.1
 
-|  Scenario UC5.2.2  |           |
+|  Scenario UC4.2.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product that is already in another cart                |
 | Post condition |  User has not added the product to the cart                |
@@ -419,9 +338,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       1        |     click on "add to cart" button next to the product to add    |
 |       2        |     system show "Product already in another cart"   |
 
-#### Scenario UC5.2.2
+#### Scenario UC4.2.2
 
-|  Scenario UC5.2.3  |           |
+|  Scenario UC4.2.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product that has already been sold                |
 | Post condition |  User has not added the product to the cart                |
@@ -429,19 +348,19 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       1        |     click on "add to cart" button next to the product to add    |
 |       2        |     system show "Product already sold"                   |
 
-### Use case 6, UC6
+### Use case 5, UC5
 
 | Actors Involved  |  Customer User  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User has logged in as Customer User |
 |  Post condition  | User has payed the current cart |
-| Nominal Scenario | User wants to pay for the current cart (UC6.1) |
+| Nominal Scenario | User wants to pay for the current cart (UC5.1) |
 |     Variants     | - |
-|    Exceptions    | User wants to pay for an empty cart (UC6.1.1) |
+|    Exceptions    | User wants to pay for an empty cart (UC5.1.1) |
 
-#### Scenario UC6.1
+#### Scenario UC5.1
 
-|  Scenario UC6.1  |           |
+|  Scenario UC5.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to pay for the current cart                |
 | Post condition |  User has paid for the current cart                | 
@@ -450,9 +369,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on pay cart button                                   |
 |       3        |     system show "Cart paid"                   |
 
-#### Scenario UC6.1.1
+#### Scenario UC5.1.1
 
-|  Scenario UC6.1.1  |           |
+|  Scenario UC5.1.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to pay for an empty cart                |
 | Post condition |  User has not paid for the current cart                |
@@ -461,19 +380,19 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on pay cart button            |
 |       3        |    system show "Cart is empty"                   |
 
-### Use case 7, UC7
+### Use case 6, UC6
 
 | Actors Involved  |  User  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in |
 |  Post condition  | User has seen the products |
-| Nominal Scenario | User wants to see the products that match an ID (UC7.1) |
-|     Variants     | User wants to see all products of a category (UC7.2), User wants to see all products that match a specific model (UC7.3), User wants to see all products (UC7.4) |
+| Nominal Scenario | User wants to see the products that match an ID (UC6.1) |
+|     Variants     | User wants to see all products of a category (UC6.2), User wants to see all products that match a specific model (UC6.3), User wants to see all products (UC6.4) |
 |    Exceptions    | - |
 
-#### Scenario UC7.1
+#### Scenario UC6.1
 
-|  Scenario UC7.1  |           |
+|  Scenario UC6.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see the product that matches an ID                |
 | Post condition |  User has seen the product that matches the ID                | 
@@ -482,9 +401,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on search button            |
 |       3        |     system show the product that matches the id     |
 
-#### Scenario UC7.2
+#### Scenario UC6.2
 
-|  Scenario UC7.2  |           |
+|  Scenario UC6.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see all the products of a category                |
 | Post condition |  User has seen all the products of a category                | 
@@ -494,9 +413,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click on the category of interest            |
 |       4        |     system show all the products of the category     |
 
-#### Scenario UC7.3
+#### Scenario UC6.3
 
-|  Scenario UC7.3  |           |
+|  Scenario UC6.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see all the products that match a specific model                |
 | Post condition |  User has seen all the products that match the model                | 
@@ -505,9 +424,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on search button            |
 |       3        |     system show all the products that match the model     |
 
-#### Scenario UC7.4
+#### Scenario UC6.4
 
-|  Scenario UC7.4  |           |
+|  Scenario UC6.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to see all the products                |
 | Post condition |  User has seen all the products                | 
@@ -516,19 +435,19 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click on search button            |
 |       3        |     system show all the products     |
 
-### Use case 8, UC8
+### Use case 7, UC7
 
 | Actors Involved  |  Manager User  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in as Manager User |
 |  Post condition  | User has managed the products |
-| Nominal Scenario | User wants to add a product (UC8.1), User wants to add quantity to a product (UC8.2), User wants to mark a product as sold (UC8.3), User wants to delete a specific product (UC8.4) |
+| Nominal Scenario | User wants to add a product (UC7.1), User wants to add quantity to a product (UC7.2), User wants to mark a product as sold (UC7.3), User wants to delete a specific product (UC7.4) |
 |     Variants     | - |
-|    Exceptions    | User wants to add a product that is already existing (UC8.1.1), User wants to mark a product as sold that is already sold (UC8.3.1) |
+|    Exceptions    | User wants to add a product that is already existing (UC7.1.1), User wants to mark a product as sold that is already sold (UC7.3.1) |
 
-#### Scenario UC8.1
+#### Scenario UC7.1
 
-|  Scenario UC8.1  |           |
+|  Scenario UC7.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product                |
 | Post condition |  User has added the product                | 
@@ -538,9 +457,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click on add product button                           |
 |       4        |     system show "Product added"                   |
 
-#### Scenario UC8.2
+#### Scenario UC7.2
 
-|  Scenario UC8.2  |           |
+|  Scenario UC7.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add quantity to a product                |
 | Post condition |  User has added quantity to the product                | 
@@ -550,9 +469,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click on confirm                           |
 |       4        |     system show "Quantity added"                   |
 
-#### Scenario UC8.3
+#### Scenario UC7.3
 
-|  Scenario UC8.3  |           |
+|  Scenario UC7.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to mark a product as sold                |
 | Post condition |  User has marked the product as sold                | 
@@ -561,9 +480,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click confirm                           |
 |       3        |     system show "Product marked as sold"                   |
 
-#### Scenario UC8.4
+#### Scenario UC7.4
 
-|  Scenario UC8.4  |           |
+|  Scenario UC7.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to delete a specific product                |
 | Post condition |  User has deleted the product                | 
@@ -572,9 +491,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       2        |     click confirm                                  |
 |       3        |     system show "Product deleted"                   |
 
-#### Scenario UC8.1.1
+#### Scenario UC7.1.1
 
-|  Scenario UC8.1.1  |           |
+|  Scenario UC7.1.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to add a product that is already existing     |
 | Post condition |  User has not added the product                | 
@@ -584,9 +503,9 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       3        |     click on add product button                           |
 |       4        |     system show "Product already existing" -> return to step 2|
 
-#### Scenario UC8.3.1
+#### Scenario UC7.3.1
 
-|  Scenario UC8.3.1  |           |
+|  Scenario UC7.3.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User wants to mark a product as sold that is already sold   |
 | Post condition |  -  | 
