@@ -1,6 +1,6 @@
 # Requirements Document - current EZElectronics
 
-Date:02/05/2024
+Date:03/05/2024
 
 Version: V1.6
 
@@ -11,7 +11,7 @@ Version: V1.6
 |       V1.3        | Update Use cases, add glossary, fix FRs, format document |
 |       V1.4        | Update Use cases, update stories and personas, update FRs, update glossary, add Deployment Diagram |
 |       V1.5        | Update Use cases |
-|       V1.6           | Review and error fixing |
+|       V1.6        | Review and error fixing |
 
 # Contents
 
@@ -175,7 +175,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 ![use case diagram](assets/UseCase_Diagram.png)
 
 |ID| Use Case  | Actor|
-|:-----:|:-----: |:-----: 
+|:-----:|:-----: |:-----:|
 |UC1|Authenticate| Users |
 |UC2|Create Account| Users|
 |UC3|Manage Account| Users|
@@ -188,7 +188,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 | Actors Involved  |  Customer User, Manager User   |
 | :--------------: | :------------------------------------------------------------------:    |
-|   Precondition   | User wants to authenticate/deauthenticate himself/herself  |
+|   Precondition   |  User has an account  |
 |  Post condition  |  User is authenticated/deauthenticated                     |
 | Nominal Scenario |  User wants to login (UC1.1), User want to logout (UC1.2)  |
 |     Variants     |   -  |
@@ -199,8 +199,8 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |  Scenario UC1.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
 |  Precondition  | User has a Customer account                              |
-| Post condition |  User is logged-in as customer                           | 
-|     **Step#**      |      **Description**                                         |
+| Post condition |  User is logged-in as customer                           |
+|     **Step#**      |      **Description**                                 |
 |       1        |     insert the username                                  |
 |       2        |     insert password                                      |
 |       3        |     click login                                          |
@@ -224,13 +224,13 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 |       1       |     insert the username               |
 |       2       |     insert password          |
 |       3       |     click login        |
-|       4       |     System show "Incorrect username and/or password" -> return to step 1   |
+|       4       |     system shows "Incorrect username and/or password" -> return to step 1   |
 
 ### Use case 2, UC2
 
 | Actors Involved  |  User  |
 | :--------------: | :------------------------------------------------------------------:    |
-|   Precondition   | New user wants to access the platform but does not have an account |
+|   Precondition   | - |
 |  Post condition  |  New user has an account |
 | Nominal Scenario |  Customer User wants to create a new account (UC2.1)|
 |     Variants     |   User want to create a manager account (UC2.2)  |
@@ -240,7 +240,7 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC2.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | Customer User does not have an account                |
+|  Precondition  | -              |
 | Post condition |  Customer User has created an account                 | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on sign up button                     |
@@ -251,26 +251,26 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC2.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | Manager User does not have an account                |
+|  Precondition  | -                |
 | Post condition |  Manager User has created an account                 | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on sign up button                     |
 |       2        |     fills name, surname, username, password           |
-|       3        |     check "manager account"                           |
+|       3        |     check "manager account" box                           |
 |       4        |     click next                                     |
 
 #### Scenario UC2.3
 
 |  Scenario UC2.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User does not have an account                         |
+|  Precondition  | -                        |
 | Post condition | User has not created an account                       | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on sign up button                     |
 |       2        |     fills name, surname, username, password           |
 |       3        |     check "manager account" if manager                |
 |       4        |     click next                                     |
-|       5        |     System show "Username already existing" -> return to step 1|
+|       5        |     system shows "Username already existing" -> return to step 1|
 
 ### Use case 3, UC3
 
@@ -286,11 +286,11 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC3.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see info about its own account          |
-| Post condition |  User has seen the account information                | 
+|  Precondition  | User is logged in         |
+| Post condition | User has seen the account information                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on account button                           |
-|       2        |     system show account information                   |
+|       2        |     system shows account information                   |
 
 ### Use case 4, UC4
 
@@ -306,75 +306,75 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC4.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see the current cart |
-| Post condition |  User has seen the current cart information                | 
+|  Precondition  | User is logged in |
+| Post condition | User has seen the current cart information                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
-|       2        |     system show the current cart information                   |
+|       2        |     system shows the current cart information                   |
 
 #### Scenario UC4.2
 
 |  Scenario UC4.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product to the cart                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has added the product to the cart                | 
 |     **Step#**      |      **Description**                               |
 |       1        |     click on "add to cart" button next to the product to add   |
-|       2        |     system show "Product added to cart"                |
+|       2        |     system adds the product to the cart and shows "Product added to cart"                |
 
 #### Scenario UC4.3
 
 |  Scenario UC4.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see the history of paid carts                |
+|  Precondition  |  User is logged in               |
 | Post condition |  User has seen the history of paid carts                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
 |       2        |     click on history of paid carts button            |
-|       3        |     system show the history of paid carts                   |
+|       3        |     system shows the history of paid carts                   |
 
 #### Scenario UC4.4
 
 |  Scenario UC4.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to remove a product from the cart |
+|  Precondition  |  User is logged in |
 | Post condition |  User has removed the product from the cart                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                                     |
 |       2        |     click on the delete button       |
-|       3        |     system show "Product removed from cart"                   |
+|       3        |     system removes the product from the cart and shows "Product removed from cart"                   |
 
 #### Scenario UC4.5
 
 |  Scenario UC4.5 |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to delete the current cart                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has deleted the current cart                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
 |       2        |     click on delete cart button            |
 |       3        |     select product that user wants to remove                  |
-|       4        |     system show "Cart deleted"                   |
+|       4        |     system deletes the cart and shows "Cart deleted"                   |
 
 #### Scenario UC4.6.1
 
 |  Scenario UC4.6.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product that is already in the cart                |
+|  Precondition  |  User is logged in               |
 | Post condition |  User has not added the product to the cart                |
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on "add to cart" button next to the product to add    |
-|       2        |     system show "Product already in the cart"   |
+|       2        |     system shows "Product already in the cart"   |
 
 #### Scenario UC4.6.2
 
 |  Scenario UC4.6.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product that has already been sold                |
+|  Precondition  |  User is logged in               |
 | Post condition |  User has not added the product to the cart                |
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on "add to cart" button next to the product to add    |
-|       2        |     system show "Product already sold"                   |
+|       2        |     system shows "Product out of stock"                   |
 
 ### Use case 5, UC5
 
@@ -390,23 +390,23 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC5.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to pay for the current cart                |
+|  Precondition  |  User is logged in              |
 | Post condition |  User has paid for the current cart                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
 |       2        |     click on pay cart button                                   |
-|       3        |     system show "Cart paid"                   |
+|       3        |     system handles the transcation and shows "Cart paid"                   |
 
 #### Scenario UC5.1.1
 
 |  Scenario UC5.1.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to pay for an empty cart                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has not paid for the current cart                |
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on cart button                           |
 |       2        |     click on pay cart button            |
-|       3        |    system show "Cart is empty"                   |
+|       3        |    system shows "Cart is empty"                   |
 
 ### Use case 6, UC6
 
@@ -422,46 +422,46 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC6.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User is logged in and wants search for a product with a specific ID              |
+|  Precondition  |  User is logged in  |
 | Post condition |  User has seen the product that matches the ID                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     insert the product ID into the search bar    |
 |       2        |     click on search button            |
-|       3        |     system show the product that matches the id     |
+|       3        |     system shows the product that matches the id     |
 
 #### Scenario UC6.2
 
 |  Scenario UC6.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User is logged in and wants to see all the products of a category                |
+|  Precondition  |  User is logged in  |
 | Post condition |  User has seen all the products of a category                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     leave text empty in the search bar    |
 |       2        |     click on the category button            |
 |       3        |     click on the category of interest            |
-|       4        |     system show all the products of the category     |
+|       4        |     system shows all the products of the category     |
 
 #### Scenario UC6.3
 
 |  Scenario UC6.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see all the products that match a specific model                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has seen all the products that match the model                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     insert the model into the search bar    |
 |       2        |     click on search button            |
-|       3        |     system show all the products that match the model     |
+|       3        |     system shows all the products that match the model     |
 
 #### Scenario UC6.4
 
 |  Scenario UC6.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to see all the products                |
+|  Precondition  | User is logged in               |
 | Post condition |  User has seen all the products                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     leave text empty in the search bar    |
 |       2        |     click on search button            |
-|       3        |     system show all the products     |
+|       3        |     system shows all the products     |
 
 ### Use case 7, UC7
 
@@ -477,67 +477,67 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 
 |  Scenario UC7.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has added the product                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on mamage product button                           |
 |       2        |     fills the product information                                   |
 |       3        |     click on post product button                           |
-|       4        |     system show "Product added"                   |
+|       4        |     system adds the product to the database                  |
 
 #### Scenario UC7.2
 
 |  Scenario UC7.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add quantity to a product                |
+|  Precondition  |  User is logged in                |
 | Post condition |  User has added quantity to the product                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on add quantity button next to the product   |
 |       2        |     fills the quantity box    |
-|       3        |     system show "Quantity added"                   |
+|       3        |     system updates quantity number                   |
 
 #### Scenario UC7.3
 
 |  Scenario UC7.3  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to mark a product as sold                |
+|  Precondition  |  User is logged in               |
 | Post condition |  User has marked the product as sold                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on mark as sold button next to the product       |
-|       2        |     system show "Product marked as sold"                   |
+|       2        |     system marks the product as sold to the database                |
 
 #### Scenario UC7.4
 
 |  Scenario UC7.4  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to delete a specific product                |
+|  Precondition  |  User is logged in               |
 | Post condition |  User has deleted the product                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on delete product button next to the product        |
 |       2        |     click confirm                                  |
-|       3        |     system show "Product deleted"                   |
+|       3        |     system deletes the product                 |
 
 #### Scenario UC7.5.1
 
 |  Scenario UC7.5.1  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to add a product that is already existing     |
+|  Precondition  |  User is logged in     |
 | Post condition |  User has not added the product                | 
 |     **Step#**      |      **Description**                                      |
 |       1        |     click on add product button                           |
 |       2        |     fills the product information     |
 |       3        |     click on add product button                           |
-|       4        |     system show "Product already existing" -> return to step 2|
+|       4        |     system shows "Product already existing" -> return to step 2|
 
 #### Scenario UC7.5.2
 
 |  Scenario UC7.5.2  |           |
 | :------------: | :------------------------------------------------------------------------:  |
-|  Precondition  | User wants to mark a product as sold that is already sold   |
+|  Precondition  | User is logged in   |
 | Post condition |  -  | 
 |     **Step#**  |      **Description**                                      |
 |       1        |     click on mark as sold button next to the product       |
-|       2        |     system show "Product already sold"                   |
+|       2        |     system shows "Product already sold"                   |
 
 # Glossary
 
