@@ -16,7 +16,7 @@ Version: 1.0
 ## Product Page
 - Product page for a logged in Customer User with detailed information about the product and reviews. The user can add the product to the cart or wishlist and he can post a review or delete one already posted by himself only.
 ![alt text](assets/GUI-V2-screenshots/image-3.png)
-- Product page for a logged in Manager User where he can to the same as the Customer user, but in addition he can choose to upgrade/downgrading the product visibility, subscribing a monthly plan.
+- Product page for a logged in Manager User where he can to the same as the Customer user, but in addition he can choose to upgrade/downgrading the product visibility, subscribing a monthly plan
 ![alt text](assets/GUI-V2-screenshots/image-4.png)
 ## Log in Page
 ![alt text](assets/GUI-V2-screenshots/image-5.png)
