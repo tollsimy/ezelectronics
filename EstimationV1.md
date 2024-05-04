@@ -75,7 +75,7 @@ Report here the results of the three estimation approaches. The estimates may di
 | ----------- | ------------------------------- | ---------------|
 | estimate by size | 270h | 1.7 weeks |
 | estimate by product decomposition | 490h | 3.1 weeks |
-| estimate by activity decomposition | 490h | 7 weeks |
+| estimate by activity decomposition | 490h | 8 weeks |
 
 The difference between the estimates is due to the level of detail and the **scope of the estimation**.
 
