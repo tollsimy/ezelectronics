@@ -1,6 +1,6 @@
 # Requirements Document - future EZElectronics
 
-Date: 02/05/2024
+Date: 04/05/2024
 
 Version: V2 - description of EZElectronics in FUTURE form (as proposed by the team)
 
@@ -8,6 +8,7 @@ Version: V2 - description of EZElectronics in FUTURE form (as proposed by the te
 | :------------: | :----: |
 |       V1.1        | Define StakeHolders, Actors, Table of Rights, Functional requirements, Stories and Personas, Interfaces, Context Diagram, NFR |
 |       V1.2        | Define Use Case Diagram, Use Cases, Glossary, System Design, Deployment Diagram description |
+|       V1.3        | add use case 12: Contact support |
 
 # Contents
 
@@ -244,6 +245,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 |UC9|Manage Reviews| Users, Analytics team, Support team, Developer, IT administrator|
 |UC10|Manage Orders| Users, Support team, Developer, IT administrator|
 |UC11|Manage Visibility| Manager Users, Analytics team, Support team, Developer, IT administrator|
+|UC12|Contact Support team|Users|
 
 ### Use case 1, UC1
 
@@ -827,6 +829,30 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 |       3        |     system handles the transaction with the payment system|
 |       4        |     system shows "Payment rejected" -> returns to step 2|
 
+### Use case 12, UC12
+
+| Actors Involved  |  Users |
+| :--------------: | :------------------------------------------------------------------:                 |
+|   Precondition   | User is logged in |
+|  Post condition  | User is in tuch with the support team |
+| Nominal Scenario | User want to contact support team with chat(UC12.1) |
+|     Variants     | - |
+|    Exceptions    | - |
+
+#### Scenario UC12.1
+
+|  Scenario UC12.1  |           |
+| :------------: | :------------------------------------------------------------------------:  |
+|  Precondition  | User is logged in |
+| Post condition |  User is in tuch with the support team          |
+|     **Step#**      |      **Description**                                      |
+|       1        |     click on chat button in the right bottom of all pages    |
+|       2        |     system looks for an operator |
+|       3        |      user writes the question |
+|       4       |      operator answers  |
+|       5       |      operator closes the chat  |
+
+
 # Glossary
 
 - User
@@ -874,4 +900,4 @@ The deployment diagram consists of the following nodes:
  - Dashboard Service: The service that allows the analytics team to see the statistics of the products
 - Database: The database that stores all the information about the products, the accounts, the carts, the payments, the reviews, the orders, the higher visibility subscriptions
 
-![deployment diagram](assets/**Deployment_Diagram_V2.png)
+![deployment diagram](assets/Deployment_Diagram_V2.png)
