@@ -50,14 +50,14 @@ Consider the EZElectronics project in FUTURE version (as proposed by your team i
 | 2.9 WishList Screen|10|
 | 2.10 Chat with support team|30|
 | **3. design document** | **-** |
-| **4. code** | **560** |
+| **4. code** | **530** |
 | 4.1 Components | 70 |
 | 4.2 Controllers | 100 |
 | 4.3 DAOs | 60 |
 | 4.4 DB | 30 |
 | 4.5 Error Handling | 50 |
 | 4.6 API Routes | 80 |
-| 4.7 Frontend | 150 |
+| 4.7 Frontend | 120 |
 | 4.8 Miscellaneous | 20 |
 | **5. unit tests** | **80** |
 | 5.1 user tests | 10 |
