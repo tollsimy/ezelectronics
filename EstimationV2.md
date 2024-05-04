@@ -23,7 +23,7 @@ Consider the EZElectronics project in FUTURE version (as proposed by your team i
 | Requirement document  | 120 |
 | GUI prototype | 120 |
 | Design document | - |
-| Code | 560 |
+| Code | 530 |
 | Unit tests | 80 |
 | Api tests | 40 |
 | Management documents  | 30 |
@@ -89,8 +89,8 @@ Report here the results of the three estimation approaches. The estimates may di
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
 | estimate by size | 900h | 5.6 weeks |
-| estimate by product decomposition | 950h | 6 weeks |
-| estimate by activity decomposition | 950h | 11 weeks |
+| estimate by product decomposition | 920h | 6 weeks |
+| estimate by activity decomposition | 920h | 13 weeks |
 
 The difference between the estimates is due to the level of detail and the **scope of the estimation**.
 

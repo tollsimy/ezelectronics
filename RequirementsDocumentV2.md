@@ -85,7 +85,8 @@ Version: V2 - description of EZElectronics in FUTURE form (as proposed by the te
 
 # Informal description
 
-EZElectronics (read EaSy Electronics) is a software application designed to help managers of electronics stores to manage their products and offer them to customers through a dedicated website. Managers can assess the available products, record new ones, and confirm purchases. Customers can see available products, add them to a cart and see the history of their past purchases.
+EZElectronics (read EaSy Electronics) is a software application designed to help managers of electronics stores to manage their products and offer them to customers through a dedicated website. Managers can assess the available products, record new ones, and confirm purchases. Customers and Managers can see available products, add them to a cart, pay for them and see the history of their past purchases. The platform is also equipped with a support service that can be contacted via chat, email or VoIP. The platform is also equipped with an analytics service that allows managers to analyze the sales and the most searched products.
+Every product has its own rating and reviews that can be added by customers. The platform is also equipped with a wishlist that allows customers to save products they are interested in.
 
 # Stakeholders
 
@@ -225,6 +226,8 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 | NFR9    | Security                           | Password should be encrypted in the database | database |
 | NFR10   | Security                           | The platform should be able to handle DDoS attacks | server |
 | NFR11   | Security                           | The platform should be able to handle SQL injection attacks | server/database |
+| NFR12   | Security                           | HTTPS should be used for all the communications | server |
+| NFR13  | Usability | The user must be able to learn how to use the platform in less than 30 minutes | GUI |
 
 # Use case diagram and use cases
 
@@ -236,15 +239,15 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 |:-----:|:-----: |:-----:|
 |UC1|Authenticate| Users |
 |UC2|Create Account| Users|
-|UC3|Manage Account| Users, Support team, Developer, IT administrator|
-|UC4|Manage Cart| Users, Support team, Developer, IT administrator|
+|UC3|Manage Account| Users, Support team, IT administrator|
+|UC4|Manage Cart| Users, Support team, IT administrator|
 |UC5|Pay Current Cart| Users|
-|UC6|Show Products| Users, Support team, Developer, IT administrator|
-|UC7|Manage Products| Manager Users, Support team, Developer, IT administrator|
-|UC8|Manage Wishlist| Users, Analytics team, Support team, Developer, IT administrator|
-|UC9|Manage Reviews| Users, Analytics team, Support team, Developer, IT administrator|
-|UC10|Manage Orders| Users, Support team, Developer, IT administrator|
-|UC11|Manage Visibility| Manager Users, Analytics team, Support team, Developer, IT administrator|
+|UC6|Show Products| Users, Support team, IT administrator|
+|UC7|Manage Products| Manager Users, Support team, IT administrator|
+|UC8|Manage Wishlist| Users, Analytics team, Support team, IT administrator|
+|UC9|Manage Reviews| Users, Analytics team, Support team, IT administrator|
+|UC10|Manage Orders| Users, Support team, IT administrator|
+|UC11|Manage Visibility| Manager Users, Analytics team, Support team, IT administrator|
 |UC12|Contact Support team|Users|
 
 ### Use case 1, UC1
@@ -352,7 +355,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 3, UC3
 
-| Actors Involved  |  User, Support team, Developer, IT administrator  |
+| Actors Involved  |  User, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is authenticated |
 |  Post condition  | User has managed an account |
@@ -372,7 +375,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 4, UC4
 
-| Actors Involved  |  User, Support team, Developer, IT administrator  |
+| Actors Involved  |  User, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in |
 |  Post condition  | User has managed the cart |
@@ -490,7 +493,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 6, UC6
 
-| Actors Involved  |  User, Support team, Developer, IT administrator  |
+| Actors Involved  |  User, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | - |
 |  Post condition  | User has seen the products |
@@ -556,7 +559,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 7, UC7
 
-| Actors Involved  |  Manager User, Support team, Developer, IT administrator  |
+| Actors Involved  |  Manager User, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in as Manager User |
 |  Post condition  | User has managed the products |
@@ -632,7 +635,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 8, UC8
 
-| Actors Involved  |   User, Analytics team, Support team, Developer, IT administrator  |
+| Actors Involved  |   User, Analytics team, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in |
 |  Post condition  | User has managed the wishlist |
@@ -684,7 +687,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 9, UC9
 
-| Actors Involved  |  Users, Analytics team, Support team, Developer, IT administrator  |
+| Actors Involved  |  Users, Analytics team, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | - |
 |  Post condition  | User has managed the review |
@@ -740,7 +743,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 10, UC10
 
-| Actors Involved  |  Users, Analytics team, Support team, Developer, IT administrator  |
+| Actors Involved  |  Users, Analytics team, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in |
 |  Post condition  | User has managed the orders |
@@ -785,7 +788,7 @@ IT Administrator: Giovanni: He is the one in charge of the server and database m
 
 ### Use case 11, UC11
 
-| Actors Involved  |  Manager User, Analytics team, Support team, Developer, IT administrator  |
+| Actors Involved  |  Manager User, Analytics team, Support team, IT administrator  |
 | :--------------: | :------------------------------------------------------------------:                 |
 |   Precondition   | User is logged in as Manager User |
 |  Post condition  | User has managed the visibility of the products |

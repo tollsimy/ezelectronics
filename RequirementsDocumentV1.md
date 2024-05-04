@@ -90,9 +90,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Actor             | Description |
 | :--------------:  | :---------: |
 | Customer user     |  People that want to buy electronics products  |
-| Manager user      |  Electronics products companies that are register in the platform|
-| Payment service   | All method that allow user to pay pruducts in the cart|
-|Developer          | The team in charge of developing the platform|
+| Manager user      |  Electronics products companies that want to sell products in the platform|
+| Payment service   | The actor that allows user to pay products in the cart|
+|Developer        | The team in charge of developing the platform|
 
 ## Interfaces
 
@@ -160,13 +160,11 @@ Payment Service: PayPal: It is the service that allows the customer to pay for t
 | :-----: | :---------------------------------: | :---------: | :-------: |
 |  NFR1   | Usability                          | Website GUI should be able to adapt to both desktop (up to 30in displays) and mobile screens (down to 4in displays) | GUI |
 |  NFR2   | Efficiency                         | All back-end operations should be performed in less that 0.1s | server |
-|  NFR3   | Reliability                        | The platform should be able to perform a backup and restore it every 24h | database |
-| NFR4    | Scalability                        | The platform should be able to handle up to 1000 simultaneous users | server/database |
-| NFR5    | Scalability                        | The platform should be able to handle up to 1000000 simultaneous products | server/database |
-| NFR6    | Maintainability                    | The platform should be able to be updated without stopping the service | server |
-| NFR7    | Availability                       | The platform should be available 99.99% of the time | server |
-| NFR8    | Legal                              | The platform should be compliant with GDPR and EU laws | whole platform |
-| NFR9    | Security                           | Password should be encrypted in the database | database |
+| NFR3    | Scalability                        | The platform should be able to handle up to 1000 simultaneous users | server/database |
+| NFR4    | Scalability                        | The platform should be able to handle up to 1000000 simultaneous products | server/database |
+| NFR5    | Availability                       | The platform should be available 99.99% of the time | server |
+| NFR6    | Legal                              | The platform should be compliant with GDPR and EU laws | whole platform |
+| NFR7    | Security                           | Password should be encrypted in the database | database |
 
 # Use case diagram and use cases
 
