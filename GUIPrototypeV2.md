@@ -1,6 +1,6 @@
 # Graphical User Interface Prototype - FUTURE
 
-Authors: Team 63
+Authors: Team 62
 
 Date: 03/05/2024
 
