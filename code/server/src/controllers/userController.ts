@@ -21,7 +21,7 @@ class UserController {
      * @param role - The role of the new user. It must not be null and it can only be one of the three allowed types ("Manager", "Customer", "Admin")
      * @returns A Promise that resolves to true if the user has been created.
      */
-    async createUser(username: string, name: string, surname: string, password: string, role: string) /**:Promise<Boolean> */ {
+    async createUser(username: string, name: string, surname: string, password: string, role: string) :Promise<Boolean>  {
         return this.dao.createUser(username, name, surname, password, role)
     }
 
@@ -29,14 +29,18 @@ class UserController {
      * Returns all users.
      * @returns A Promise that resolves to an array of users.
      */
-    async getUsers() /**:Promise<User[]> */ { }
+    async getUsers()  { 
+        return this.dao.getUsers();
+    }
 
     /**
      * Returns all users with a specific role.
      * @param role - The role of the users to retrieve. It can only be one of the three allowed types ("Manager", "Customer", "Admin")
      * @returns A Promise that resolves to an array of users with the specified role.
      */
-    async getUsersByRole(role: string) /**:Promise<User[]> */ { }
+    async getUsersByRole(role: string) : Promise<User[]>  { 
+        return this.dao.getUsersByRole(role);
+    }
 
     /**
      * Returns a specific user.

@@ -57,7 +57,7 @@ class UserRoutes {
         this.router.post(
             "/",
             (req: any, res: any, next: any) => this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
-                .then(() => res.status(200).end())
+                .then((ret : boolean) => ret? res.status(200).end(): res.status(400).json({error: "User already exists"}))
                 .catch((err) => {
                     next(err)
                 })
@@ -70,10 +70,13 @@ class UserRoutes {
          */
         this.router.get(
             "/",
-            (req: any, res: any, next: any) => this.controller.getUsers()
-                .then((users: any /**User[] */) => res.status(200).json(users))
-                .catch((err) => next(err))
-        )
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
+            (req: any, res: any, next: any) => {
+                this.controller.getUsers()
+                    .then((users: User[]) => res.status(200).json(users))
+                    .catch((err) => next(err));
+            }
+        );
 
         /**
          * Route for retrieving all users of a specific role.
@@ -83,9 +86,12 @@ class UserRoutes {
          */
         this.router.get(
             "/roles/:role",
-            (req: any, res: any, next: any) => this.controller.getUsersByRole(req.params.role)
-                .then((users: any /**User[] */) => res.status(200).json(users))
-                .catch((err) => next(err))
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
+            (req: any, res: any, next: any) => { 
+                this.controller.getUsersByRole(req.params.role)
+                    .then((users: User[] ) => res.status(200).json(users))
+                    .catch((err) => next(err))
+            }
         )
 
         /**

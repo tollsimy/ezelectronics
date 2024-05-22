@@ -100,5 +100,50 @@ class UserDAO {
 
         })
     }
+    /**
+     * Returns a list of all user objects from the database .
+     * @returns A Promise that resolves the information of the requested user
+     */
+    getUsers(): Promise<User[]> {
+        return new Promise<User[]>((resolve, reject) => {
+            try {
+                const sql = "SELECT * FROM users"
+                db.all(sql, (err: Error | null, rows: any[]) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    const users: User[] = rows.map((row) => new User(row.username, row.name, row.surname, row.role, row.address, row.birthdate))
+                    resolve(users)
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        })
+    }
+    /**
+     * Returns a list of all user objects of a given role from the database .
+     * @param role The role of the user to retrieve
+     * @returns A Promise that resolves the information of the requested user
+     */
+    getUsersByRole(role: string): Promise<User[]> {
+        return new Promise<User[]>((resolve, reject) => {
+            try {
+                const sql = "SELECT * FROM users WHERE role = ?"
+                db.all(sql, [role], (err: Error | null, rows: any[]) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    const users: User[] = rows.map((row) => new User(row.username, row.name, row.surname, row.role, row.address, row.birthdate))
+                    resolve(users)
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        })
+    }
 }
 export default UserDAO
