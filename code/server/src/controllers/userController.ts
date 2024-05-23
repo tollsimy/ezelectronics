@@ -50,7 +50,14 @@ class UserController {
      * @param username - The username of the user to retrieve. The user must exist.
      * @returns A Promise that resolves to the user with the specified username.
      */
-    async getUserByUsername(user: User, username: string) /**:Promise<User> */ { }
+    async getUserByUsername(user: User, username: string) :Promise<User>  { 
+        if(user.role === "Admin")
+            return this.dao.getUserByUsername(username);
+        else if(user.username === username)
+            return this.dao.getUserByUsername(username);
+        else
+            throw new Error("You are not authorized to view this user");
+    }
 
     /**
      * Deletes a specific user
@@ -60,13 +67,27 @@ class UserController {
      * @param username - The username of the user to delete. The user must exist.
      * @returns A Promise that resolves to true if the user has been deleted.
      */
-    async deleteUser(user: User, username: string) /**:Promise<Boolean> */ { }
+    async deleteUser(user: User, username: string) :Promise<Boolean>  { 
+        if(user.role === "Admin")
+            //cotrol if the user we want to delete is not an Admin
+            this.dao.getUserByUsername(username).then((user: User) => {
+                if(user.role === "Admin")
+                    throw new Error("You can't delete an Admin user");
+                else return this.dao.deleteUser(username);
+            });
+        else if(user.username === username)
+            return this.dao.deleteUser(username);
+        else
+            throw new Error("You are not authorized to delete this user");
+    }
 
     /**
      * Deletes all non-Admin users
      * @returns A Promise that resolves to true if all non-Admin users have been deleted.
      */
-    async deleteAll() { }
+    async deleteAll() { 
+        return this.dao.deleteAll();
+    }
 
     /**
      * Updates the personal information of one user. The user can only update their own information.
@@ -78,7 +99,14 @@ class UserController {
      * @param username The username of the user to update. It must be equal to the username of the user parameter.
      * @returns A Promise that resolves to the updated user
      */
-    async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string) /**:Promise<User> */ { }
+    async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string) :Promise<User> {
+        if(user.role === "Admin")
+            return this.dao.updateUserInfo(name, surname, address, birthdate, username);
+        else if(user.username === username)
+            return this.dao.updateUserInfo(name, surname, address, birthdate, username);
+        else
+            throw new Error("You are not authorized to update this user");
+     }
 }
 
 export default UserController

@@ -1,10 +1,9 @@
 import express, { Router } from "express"
 import Authenticator from "./auth"
-import { body, param } from "express-validator"
+import { body, param, check, validationResult} from "express-validator"
 import { User } from "../components/user"
 import ErrorHandler from "../helper"
 import UserController from "../controllers/userController"
-
 /**
  * Represents a class that defines the routes for handling users.
  */
@@ -70,6 +69,7 @@ class UserRoutes {
          */
         this.router.get(
             "/",
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
             (req: any, res: any, next: any) => {
                 this.controller.getUsers()
@@ -86,6 +86,7 @@ class UserRoutes {
          */
         this.router.get(
             "/roles/:role",
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
             (req: any, res: any, next: any) => { 
                 this.controller.getUsersByRole(req.params.role)
@@ -102,9 +103,10 @@ class UserRoutes {
          */
         this.router.get(
             "/:username",
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.getUserByUsername(req.user, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
-                .catch((err) => next(err))
+                .then((user: User ) => res.status(200).json(user))
+                .catch((err) => res.status(401).json({error: err.message, status: 401}))
         )
 
         /**
@@ -115,9 +117,10 @@ class UserRoutes {
          */
         this.router.delete(
             "/:username",
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteUser(req.user, req.params.username)
                 .then(() => res.status(200).end())
-                .catch((err: any) => next(err))
+                .catch((err: any) => res.status(401).json({error: err.message, status: 401}))
         )
 
         /**
@@ -127,6 +130,7 @@ class UserRoutes {
          */
         this.router.delete(
             "/",
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteAll()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -145,11 +149,26 @@ class UserRoutes {
          */
         this.router.patch(
             "/:username",
-            (req: any, res: any, next: any) => this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
-                .catch((err: any) => next(err))
-        )
-
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
+            body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
+            body("name").isString().isLength({ min: 1 }), // the request body must contain an attribute named "name", the attribute must be a non-empty string
+            body("address").isString().isLength({ min: 1 }), // the request body must contain an attribute named "address", the attribute must be a non-empty string
+            check("birthdate")
+                .isISO8601({ strict: true, strictSeparator: true })
+                .withMessage("Invalid date format, must be YYYY-MM-DD")
+                .custom((value) => {
+                    if (new Date(value) > new Date()) {
+                        throw new Error("Birthdate cannot be in the future");
+                    }
+                    return true;
+                }), // the request body must contain an attribute named "birthdate", it must be a valid date in format YYYY-MM-DD, and it cannot be after the current date
+                this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => {
+                this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
+                    .then((user: User) => res.status(200).json(user))
+                    .catch((err: any) => next(err));
+            }
+        );
     }
 }
 
