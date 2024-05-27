@@ -1,4 +1,5 @@
-import { User } from "../components/user";
+import { User, Role} from "../components/user";
+import { Cart } from "../components/cart";
 import CartDAO from "../dao/cartDAO";
 
 /**
@@ -20,7 +21,9 @@ class CartController {
      * @param productId - The model of the product to add.
      * @returns A Promise that resolves to `true` if the product was successfully added.
      */
-    async addToCart(user: User, product: string)/*: Promise<Boolean>*/ { }
+    async addToCart(user: User, product: string): Promise<Boolean> { 
+        return this.dao.addToCart(user,product)
+    }
 
 
     /**
@@ -28,7 +31,9 @@ class CartController {
      * @param user - The user for whom to retrieve the cart.
      * @returns A Promise that resolves to the user's cart or an empty one if there is no current cart.
      */
-    async getCart(user: User)/*: Cart*/ { }
+    async getCart(user: User): Promise<Cart>{ 
+        return this.dao.getCart(user)
+    }
 
     /**
      * Checks out the user's cart. We assume that payment is always successful, there is no need to implement anything related to payment.
@@ -36,7 +41,9 @@ class CartController {
      * @returns A Promise that resolves to `true` if the cart was successfully checked out.
      * 
      */
-    async checkoutCart(user: User) /**Promise<Boolean> */ { }
+    async checkoutCart(user: User) :Promise<Boolean>  { 
+        return this.dao.checkoutCart(user)
+    }
 
     /**
      * Retrieves all paid carts for a specific customer.
@@ -44,7 +51,9 @@ class CartController {
      * @returns A Promise that resolves to an array of carts belonging to the customer.
      * Only the carts that have been checked out should be returned, the current cart should not be included in the result.
      */
-    async getCustomerCarts(user: User) { } /**Promise<Cart[]> */
+    async getCustomerCarts(user: User) :Promise<Cart[]> {
+       return this.dao.getCustomerCarts(user)
+     } 
 
     /**
      * Removes one product unit from the current cart. In case there is more than one unit in the cart, only one should be removed.

@@ -50,8 +50,10 @@ class CartRoutes {
          */
         this.router.get(
             "/",
+            //(req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            //(req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
             (req: any, res: any, next: any) => this.controller.getCart(req.user)
-                .then((cart: any /**Cart */) => {
+                .then((cart: Cart ) => {
                     res.status(200).json(cart)
                 })
                 .catch((err) => {
@@ -68,6 +70,10 @@ class CartRoutes {
          */
         this.router.post(
             "/",
+            body("model").isString().notEmpty(),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
             (req: any, res: any, next: any) => this.controller.addToCart(req.user, req.body.model)
                 .then(() => res.status(200).end())
                 .catch((err) => {
@@ -83,6 +89,8 @@ class CartRoutes {
          */
         this.router.patch(
             "/",
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
             (req: any, res: any, next: any) => this.controller.checkoutCart(req.user)
                 .then(() => res.status(200).end())
                 .catch((err) => {
@@ -97,8 +105,10 @@ class CartRoutes {
          */
         this.router.get(
             "/history",
+            //(req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            //(req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
             (req: any, res: any, next: any) => this.controller.getCustomerCarts(req.user)
-                .then((carts: any /**Cart[] */) => res.status(200).json(carts))
+                .then((carts: Cart[]) => res.status(200).json(carts))
                 .catch((err) => next(err))
         )
 
