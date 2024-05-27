@@ -55,6 +55,12 @@ class UserRoutes {
          */
         this.router.post(
             "/",
+            body("username").isLength({ min: 1 }),
+            body("name").isLength({ min: 1 }),
+            body("surname").isLength({ min: 1 }),
+            body("password").isLength({ min: 1 }),
+            body("role").isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
                 .then((ret : boolean) => ret? res.status(200).end(): res.status(400).json({error: "User already exists"}))
                 .catch((err) => {
@@ -86,6 +92,8 @@ class UserRoutes {
          */
         this.router.get(
             "/roles/:role",
+            param("role").isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
             (req: any, res: any, next: any) => { 
@@ -103,6 +111,8 @@ class UserRoutes {
          */
         this.router.get(
             "/:username",
+            param("username").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.getUserByUsername(req.user, req.params.username)
                 .then((user: User ) => res.status(200).json(user))
@@ -117,6 +127,8 @@ class UserRoutes {
          */
         this.router.delete(
             "/:username",
+            param("username").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteUser(req.user, req.params.username)
                 .then(() => res.status(200).end())
@@ -149,20 +161,14 @@ class UserRoutes {
          */
         this.router.patch(
             "/:username",
-            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
-            body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
+            param("username").isString().isLength({ min: 1 }), // the request parameters must contain an attribute named "username", the attribute must be a non-empty string
             body("name").isString().isLength({ min: 1 }), // the request body must contain an attribute named "name", the attribute must be a non-empty string
+            body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
             body("address").isString().isLength({ min: 1 }), // the request body must contain an attribute named "address", the attribute must be a non-empty string
-            check("birthdate")
-                .isISO8601({ strict: true, strictSeparator: true })
-                .withMessage("Invalid date format, must be YYYY-MM-DD")
-                .custom((value) => {
-                    if (new Date(value) > new Date()) {
-                        throw new Error("Birthdate cannot be in the future");
-                    }
-                    return true;
-                }), // the request body must contain an attribute named "birthdate", it must be a valid date in format YYYY-MM-DD, and it cannot be after the current date
-                this.errorHandler.validateRequest,
+            // Date must be in format YYYY-MM-DD
+            body("birthdate").isString().isLength({ min: 1 }).matches(/^\d{4}-\d{2}-\d{2}$/).isBefore(new Date().toISOString().split("T")[0]),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => {
                 this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
                     .then((user: User) => res.status(200).json(user))
@@ -215,6 +221,9 @@ class AuthRoutes {
          */
         this.router.post(
             "/",
+            body("username").isLength({ min: 1 }),
+            body("password").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req, res, next) => this.authService.login(req, res, next)
                 .then((user: User) => res.status(200).json(user))
                 .catch((err: any) => { res.status(401).json(err) })
@@ -227,6 +236,7 @@ class AuthRoutes {
          */
         this.router.delete(
             "/current",
+            (req, res, next) => this.authService.isLoggedIn(req, res, next),
             (req, res, next) => this.authService.logout(req, res, next)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -239,6 +249,7 @@ class AuthRoutes {
          */
         this.router.get(
             "/current",
+            (req, res, next) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any) => res.status(200).json(req.user)
         )
     }
