@@ -61,7 +61,9 @@ class CartController {
      * @param product The model of the product to remove.
      * @returns A Promise that resolves to `true` if the product was successfully removed.
      */
-    async removeProductFromCart(user: User, product: string) /**Promise<Boolean> */ { }
+    async removeProductFromCart(user: User, product: string) :Promise<Boolean>  {
+        return this.dao.removeProductFromCart(user,product)
+     }
 
 
     /**
@@ -69,19 +71,25 @@ class CartController {
      * @param user - The user who owns the cart.
      * @returns A Promise that resolves to `true` if the cart was successfully cleared.
      */
-    async clearCart(user: User)/*:Promise<Boolean> */ { }
+    async clearCart(user: User):Promise<Boolean>  { 
+        return this.dao.clearCart(user)
+    }
 
     /**
      * Deletes all carts of all users.
      * @returns A Promise that resolves to `true` if all carts were successfully deleted.
      */
-    async deleteAllCarts() /**Promise<Boolean> */ { }
+    async deleteAllCarts() :Promise<Boolean>  { 
+        return this.dao.deleteAllCarts()
+    }
 
     /**
      * Retrieves all carts in the database.
      * @returns A Promise that resolves to an array of carts.
      */
-    async getAllCarts() /*:Promise<Cart[]> */ { }
+    async getAllCarts() :Promise<Cart[]>  { 
+        return this.dao.getAllCarts()
+    }
 }
 
 export default CartController
