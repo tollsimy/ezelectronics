@@ -129,7 +129,6 @@ class ProductDAO {
                     ],
                     (err: Error | null) => {
                         if (err) {
-                            console.log("ee")
                             reject(new ProductNotFoundError)
                             return
                         }

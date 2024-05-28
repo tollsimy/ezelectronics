@@ -70,8 +70,8 @@ class ProductRoutes {
             }),
             body("arrivalDate").isString().optional().isBefore(new Date().toISOString().split('T')[0]),
             this.errorHandler.validateRequest,
-            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
-            (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
+            //(req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            //(req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
             (req: any, res: any, next: any) =>
                 this.controller.registerProducts(
                     req.body.model,

@@ -4,6 +4,7 @@ import { body, param, query } from "express-validator"
 import ReviewController from "../controllers/reviewController"
 import Authenticator from "./auth"
 import { ProductReview } from "../components/review"
+import { User } from "../components/user"
 
 class ReviewRoutes {
     private controller: ReviewController
@@ -36,12 +37,25 @@ class ReviewRoutes {
          */
         this.router.post(
             "/:model",
-            (req: any, res: any, next: any) => this.controller.addReview(req.params.model, req.user, req.body.score, req.body.comment)
-                .then(() => res.status(200).send())
-                .catch((err: Error) => {
-                    console.log(err)
-                    next(err)
-                })
+            param("model").isString().notEmpty(),
+            body("score").isInt({ min: 1, max: 5 }),
+            body("comment").isString().notEmpty(),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
+            (req: any, res: any, next: any) => {
+                this.controller.addReview(
+                    req.params.model,
+                    req.body.score,
+                    req.body.comment,
+                    req.user
+                )
+                    .then(() => res.status(200).send())
+                    .catch((err: Error) => {
+                        console.log(err)
+                        next(err)
+                    })
+            }
         )
 
         /**
@@ -52,8 +66,11 @@ class ReviewRoutes {
          */
         this.router.get(
             "/:model",
+            param("model").isString().notEmpty(),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.getProductReviews(req.params.model)
-                .then((reviews: any/*ProductReview[]*/) => res.status(200).json(reviews))
+                .then((reviews: ProductReview[]) => res.status(200).json(reviews))
                 .catch((err: Error) => next(err))
         )
 
@@ -65,6 +82,10 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/:model",
+            param("model").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
@@ -81,6 +102,10 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/:model/all",
+            param("model").isString().notEmpty(),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteReviewsOfProduct(req.params.model)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))
@@ -93,6 +118,8 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/",
+            (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteAllReviews()
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))
