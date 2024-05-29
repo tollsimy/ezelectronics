@@ -91,7 +91,7 @@ class UserRoutes {
          * It returns an array of users.
          */
         this.router.get(
-            "/roles/:role",
+            "/role/:role",
             param("role").isIn(["Manager", "Customer", "Admin"]),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
@@ -116,7 +116,7 @@ class UserRoutes {
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.getUserByUsername(req.user, req.params.username)
                 .then((user: User ) => res.status(200).json(user))
-                .catch((err) => res.status(401).json({error: err.message, status: 401}))
+                .catch((err) => next(err))
         )
 
         /**
@@ -132,7 +132,7 @@ class UserRoutes {
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteUser(req.user, req.params.username)
                 .then(() => res.status(200).end())
-                .catch((err: any) => res.status(401).json({error: err.message, status: 401}))
+                .catch((err: any) => next(err))
         )
 
         /**

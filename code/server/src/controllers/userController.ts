@@ -1,5 +1,6 @@
 import { User } from "../components/user"
 import UserDAO from "../dao/userDAO"
+import { UserNotFoundError, UserNotManagerError, UserNotCustomerError, UserAlreadyExistsError, UserNotAdminError, UserIsAdminError, UnauthorizedUserError } from "../errors/userError"
 
 /**
  * Represents a controller for managing users.
@@ -68,17 +69,21 @@ class UserController {
      * @returns A Promise that resolves to true if the user has been deleted.
      */
     async deleteUser(user: User, username: string) :Promise<Boolean>  { 
-        if(user.role === "Admin")
-            //cotrol if the user we want to delete is not an Admin
-            this.dao.getUserByUsername(username).then((user: User) => {
-                if(user.role === "Admin")
-                    throw new Error("You can't delete an Admin user");
+        try{
+            const res= await this.dao.getUserByUsername(username);
+            if(user.username === username)
+                return this.dao.deleteUser(username);
+            else if(user.role === "Admin")
+                //cotrol if the user we want to delete is not an Admin
+                if(res.role === "Admin")
+                    throw new UserIsAdminError();
                 else return this.dao.deleteUser(username);
-            });
-        else if(user.username === username)
-            return this.dao.deleteUser(username);
-        else
-            throw new Error("You are not authorized to delete this user");
+            else
+                throw new UserNotAdminError();
+        }catch(err){
+            throw err;
+        }
+        
     }
 
     /**
@@ -100,12 +105,24 @@ class UserController {
      * @returns A Promise that resolves to the updated user
      */
     async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string) :Promise<User> {
-        if(user.role === "Admin")
+        if(user.username === username)
             return this.dao.updateUserInfo(name, surname, address, birthdate, username);
-        else if(user.username === username)
-            return this.dao.updateUserInfo(name, surname, address, birthdate, username);
+        else if(user.role === "Admin")
+            try{
+                const res= await this.dao.getUserByUsername(username);
+                //cotrol if the user we want to update exists
+                if(res === null)
+                    throw new UserNotFoundError();
+                //cotrol if the user we want to update is an Admin
+                if(res.role === "Admin")
+                    throw new UnauthorizedUserError();
+                else return this.dao.updateUserInfo(name, surname, address, birthdate, username);
+            }catch(err){
+                throw err;
+            }
+            
         else
-            throw new Error("You are not authorized to update this user");
+            throw new UserNotAdminError();
      }
 }
 

@@ -213,7 +213,7 @@ class UserDAO {
                                 reject(err)
                                 return
                             }
-                            resolve(user)
+                            resolve(new User(username, name, surname, user.role, address, birthdate))
                         })
                     }
                 }).catch((err: Error) => {
