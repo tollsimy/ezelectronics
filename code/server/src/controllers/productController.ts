@@ -13,10 +13,10 @@ class ProductController {
         this.dao = new ProductDAO
     }
 
-    async isAfterDate(date: string, model: string): Promise<boolean> {
+    async isAfterOrTodayDate(date: string, model: string): Promise<boolean> {
         const product = await this.dao.getProductByModel(model);
         if (product[0].arrivalDate) {
-            if (date > product[0].arrivalDate) {
+            if (date >= product[0].arrivalDate) {
                 return true;
             }
         }
@@ -51,7 +51,7 @@ class ProductController {
         if (!changeDate) {
             changeDate = new Date().toISOString().split('T')[0];
         }
-        if (!await this.isAfterDate(changeDate, model)) {
+        if (!await this.isAfterOrTodayDate(changeDate, model)) {
             throw new DateError();
         }
         return this.dao.addProductQuantity(model, newQuantity);
@@ -68,7 +68,7 @@ class ProductController {
         if (!sellingDate) {
             sellingDate = new Date().toISOString().split('T')[0];
         }
-        if (!await this.isAfterDate(sellingDate, model)) {
+        if (!await this.isAfterOrTodayDate(sellingDate, model)) {
             throw new DateError();
         }
         return this.dao.removeProductQuantity(model, quantity);
