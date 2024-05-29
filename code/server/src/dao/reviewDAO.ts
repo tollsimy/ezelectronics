@@ -12,7 +12,7 @@ class ReviewDAO {
     async addReview(model: string, user: string, date: string, score: number, comment: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             try {
-                const sql = "INSERT INTO reviews (score, date, comment, model, user) VALUES (\
+                const sql = "INSERT INTO reviews (score, date, comment, cod_model, user) VALUES (\
                             ?,\
                             ?,\
                             ?,\
@@ -40,7 +40,7 @@ class ReviewDAO {
     async getProductReviews(model: string): Promise<ProductReview[]> {
         return new Promise<ProductReview[]>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM reviews WHERE model = ?"
+                const sql = "SELECT * FROM reviews WHERE cod_model = ?"
                 db.all(sql, [model], (err: Error | null, rows: any) => {
                     if (err) {
                         reject(err);
@@ -68,14 +68,14 @@ class ReviewDAO {
 
     async deleteReview(model: string, user: string): Promise<Boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            const checkSql = "SELECT * FROM reviews WHERE model = ? AND user = ?"
+            const checkSql = "SELECT * FROM reviews WHERE cod_model = ? AND user = ?"
             db.get(checkSql, [model, user], (err, row) => {
                 if (err) {
                     reject(err)
                 } else if (!row) {
                     reject(new NoReviewProductError())
                 } else {
-                    const deleteSql = "DELETE FROM reviews WHERE model = ? AND user = ?"
+                    const deleteSql = "DELETE FROM reviews WHERE cod_model = ? AND user = ?"
                     db.run(deleteSql, [model, user], (err: Error | null) => {
                         if (err) {
                             reject(err)
@@ -90,14 +90,14 @@ class ReviewDAO {
 
     async deleteReviewsOfProduct(model: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            const checkSql = "SELECT * FROM reviews WHERE model = ?";
+            const checkSql = "SELECT * FROM reviews WHERE cod_model = ?";
             db.get(checkSql, [model], (err, row) => {
                 if (err) {
                     reject(err);
                 } else if (!row) {
                     reject(new NoReviewProductError());
                 } else {
-                    const deleteSql = "DELETE FROM reviews WHERE model = ?";
+                    const deleteSql = "DELETE FROM reviews WHERE cod_model = ?";
                     db.run(deleteSql, [model], (err: Error | null) => {
                         if (err) {
                             reject(err);

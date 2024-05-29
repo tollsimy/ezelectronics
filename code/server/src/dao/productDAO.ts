@@ -34,7 +34,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         )])
                     }
                 })
@@ -55,7 +55,7 @@ class ProductDAO {
                             category, \
                             arrivalDate, \
                             details, \
-                            quantity) \
+                            stock) \
                             VALUES (?,?,?,?,?,?)"
                 db.run(sql,
                     [
@@ -85,7 +85,7 @@ class ProductDAO {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products SET \
-                            quantity = quantity + ? \
+                            stock = stock + ? \
                             WHERE model = ?";
                 db.run(sql,
                     [
@@ -105,7 +105,7 @@ class ProductDAO {
                                     reject(new ProductNotFoundError)
                                 }
                                 else {
-                                    resolve(row.quantity)
+                                    resolve(row.stock)
                                 }
                             })
                         }
@@ -120,7 +120,7 @@ class ProductDAO {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products SET \
-                                quantity = quantity - ? \
+                                stock = stock - ? \
                                 WHERE model = ?";
                 db.run(sql,
                     [
@@ -140,7 +140,7 @@ class ProductDAO {
                                     reject(new ProductNotFoundError)
                                 }
                                 else {
-                                    resolve(row.quantity)
+                                    resolve(row.stock)
                                 }
                             })
                         }
@@ -168,7 +168,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         ))
                     }
                     resolve(products)
@@ -196,7 +196,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         ))
                     }
                     resolve(products)
@@ -252,7 +252,7 @@ class ProductDAO {
     getAvailableProducts(): Promise<Product[]> {
         return new Promise<Product[]>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM products WHERE quantity > 0";
+                const sql = "SELECT * FROM products WHERE stock > 0";
                 db.all(sql, [], (err: Error | null, rows: any) => {
                     if (err) {
                         reject(err)
@@ -266,7 +266,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         ))
                     }
                     resolve(products)
@@ -280,7 +280,7 @@ class ProductDAO {
     getAvailableProductsByCategory(category: string): Promise<Product[]> {
         return new Promise<Product[]>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM products WHERE category = ? AND quantity > 0"
+                const sql = "SELECT * FROM products WHERE category = ? AND stock > 0"
                 db.all(sql, [category], (err: Error | null, rows: any) => {
                     if (err) {
                         reject(err)
@@ -294,7 +294,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         ))
                     }
                     resolve(products)
@@ -308,7 +308,7 @@ class ProductDAO {
     getAvailableProductByModel(model: string): Promise<Product[]> {
         return new Promise<Product[]>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM products WHERE model = ? AND quantity > 0"
+                const sql = "SELECT * FROM products WHERE model = ? AND stock > 0"
                 db.get(sql, [model], (err: Error | null, row: any) => {
                     if (err) {
                         reject(err)
@@ -325,7 +325,7 @@ class ProductDAO {
                             row.category,
                             row.arrivalDate,
                             row.details,
-                            row.quantity
+                            row.stock
                         )])
                     }
                 })
