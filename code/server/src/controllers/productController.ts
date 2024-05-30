@@ -16,7 +16,7 @@ class ProductController {
     async isAfterOrTodayDate(date: string, model: string): Promise<boolean> {
         const product = await this.dao.getProductByModel(model);
         if (product[0].arrivalDate) {
-            if (date >= product[0].arrivalDate) {
+            if (date >= product[0].arrivalDate && date <= new Date().toISOString().split('T')[0]) {
                 return true;
             }
         }
@@ -36,6 +36,9 @@ class ProductController {
     async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null): Promise<void> {
         if (!arrivalDate) {
             arrivalDate = new Date().toISOString().split('T')[0];
+        }
+        if(arrivalDate > new Date().toISOString().split('T')[0]){
+            throw new DateError();
         }
         return this.dao.createProduct(model, sellingPrice, category, arrivalDate, details, quantity);
     }

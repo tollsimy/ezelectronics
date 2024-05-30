@@ -68,7 +68,7 @@ class ProductRoutes {
                 }
                 return true;
             }),
-            body("arrivalDate").isString().optional().isBefore(new Date().toISOString().split('T')[0]),
+            body("arrivalDate").isString().optional(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -100,8 +100,7 @@ class ProductRoutes {
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("changeDate")
                 .isString()
-                .optional({ nullable: true })
-                .isBefore(new Date().toISOString().split('T')[0]),
+                .optional({ nullable: true }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -130,8 +129,7 @@ class ProductRoutes {
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("sellingDate")
                 .optional({ nullable: true })
-                .isString()
-                .isBefore(new Date().toISOString().split('T')[0]),
+                .isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -142,7 +140,6 @@ class ProductRoutes {
                 )
                     .then((quantity: number) => res.status(200).json({ quantity: quantity }))
                     .catch((err) => {
-                        console.log(err)
                         next(err)
                     })
         )
@@ -163,21 +160,27 @@ class ProductRoutes {
             query("model").isString().optional().isLength({ min: 1 }),
             // If grouping is category, then category must be present and model must be absent
             query("category").custom((value, { req }) => {
+                if(!req.query.grouping && value){
+                    return false
+                }
                 if (req.query.grouping === "category" && !value) {
-                    throw new Error("Invalid value")
+                    return false
                 }
                 if (value && req.query.grouping === "model") {
-                    throw new Error("Invalid value")
+                    return false
                 }
                 return true
             }),
             // If grouping is model, then model must be present and category must be absent
             query("model").custom((value, { req }) => {
+                if(!req.query.grouping && value){
+                    return false
+                }
                 if (req.query.grouping === "model" && !value) {
-                    throw new Error("Invalid value")
+                    return false
                 }
                 if (value && req.query.grouping === "category") {
-                    throw new Error("Invalid value")
+                    return false
                 }
                 return true
             }),
@@ -192,7 +195,6 @@ class ProductRoutes {
                 )
                     .then((products: Product[]) => res.status(200).json(products))
                     .catch((err) => {
-                        console.log(err)
                         next(err)
                     })
         )
@@ -213,21 +215,27 @@ class ProductRoutes {
             query("model").isString().optional().isLength({ min: 1 }),
             // If grouping is category, then category must be present and model must be absent
             query("category").custom((value, { req }) => {
+                if(!req.query.grouping && value){
+                    return false
+                }
                 if (req.query.grouping === "category" && !value) {
-                    throw new Error("Invalid value")
+                    throw false
                 }
                 if (value && req.query.grouping === "model") {
-                    throw new Error("Invalid value")
+                    throw false
                 }
                 return true
             }),
             // If grouping is model, then model must be present and category must be absent
             query("model").custom((value, { req }) => {
+                if(!req.query.grouping && value){
+                    return false
+                }
                 if (req.query.grouping === "model" && !value) {
-                    throw new Error("Invalid value")
+                    throw false
                 }
                 if (value && req.query.grouping === "category") {
-                    throw new Error("Invalid value")
+                    throw false
                 }
                 return true
             }),

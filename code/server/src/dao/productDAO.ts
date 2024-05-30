@@ -119,32 +119,38 @@ class ProductDAO {
     removeProductQuantity(model: string, quantity: number): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             try {
-                const sql = "UPDATE products SET \
+                const sql= "SELECT * FROM products WHERE model = ?";
+                db.get(sql, [model], (err: Error | null, row: any) => {
+                    if (err) {
+                        reject(new ProductNotFoundError())
+                        return
+                    }
+                    if (row.stock == 0) {
+                        reject(new EmptyProductStockError())
+                        return
+                    }
+                    if (row.stock < quantity) {
+                        reject(new LowProductStockError())
+                        return
+                    }
+                    const sql = "UPDATE products SET \
                                 stock = stock - ? \
                                 WHERE model = ?";
-                db.run(sql,
-                    [
-                        quantity,
-                        model
-                    ],
-                    (err: Error | null) => {
-                        if (err) {
-                            reject(new ProductNotFoundError)
-                            return
-                        }
-                        else {
-                            const getSql = "SELECT * FROM products \
-                                                WHERE model = ?";
-                            db.get(getSql, [model], (err: Error | null, row: any) => {
-                                if (err) {
-                                    reject(new ProductNotFoundError)
-                                }
-                                else {
-                                    resolve(row.stock)
-                                }
-                            })
-                        }
-                    })
+                    db.run(sql,
+                        [
+                            quantity,
+                            model
+                        ],
+                        (err: Error | null) => {
+                            if (err) {
+                                reject(new ProductNotFoundError)
+                                return
+                            }
+                            else {
+                                resolve(row.stock - quantity)
+                            }
+                        })
+                })
             } catch (error) {
                 reject(error)
             }
