@@ -68,7 +68,9 @@ class ProductRoutes {
                 }
                 return true;
             }),
-            body("arrivalDate").isString().optional(),
+            body("arrivalDate")
+                .isString()
+                .optional(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -100,7 +102,7 @@ class ProductRoutes {
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("changeDate")
                 .isString()
-                .optional({ nullable: true }),
+                .optional(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -128,8 +130,8 @@ class ProductRoutes {
             param("model").isString().isLength({ min: 1 }),
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("sellingDate")
-                .optional({ nullable: true })
-                .isString(),
+                .isString()
+                .optional(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
