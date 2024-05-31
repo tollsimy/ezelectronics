@@ -38,8 +38,7 @@ class ReviewController {
      * @returns A Promise that resolves to nothing
      */
     async deleteReview(model: string, user: string): Promise<Boolean> {
-        const userProva = new User("lisa", "lisan", "lisac", Role.CUSTOMER, "Via mio 1", "2023-12-04")
-        return this.dao.deleteReview(model, "lisa");
+        return this.dao.deleteReview(model, user);
     }
 
     /**

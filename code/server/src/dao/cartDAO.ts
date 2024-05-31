@@ -20,18 +20,17 @@ class CartDAO {
         return new Promise<Cart>((resolve, reject) => {
             const sql = "SELECT *  FROM carts C, productsInACart PC, products P WHERE C.customer = ? AND paid = 0 AND C.id_Cart = PC.cartId AND PC.Cod_model=P.model"
             try {
-                db.get(sql, [user.username], (err: Error | null, rows: any[]) => {
+                db.all(sql, [user.username], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
                     if (!rows || rows.length === 0) { resolve(new Cart(user.username, false, null, 0, [])); return; }
                     let products: ProductInCart[] = []
                     let total = 0
-                    const paymentDate = rows[0].paymentDate
                     rows.forEach((row) => {
                         const product = new ProductInCart(row.model, row.quantity, row.category, row.sellingPrice)
                         products.push(product)
                         total += row.sellingPrice * row.quantity
                     })
-                    const cart = new Cart(user.username, false, paymentDate, total, products)
+                    const cart = new Cart(user.username, false, null, total, products)
                     resolve(cart)
                 })
             } catch (error) {
@@ -58,14 +57,17 @@ class CartDAO {
                         //create a new cart paid=0
                         //insert the product in the cart
                         const sql = "INSERT INTO carts (customer, paid) VALUES (?, 0)"
-                        db.run(sql, [user.username], (err: Error) => {
+                        db.run(sql, [user.username], (err: Error | null) => {
+                            
                             if (err) { reject(err); return; }
                             const sql = "SELECT * FROM products WHERE model = ?"
                             db.get(sql, [product], (err: Error | null, row: any) => {
+                                
                                 if (err) { reject(err); }
                                 if (!row) { reject(new ProductNotFoundError()); return; }
                                 if (row.stock === 0) { reject(new EmptyProductStockError()); return; }
-                                const sql = "INSERT INTO productsInACart (cartId, Cod_model, quantity) VALUES ((SELECT id FROM carts WHERE customer = ? AND paid = 0), ?, 1)"
+                                const sql = "INSERT INTO productsInACart (cartId, Cod_model, quantity) VALUES ((SELECT id_Cart FROM carts WHERE customer = ? AND paid = 0), ?, 1)"
+                                
                                 db.run(sql, [user.username, product], (err: Error) => {
                                     if (err) { reject(err); }
                                     resolve(true)
@@ -74,34 +76,35 @@ class CartDAO {
                             })
                         })
 
-                    }
-                    //scenario n2: the user has a cart
-                    const sql = "SELECT * FROM products WHERE model = ?"
-                    db.get(sql, [product], (err: Error | null, row: any) => {
-                        if (err) { reject(err); return; }
-                        if (!row) { reject(new ProductNotFoundError()); return; }
-                        if (row.stock === 0) { reject(new EmptyProductStockError()); return; }
-                        //control if the product is already in the cart
-                        const sql = "SELECT * FROM productsInACart WHERE cartId = ? AND Cod_model = ?"
-                        db.get(sql, [rows.id_Cart, product], (err: Error | null, row: any) => {
+                    }else{
+                        //scenario n2: the user has a cart
+                        const sql = "SELECT * FROM products WHERE model = ?"
+                        db.get(sql, [product], (err: Error | null, row: any) => {
                             if (err) { reject(err); return; }
-                            if (row) {
-                                //scenario n2.1: the product is already in the cart
-                                const sql = "UPDATE productsInACart SET quantity = quantity + 1 WHERE cartId = ? AND Cod_model = ?"
-                                db.run(sql, [rows.id_Cart, product], (err: Error) => {
-                                    if (err) { reject(err); return; }
-                                    resolve(true)
-                                })
-                            } else {
-                                //scenario n2.2: the product is not in the cart
-                                const sql = "INSERT INTO productsInACart (cartId, Cod_model, quantity) VALUES (?, ?, 1)"
-                                db.run(sql, [rows.id_Cart, product], (err: Error) => {
-                                    if (err) { reject(err); return; }
-                                    resolve(true)
-                                })
-                            }
+                            if (!row) { reject(new ProductNotFoundError()); return; }
+                            if (row.stock === 0) { reject(new EmptyProductStockError()); return; }
+                            //control if the product is already in the cart
+                            const sql = "SELECT * FROM productsInACart WHERE cartId = ? AND Cod_model = ?"
+                            db.get(sql, [rows.id_Cart, product], (err: Error | null, row: any) => {
+                                if (err) { reject(err); return; }
+                                if (row) {
+                                    //scenario n2.1: the product is already in the cart
+                                    const sql = "UPDATE productsInACart SET quantity = quantity + 1 WHERE cartId = ? AND Cod_model = ?"
+                                    db.run(sql, [rows.id_Cart, product], (err: Error) => {
+                                        if (err) { reject(err); return; }
+                                        resolve(true)
+                                    })
+                                } else {
+                                    //scenario n2.2: the product is not in the cart
+                                    const sql = "INSERT INTO productsInACart (cartId, Cod_model, quantity) VALUES (?, ?, 1)"
+                                    db.run(sql, [rows.id_Cart, product], (err: Error) => {
+                                        if (err) { reject(err); return; }
+                                        resolve(true)
+                                    })
+                                }
+                            })
                         })
-                    })
+                    }
                 })
             } catch (error) {
                 reject(error)
@@ -125,7 +128,7 @@ class CartDAO {
             try {
                 db.all(sql, [user.username], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
-                    if (!rows) { reject(new CartNotFoundError()); return; }
+                    if (!rows || rows.length===0) { reject(new CartNotFoundError()); return; }
                     const sql1 = "SELECT *  FROM productsInACart PC, products P WHERE PC.cartId = ? AND PC.Cod_model=P.model"
                     db.all(sql1, [rows[0].id_Cart], (err: Error | null, rows: any[]) => {
                         if (err) { reject(err); return; }
@@ -178,7 +181,9 @@ class CartDAO {
                     let product: ProductInCart
                     let previousCartId = -1
                     let total = 0
+                    let i=-1;
                     rows.forEach((row) => {
+                        i++;
                         if (previousCartId !== row.id_Cart) {
                             if (previousCartId !== -1) {
                                 cart = new Cart(user.username, true, row.paymentDate, total, products)
@@ -189,9 +194,11 @@ class CartDAO {
                             previousCartId = row.id_Cart
                         }
                         total += row.sellingPrice * row.quantity
-                        product = new ProductInCart(row.cod_model, row.quantity, row.category, row.sellingPrice)
+                        product = new ProductInCart(row.Cod_model, row.quantity, row.category, row.sellingPrice)
                         products.push(product)
                     })
+                    cart = new Cart(user.username, true, rows[i].paymentDate, total, products)
+                    carts.push(cart)
                     resolve(carts)
 
 
@@ -223,15 +230,23 @@ class CartDAO {
                     db.get(sql, [product], (err: Error | null, row: any) => {
                         if (err) { reject(err); return; }
                         if (!row) { reject(new ProductNotFoundError()); return; }
-                        const sql = "SELECT * FROM productsInACart WHERE cartId = ? AND model = ?"
+                        const sql = "SELECT * FROM productsInACart WHERE cartId = ? AND Cod_model = ?"
                         db.get(sql, [idCart, product], (err: Error | null, row: any) => {
                             if (err) { reject(err); return; }
                             if (!row) { reject(new ProductNotInCartError()); return; }
-                            const sql = "DELETE FROM productsInACart WHERE cartId = ? AND model = ?"
-                            db.run(sql, [idCart, product], (err: Error) => {
-                                if (err) { reject(err); return; }
-                                resolve(true)
-                            })
+                            if(row.quantity===1){
+                                const sql = "DELETE FROM productsInACart WHERE cartId = ? AND Cod_model = ?"
+                                db.run(sql, [idCart, product], (err: Error) => {
+                                    if (err) { reject(err); return; }
+                                    resolve(true)
+                                })
+                            }else{
+                                const sql = "UPDATE productsInACart SET quantity = quantity - 1 WHERE cartId = ? AND Cod_model = ?"
+                                db.run(sql, [idCart, product], (err: Error) => {
+                                    if (err) { reject(err); return; }
+                                    resolve(true)
+                                })
+                            }   
                         })
                     })
                 })
@@ -270,11 +285,15 @@ class CartDAO {
     */
     deleteAllCarts(): Promise<Boolean> {
         return new Promise<Boolean>((resolve, reject) => {
-            const sql = "DELETE FROM carts"
+            const sql = "DELETE FROM productsInACart"
             try {
                 db.run(sql, (err: Error) => {
                     if (err) { reject(err); return; }
-                    resolve(true)
+                    const sql = "DELETE FROM carts"
+                    db.run(sql, (err: Error) => {
+                        if (err) { reject(err); return; }
+                        resolve(true)
+                    })
                 })
             } catch (error) {
                 reject(error)
@@ -291,14 +310,16 @@ class CartDAO {
             try {
                 db.all(sql, [], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
-                    if (!rows) { reject(new CartNotFoundError()); return; }
+                    if (!rows || rows.length===0) { reject(new CartNotFoundError()); return; }
                     const carts: Cart[] = []
                     let cart: Cart
                     let products: ProductInCart[] = []
                     let product: ProductInCart
                     let previousCartId = -1
                     let total = 0
+                    let i=-1;
                     rows.forEach((row) => {
+                        i++;
                         if (previousCartId !== row.id_Cart) {
                             if (previousCartId !== -1) {
                                 cart = new Cart(row.customer, row.paid, row.paymentDate, total, products)
@@ -309,9 +330,11 @@ class CartDAO {
                             previousCartId = row.id_Cart
                         }
                         total += row.sellingPrice * row.quantity
-                        product = new ProductInCart(row.cod_model, row.quantity, row.category, row.sellingPrice)
+                        product = new ProductInCart(row.Cod_model, row.quantity, row.category, row.sellingPrice)
                         products.push(product)
                     })
+                    cart = new Cart(rows[i].customer, rows[i].paid, rows[i].paymentDate, total, products)
+                    carts.push(cart)
                     resolve(carts)
                 })
             } catch (error) {

@@ -68,8 +68,10 @@ class ReviewDAO {
 
     async deleteReview(model: string, user: string): Promise<Boolean> {
         return new Promise<boolean>((resolve, reject) => {
+            console.log(model, user)
             const checkSql = "SELECT * FROM reviews WHERE cod_model = ? AND user = ?"
-            db.get(checkSql, [model, user], (err, row) => {
+            db.get(checkSql, [model, user], (err: Error | null, row:any) => {
+                
                 if (err) {
                     reject(err)
                 } else if (!row) {
