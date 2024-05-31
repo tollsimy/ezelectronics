@@ -9,8 +9,8 @@ import { User } from '../components/user';
  * You are free to implement any method you need here, as long as the requirements are satisfied.
  */
 class ReviewDAO {
-    async addReview(model: string, user: string, date: string, score: number, comment: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+    async addReview(model: string, user: string, date: string, score: number, comment: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             try {
                 const sql = "INSERT INTO reviews (score, date, comment, cod_model, user) VALUES (\
                             ?,\
@@ -28,7 +28,7 @@ class ReviewDAO {
                         }
                         //TODO
                     } else {
-                        resolve(true)
+                        resolve()
                     }
                 })
             } catch (err) {
@@ -66,8 +66,8 @@ class ReviewDAO {
         })
     }
 
-    async deleteReview(model: string, user: string): Promise<Boolean> {
-        return new Promise<boolean>((resolve, reject) => {
+    async deleteReview(model: string, user: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             console.log(model, user)
             const checkSql = "SELECT * FROM reviews WHERE cod_model = ? AND user = ?"
             db.get(checkSql, [model, user], (err: Error | null, row:any) => {
@@ -82,7 +82,7 @@ class ReviewDAO {
                         if (err) {
                             reject(err)
                         } else {
-                            resolve(true)
+                            resolve()
                         }
                     })
                 }
@@ -90,8 +90,8 @@ class ReviewDAO {
         })
     }
 
-    async deleteReviewsOfProduct(model: string): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
+    async deleteReviewsOfProduct(model: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             const checkSql = "SELECT * FROM reviews WHERE cod_model = ?";
             db.get(checkSql, [model], (err, row) => {
                 if (err) {
@@ -104,7 +104,7 @@ class ReviewDAO {
                         if (err) {
                             reject(err);
                         } else {
-                            resolve(true);
+                            resolve();
                         }
                     });
                 }
@@ -112,8 +112,8 @@ class ReviewDAO {
         });
     }
 
-    async deleteAllReviews(): Promise<Boolean> {
-        return new Promise<boolean>((resolve, reject) => {
+    async deleteAllReviews(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             try {
                 const sql = "DELETE FROM reviews";
                 db.run(sql, [], (err: Error | null) => {
@@ -122,7 +122,7 @@ class ReviewDAO {
                         return
                     }
                     else {
-                        resolve(true)
+                        resolve()
                     }
                 })
             } catch (error) {
