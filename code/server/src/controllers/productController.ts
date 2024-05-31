@@ -36,8 +36,7 @@ class ProductController {
     async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null): Promise<void> {
         if (!arrivalDate) {
             arrivalDate = new Date().toISOString().split('T')[0];
-        }
-        if(arrivalDate > new Date().toISOString().split('T')[0]){
+        } else if (arrivalDate > new Date().toISOString().split('T')[0]) {
             throw new DateError();
         }
         return this.dao.createProduct(model, sellingPrice, category, arrivalDate, details, quantity);
@@ -54,7 +53,10 @@ class ProductController {
         if (!changeDate) {
             changeDate = new Date().toISOString().split('T')[0];
         }
-        if (!await this.isAfterOrTodayDate(changeDate, model)) {
+        else if (changeDate > new Date().toISOString().split('T')[0]) {
+            throw new DateError();
+        }
+        else if (!await this.isAfterOrTodayDate(changeDate, model)) {
             throw new DateError();
         }
         return this.dao.addProductQuantity(model, newQuantity);
@@ -71,7 +73,10 @@ class ProductController {
         if (!sellingDate) {
             sellingDate = new Date().toISOString().split('T')[0];
         }
-        if (!await this.isAfterOrTodayDate(sellingDate, model)) {
+        else if (sellingDate > new Date().toISOString().split('T')[0]) {
+            throw new DateError();
+        }
+        else if (!await this.isAfterOrTodayDate(sellingDate, model)) {
             throw new DateError();
         }
         return this.dao.removeProductQuantity(model, quantity);
