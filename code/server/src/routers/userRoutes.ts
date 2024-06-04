@@ -61,11 +61,10 @@ class UserRoutes {
             body("password").isLength({ min: 1 }),
             body("role").isIn(["Manager", "Customer", "Admin"]),
             this.errorHandler.validateRequest,
-            (req: any, res: any, next: any) => this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
-                .then((ret : boolean) => ret? res.status(200).end(): res.status(400).json({error: "User already exists"}))
-                .catch((err) => {
-                    next(err)
-                })
+            (req: any, res: any, next: any) => 
+                this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
+                    .then(() => res.status(200).end())
+                    .catch((err) => next(err))
         )
 
         /**
@@ -91,7 +90,7 @@ class UserRoutes {
          * It returns an array of users.
          */
         this.router.get(
-            "/role/:role",
+            "/roles/:role",
             param("role").isIn(["Manager", "Customer", "Admin"]),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),

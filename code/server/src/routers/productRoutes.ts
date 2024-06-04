@@ -274,7 +274,7 @@ class ProductRoutes {
          * It returns a 200 status code.
          */
         this.router.delete(
-            "/:model",
+            "/products/:model",
             param("model").isString().isLength({ min: 1 }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
