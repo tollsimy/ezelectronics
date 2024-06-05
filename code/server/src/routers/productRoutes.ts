@@ -3,7 +3,8 @@ import ErrorHandler from "../helper"
 import { body, param, query } from "express-validator"
 import ProductController from "../controllers/productController"
 import Authenticator from "./auth"
-import { Product } from "../components/product"
+import { Product} from "../components/product"
+
 
 /**
  * Represents a class that defines the routes for handling proposals.
@@ -274,7 +275,7 @@ class ProductRoutes {
          * It returns a 200 status code.
          */
         this.router.delete(
-            "/products/:model",
+            "/:model",
             param("model").isString().isLength({ min: 1 }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
