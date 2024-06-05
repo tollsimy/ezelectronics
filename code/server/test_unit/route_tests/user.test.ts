@@ -72,7 +72,7 @@ describe("Route unit tests", () => {
                 return res.status(422).json({ error: "The parameters are not formatted properly\n\n" });
             })
             //We call the route with the mocked dependencies, and expect a 422 error code
-            const response = await request(app).post(baseURL + "/users").send(inputUser)
+            const response = await request(app).post(baseURL + "/users")
             expect(response.status).toBe(422)
         })
     })
@@ -170,6 +170,86 @@ describe("Route unit tests", () => {
             //We call the route with dependencies mocked to simulate an error scenario, and expect a 422 code
             const response = await request(app).get(baseURL + "/users/roles/Invalid")
             expect(response.status).toBe(422)
+        })
+    })
+
+    describe("GET /users/:username", () => {
+
+        test("It returns a user with a specific username", async () => {
+            jest.spyOn(UserController.prototype, "getUserByUsername").mockResolvedValueOnce(testAdmin)
+            jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => {
+                return next();
+            })
+            jest.mock('express-validator', () => ({
+                param: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
+                    isIn: () => ({ isLength: () => ({}) }),
+                })),
+            }))
+            const response = await request(app).get(baseURL + "/users/admin")
+            expect(response.status).toBe(200)
+            expect(response.body).toEqual(testAdmin)
+        })
+    })
+
+    describe("DELETE /users/:username", () => {
+        
+        test("It deletes a user with a specific username", async () => {
+            jest.spyOn(UserController.prototype, "deleteUser").mockResolvedValueOnce(true)
+            jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => {
+                return next();
+            })
+            jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req, res, next) => {
+                return next();
+            })
+            const response = await request(app).delete(baseURL + "/users/admin")
+            expect(response.status).toBe(200)
+            expect(UserController.prototype.deleteUser).toHaveBeenCalled()
+        })
+    })
+
+    describe("DELETE /users", () => {
+        test("It deletes all users", async () => {
+            jest.spyOn(UserController.prototype, "deleteAll").mockResolvedValueOnce(true)
+            jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => {
+                return next();
+            })
+            jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req, res, next) => {
+                return next();
+            })
+            const response = await request(app).delete(baseURL + "/users")
+            expect(response.status).toBe(200)
+            expect(UserController.prototype.deleteAll).toHaveBeenCalled()
+        })
+    })
+
+    describe("PATCH /users/:username", () => {
+        test("It updates a user with a specific username", async () => {
+            const inputUser = new User("test", "test", "test", Role.MANAGER, "test", "2000-06-04")
+            jest.spyOn(UserController.prototype, "updateUserInfo").mockResolvedValueOnce(inputUser)
+            jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => {
+                req.user = inputUser.username
+                return next();
+            })
+            jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => {
+                return next();
+            })
+            jest.mock('express-validator', () => ({
+                body: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
+                    isIn: () => ({ isLength: () => ({}) }),
+                })),
+                param: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
+                    isIn: () => ({ isLength: () => ({}) }),
+                })),
+            }))
+            const data = {user: inputUser, name: inputUser.name, surname: inputUser.surname, address: inputUser.address, birthdate: inputUser.birthdate, username: inputUser.username}
+            const response = await request(app).patch(baseURL + "/users/test").send(data)
+            console.log(response.body)
+            expect(response.status).toBe(200)
+            expect(UserController.prototype.updateUserInfo).toHaveBeenCalled()
+            expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(inputUser.username, inputUser.name, inputUser.surname, inputUser.address, inputUser.birthdate, inputUser.username)
         })
     })
 })
