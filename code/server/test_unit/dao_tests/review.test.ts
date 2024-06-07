@@ -55,7 +55,6 @@ test("It should resolve if all the reviews of a specific model are deleted", asy
         return {} as Database
     });
     const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
-        callback(null)
         return {} as Database
     })
     const result = await reviewDAO.deleteReviewsOfProduct("model")
