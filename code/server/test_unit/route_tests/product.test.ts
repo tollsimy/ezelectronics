@@ -8,6 +8,7 @@ import { Role, User } from "../../src/components/user"
 import { Product, Category } from "../../src/components/product"
 import ErrorHandler from "../../src/helper"
 import e from "express"
+import { param } from "express-validator"
 const baseURL = "/ezelectronics"
 
 //For unit tests, we need to validate the internal logic of a single component, without the need to test the interaction with other components
@@ -86,6 +87,9 @@ describe("Route unit tests", () => {
             jest.mock('express-validator', () => ({
                 body: jest.fn().mockImplementation(() => ({
                     isInt: () => ({ isLength: () => ({}) }),
+                })),
+                param: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
                 })),
             }))
             jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => {
@@ -221,6 +225,9 @@ describe("Route unit tests", () => {
             jest.mock('express-validator', () => ({
                 body: jest.fn().mockImplementation(() => ({
                     isInt: () => ({ isLength: () => ({}) }),
+                })),
+                param: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
                 })),
             }))
             jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => {

@@ -65,13 +65,19 @@ class ProductRoutes {
             body("details").isString().optional(),
             body("sellingPrice").isNumeric().custom(value => {
                 if (value <= 0) {
-                    throw new Error('Invalid value');
+                    throw false;
                 }
                 return true;
             }),
             body("arrivalDate")
                 .isString()
-                .optional(),
+                .optional()
+                .matches(/^\d{4}-\d{2}-\d{2}$/).custom((value) => {
+                    const date = new Date(value);
+                    if(date.toString() === "Invalid Date") 
+                        return false;
+                    return true;
+            }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -103,7 +109,13 @@ class ProductRoutes {
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("changeDate")
                 .isString()
-                .optional(),
+                .optional()
+                .matches(/^\d{4}-\d{2}-\d{2}$/).custom((value) => {
+                    const date = new Date(value);
+                    if(date.toString() === "Invalid Date") 
+                        return false;
+                    return true;
+                }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),
@@ -132,7 +144,13 @@ class ProductRoutes {
             body("quantity").isNumeric().isInt({ gt: 0 }),
             body("sellingDate")
                 .isString()
-                .optional(),
+                .optional()
+                .matches(/^\d{4}-\d{2}-\d{2}$/).custom((value) => {
+                    const date = new Date(value);
+                    if(date.toString() === "Invalid Date") 
+                        return false;
+                    return true;
+                }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isAdminOrManager(req, res, next),

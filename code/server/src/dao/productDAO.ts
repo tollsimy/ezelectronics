@@ -81,16 +81,18 @@ class ProductDAO {
         })
     };
 
-    addProductQuantity(model: string, quantity: number): Promise<number> {
+    addProductQuantity(model: string, quantity: number,changeDate:string): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products SET \
-                            stock = stock + ? \
+                            stock = stock + ?, arrivalDate = ? \
                             WHERE model = ?";
                 db.run(sql,
                     [
                         quantity,
+                        changeDate,
                         model
+                        
                     ],
                     (err: Error | null) => {
                         if (err) {
@@ -121,7 +123,7 @@ class ProductDAO {
             try {
                 const sql= "SELECT * FROM products WHERE model = ?";
                 db.get(sql, [model], (err: Error | null, row: any) => {
-                    if (err) {
+                    if (err || !row ) {
                         reject(new ProductNotFoundError())
                         return
                     }
@@ -264,6 +266,10 @@ class ProductDAO {
                         reject(err)
                         return
                     }
+                    if (!rows || rows.length == 0) {
+                        resolve([])
+                        return
+                    }
                     let products: Product[] = [];
                     for (let row of rows) {
                         products.push(new Product(
@@ -321,7 +327,7 @@ class ProductDAO {
                         return
                     }
                     //If there is no product with this model
-                    if (!row) {
+                    if (!row || row.stock == 0) {
                         reject(new ProductNotFoundError())
                         return
                     } else {

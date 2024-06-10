@@ -59,7 +59,7 @@ class ProductController {
         else if (!await this.isAfterOrTodayDate(changeDate, model)) {
             throw new DateError();
         }
-        return this.dao.addProductQuantity(model, newQuantity);
+        return this.dao.addProductQuantity(model, newQuantity, changeDate);
     }
 
     /**
