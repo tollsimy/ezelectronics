@@ -1,6 +1,7 @@
 import { User } from "../components/user"
 import UserDAO from "../dao/userDAO"
-import { UserNotFoundError, UserNotManagerError, UserNotCustomerError, UserAlreadyExistsError, UserNotAdminError, UserIsAdminError, UnauthorizedUserError } from "../errors/userError"
+import { UserNotFoundError, UserNotManagerError, UserNotCustomerError, UserAlreadyExistsError, UserNotAdminError, UserIsAdminError, UnauthorizedUserError} from "../errors/userError"
+import { DateError} from "../utilities"
 
 /**
  * Represents a controller for managing users.
@@ -57,7 +58,7 @@ class UserController {
         else if (user.username === username)
             return this.dao.getUserByUsername(username);
         else
-            throw new Error("You are not authorized to view this user");
+            throw new UnauthorizedUserError();
     }
 
     /**
@@ -105,7 +106,12 @@ class UserController {
      * @returns A Promise that resolves to the updated user
      */
     async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string): Promise<User> {
-        if (user.username === username) {
+        //control if the birthdate is a correct date and it is after the current date
+        const date = new Date(birthdate);
+        if ( date > new Date())
+            throw new DateError();
+        
+        else if (user.username === username) {
             return this.dao.updateUserInfo(name, surname, address, birthdate, username);
         }
         else if (user.role === "Admin") {

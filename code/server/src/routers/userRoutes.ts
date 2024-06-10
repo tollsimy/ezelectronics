@@ -165,7 +165,14 @@ class UserRoutes {
             body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
             body("address").isString().isLength({ min: 1 }), // the request body must contain an attribute named "address", the attribute must be a non-empty string
             // Date must be in format YYYY-MM-DD
-            body("birthdate").isString().isLength({ min: 1 }).matches(/^\d{4}-\d{2}-\d{2}$/).isBefore(new Date().toISOString().split("T")[0]),
+            // Date must be a valid date
+
+            body("birthdate").isString().isLength({ min: 1 }).matches(/^\d{4}-\d{2}-\d{2}$/).custom((value) => {
+                const date = new Date(value);
+                if(date.toString() === "Invalid Date") 
+                    return false;
+                return true;
+            }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => {

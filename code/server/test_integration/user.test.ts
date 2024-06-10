@@ -8,6 +8,10 @@ const routePath = "/ezelectronics" //Base route path for the API
 //Default user information. We use them to create users and evaluate the returned values
 const customer = { username: "customer", name: "customer", surname: "customer", password: "customer", role: "Customer" }
 const admin = { username: "admin", name: "admin", surname: "admin", password: "admin", role: "Admin" }
+const admin2 = { username: "admin2", name: "admin2", surname: "admin2", password: "admin2", role: "Admin" }
+
+
+
 //Cookies for the users. We use them to keep users logged in. Creating them once and saving them in a variables outside of the tests will make cookies reusable
 let customerCookie: string
 let adminCookie: string
@@ -34,14 +38,17 @@ const login = async (userInfo: any) => {
                 if (err) {
                     reject(err)
                 }
-                resolve(res.header["set-cookie"][0])
+                if(!res|| !res.header["set-cookie"] )
+                    reject()
+                else
+                    resolve(res.header["set-cookie"][0])
             })
     })
 }
 
 //Before executing tests, we remove everything from our test database, create an Admin user and log in as Admin, saving the cookie in the corresponding variable
 beforeAll(async () => {
-    cleanup()
+    //cleanup()
     await postUser(admin)
     adminCookie = await login(admin)
 })
@@ -52,29 +59,23 @@ afterAll(() => {
 })
 
 
-//A 'describe' block is a way to group tests. It can be used to group tests that are related to the same functionality
-//In this example, tests are for the user routes
+
 //Inner 'describe' blocks define tests for each route
 describe("User routes integration tests", () => {
     describe("POST /users", () => {
-        //A 'test' block is a single test. It should be a single logical unit of testing for a specific functionality and use case (e.g. correct behavior, error handling, authentication checks)
         test("It should return a 200 success code and create a new user", async () => {
-            //A 'request' function is used to send a request to the server. It is similar to the 'fetch' function in the browser
-            //It executes an API call to the specified route, similarly to how the client does it
-            //It is an actual call, with no mocking, so it tests the real behavior of the server
-            //Route calls are asynchronous operations, so we need to use 'await' to wait for the response
             await request(app)
-                .post(`${routePath}/users`) //The route path is specified here. Other operation types can be defined with similar blocks (e.g. 'get', 'patch', 'delete'). Route and query parameters can be added to the path
-                .send(customer) //In case of a POST request, the data is sent in the body of the request. It is specified with the 'send' block. The data sent should be consistent with the API specifications in terms of names and types
-                .expect(200) //The 'expect' block is used to check the response status code. We expect a 200 status code for a successful operation
+                .post(`${routePath}/users`) 
+                .send(customer) 
+                .expect(200) 
 
-            //After the request is sent, we can add additional checks to verify the operation, since we need to be sure that the user is present in the database
-            //A possible way is retrieving all users and looking for the user we just created.
-            const users = await request(app) //It is possible to assign the response to a variable and use it later. 
+            
+            
+            const users = await request(app) 
                 .get(`${routePath}/users`)
-                .set("Cookie", adminCookie) //Authentication is specified with the 'set' block. Adding a cookie to the request will allow authentication (if the cookie has been created with the correct login route). Without this cookie, the request will be unauthorized
+                .set("Cookie", adminCookie) 
                 .expect(200)
-            expect(users.body).toHaveLength(2) //Since we know that the database was empty at the beginning of our tests and we created two users (an Admin before starting and a Customer in this test), the array should contain only two users
+            expect(users.body).toHaveLength(2) //Should contain 2 users, the Admin and the Customer
             let cust = users.body.find((user: any) => user.username === customer.username) //We look for the user we created in the array of users
             expect(cust).toBeDefined() //We expect the user we have created to exist in the array. The parameter should also be equal to those we have sent
             expect(cust.name).toBe(customer.name)
@@ -89,13 +90,39 @@ describe("User routes integration tests", () => {
                 .post(`${routePath}/users`)
                 .send({ username: "", name: "test", surname: "test", password: "test", role: "Customer" }) //We send a request with an empty username. The express-validator checks will catch this and return a 422 error code
                 .expect(422)
-            await request(app).post(`${routePath}/users`).send({ username: "test", name: "", surname: "test", password: "test", role: "Customer" }).expect(422) //We can repeat the call for the remaining body parameters
+            await request(app)
+                .post(`${routePath}/users`)
+                .send({ username: "test", name: "", surname: "test", password: "test", role: "Customer" })
+                .expect(422) 
+            await request(app)
+                .post(`${routePath}/users`)
+                .send({ username: "test", name: "test", surname: "", password: "test", role: "Customer" })
+                .expect(422)
+            await request(app)
+                .post(`${routePath}/users`)
+                .send({ username: "test", name: "test", surname: "test", password: "", role: "Customer" })
+                .expect(422)
+            await request(app)
+                .post(`${routePath}/users`)
+                .send({ username: "test", name: "test", surname: "test", password: "test", role: "Errror" })
+                .expect(422)
+        })
+
+        test("It should return 409 if the username already exists in the db", async () => {
+            await request(app)
+                .post(`${routePath}/users`)
+                .send(customer) 
+                .expect(409)
         })
     })
 
     describe("GET /users", () => {
         test("It should return an array of users", async () => {
-            const users = await request(app).get(`${routePath}/users`).set("Cookie", adminCookie).expect(200)
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            
             expect(users.body).toHaveLength(2)
             let cust = users.body.find((user: any) => user.username === customer.username)
             expect(cust).toBeDefined()
@@ -111,16 +138,13 @@ describe("User routes integration tests", () => {
 
         test("It should return a 401 error code if the user is not an Admin", async () => {
             customerCookie = await login(customer)
-            await request(app).get(`${routePath}/users`).set("Cookie", customerCookie).expect(401) //We call the same route but with the customer cookie. The 'expect' block must be changed to validate the error
-            await request(app).get(`${routePath}/users`).expect(401) //We can also call the route without any cookie. The result should be the same
+            await request(app).get(`${routePath}/users`).set("Cookie", customerCookie).expect(401) 
+            await request(app).get(`${routePath}/users`).expect(401) 
         })
     })
 
     describe("GET /users/roles/:role", () => {
         test("It should return an array of users with a specific role", async () => {
-            //Route parameters are set in this way by placing directly the value in the path
-            //It is not possible to send an empty value for the role (/users/roles/ will not be recognized as an existing route, it will return 404)
-            //Empty route parameters cannot be tested in this way, but there should be a validation block for them in the route
             const admins = await request(app).get(`${routePath}/users/roles/Admin`).set("Cookie", adminCookie).expect(200)
             expect(admins.body).toHaveLength(1) //In this case, we expect only one Admin user to be returned
             let adm = admins.body[0]
@@ -130,8 +154,185 @@ describe("User routes integration tests", () => {
         })
 
         test("It should fail if the role is not valid", async () => {
-            //Invalid route parameters can be sent and tested in this way. The 'expect' block should contain the corresponding code
-            await request(app).get(`${routePath}/users/roles/Invalid`).set("Cookie", adminCookie).expect(422)
+                
+            await request(app)
+            .get(`${routePath}/users/roles/Invalid`)
+            .set("Cookie", adminCookie)
+            .expect(422)
+        })
+
+        test("It should return a 401 error code if the user is not an Admin", async () => {
+            customerCookie = await login(customer)
+            await request(app).get(`${routePath}/users`).set("Cookie", customerCookie).expect(401) 
+            await request(app).get(`${routePath}/users`).expect(401) 
+        })
+    })
+
+    describe("GET /users/:username", () => {
+        test("It should return a user with a specific username", async () => {
+            const user = await request(app).get(`${routePath}/users/${customer.username}`).set("Cookie", adminCookie).expect(200)
+            expect(user.body.username).toBe(customer.username)
+            expect(user.body.name).toBe(customer.name)
+            expect(user.body.surname).toBe(customer.surname)
+            expect(user.body.role).toBe(customer.role)
+        })
+
+        test("It should return a 401 error code if the user is not an Admin and the usename of the logged in user is not the one requested", async () => {
+            customerCookie = await login(customer)
+            await request(app).get(`${routePath}/users/${admin.username}`).set("Cookie", customerCookie).expect(401) 
+            await request(app).get(`${routePath}/users/${customer.username}`).expect(401) 
+        })
+        test("It should return a 404 error code if the user does not exist", async () => {
+            await request(app).get(`${routePath}/users/Invalid`).set("Cookie", adminCookie).expect(404)
+        })
+    })
+
+    describe("DELETE /users/:username", () => {
+        test("It should return a 200 success code and delete a user with a specific username", async () => {
+            await request(app)
+                .delete(`${routePath}/users/${customer.username}`)
+                .set("Cookie", adminCookie).expect(200)
+
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            expect(users.body).toHaveLength(1) //We expect only the Admin user to be returned
+            let adm = users.body.find((user: any) => user.username === admin.username)
+            expect(adm).toBeDefined()
+            expect(adm.name).toBe(admin.name)
+            expect(adm.surname).toBe(admin.surname)
+            expect(adm.role).toBe(admin.role)
+        })
+
+        test("It should return a 404 error code if the user does not exist", async () => {
+            await request(app).delete(`${routePath}/users/Invalid`).set("Cookie", adminCookie).expect(404)
+        })
+
+        test("It should return a 401 error code if the user is not an Admin and the usename of the logged in user is not the one requested", async () => {
+            await postUser(customer)
+            customerCookie = await login(customer)
+            await request(app).delete(`${routePath}/users/${admin.username}`).set("Cookie", customerCookie).expect(401) 
+            await request(app).delete(`${routePath}/users/${customer.username}`).expect(401) 
+        })
+
+        test("It should return a 401 error code if the user is an Admin and try tu delete another admin user", async () => {
+            await postUser(admin2)
+            await request(app).delete(`${routePath}/users/${admin2.username}`).set("Cookie", adminCookie).expect(401) 
+        })  
+    })
+
+    describe("DELETE /users", () => {
+        test("It should return a 200 success code and delete all non-admin users", async () => {
+            await request(app)
+                .delete(`${routePath}/users`)
+                .set("Cookie", adminCookie).expect(200)
+
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            expect(users.body).toHaveLength(2) //We expect only the Admin users to be returned (admin1 and admin2)
+            let adm = users.body.find((user: any) => user.username === admin.username)
+            expect(adm).toBeDefined()
+            expect(adm.name).toBe(admin.name)
+            expect(adm.surname).toBe(admin.surname)
+            expect(adm.role).toBe(admin.role)
+            let adm2 = users.body.find((user: any) => user.username === admin2.username)
+            expect(adm2).toBeDefined()
+            expect(adm2.name).toBe(admin2.name)
+            expect(adm2.surname).toBe(admin2.surname)
+            expect(adm2.role).toBe(admin2.role)
+        })
+
+        test("It should return a 401 error code if the user is not an Admin", async () => {
+            await postUser(customer)
+            customerCookie = await login(customer)
+            await request(app).delete(`${routePath}/users`).set("Cookie", customerCookie).expect(401) 
+            await request(app).delete(`${routePath}/users`).expect(401) 
+        })
+    })
+
+    describe("PATCH /users/:username", () => {
+        test("It should return a 200 success code and update a user with a specific username", async () => {
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname",  address: "test", birthdate: "2000-01-01"})
+                .expect(200)
+
+            const user = await request(app)
+                .get(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            expect(user.body.username).toBe(admin.username)
+            expect(user.body.name).toBe("newAdminName")
+            expect(user.body.surname).toBe("newAdminSurname")
+            expect(user.body.address).toBe("test")
+            expect(user.body.birthdate).toBe("2000-01-01")
+        })
+
+        test("It should return a 404 error code if the user does not exist", async () => {
+            await request(app)
+                .patch(`${routePath}/users/Invalid`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: "2000-01-01"})
+                .expect(404)
+        })
+        test("It should return a 400 error code if the birthdate is after the current date", async () => {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowString = tomorrow.toISOString().split('T')[0];
+
+             await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: tomorrowString})
+                .expect(400)
+        })
+
+        test("It should return a 401 error code if the user is not an Admin and the usename of the logged in user is not the one requested", async () => {
+            customerCookie = await login(customer)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", customerCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: "2000-01-01" })
+                .expect(401)
+        })
+
+        
+
+        test("It should return a 422 error code if at least one request body parameter is empty/missing", async () => {
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "", surname: "newAdminSurname", address: "test", birthdate: "2000-01-01"  })
+                .expect(422)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "", address: "test", birthdate: "2000-01-01"  })
+                .expect(422)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "", birthdate: "2000-01-01"  })
+                .expect(422)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: ""  })
+                .expect(422)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: "32/01/2000"  })
+                .expect(422)
+            await request(app)
+                .patch(`${routePath}/users/${admin.username}`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: "2000-01-32"  })
+                .expect(422)
         })
     })
 })
