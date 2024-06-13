@@ -260,7 +260,7 @@ describe("Product routes integration tests", () => {
     /* ------------------------------------------------------------------------------------*/
         
     describe("PATCH /products/:model/sell", () => {
-        test("It should return a 200 success code and decrease the quantity of a product", async () => {
+        test("It should return a 200 success code and decrease the quantity of a product and the user is manager", async () => {
             const quantity = 5
             await request(app)
                 .patch(`${routePath}/products/${product.model}/sell`)
@@ -277,6 +277,27 @@ describe("Product routes integration tests", () => {
                 expect(p.model).toBe(product.model)
                 expect(p.category).toBe(product.category)
                 expect(p.quantity).toBe(product.quantity)
+                expect(p.sellingPrice).toBe(product.sellingPrice)
+            })
+        })
+
+        test("It should return a 200 success code and decrease the quantity of a product and the user is admin", async () => {
+            const quantity = 5
+            await request(app)
+                .patch(`${routePath}/products/${product.model}/sell`)
+                .set('Cookie', adminCookie)
+                .send({ quantity: quantity })
+                .expect(200)
+            
+            const products=await request(app)
+                .get(`${routePath}/products`)
+                .set('Cookie', adminCookie)
+                .expect(200)
+            expect(products.body.length).toBe(1)
+            products.body.forEach((p:any)=>{
+                expect(p.model).toBe(product.model)
+                expect(p.category).toBe(product.category)
+                expect(p.quantity).toBe(product.quantity - quantity)
                 expect(p.sellingPrice).toBe(product.sellingPrice)
             })
         })
@@ -319,7 +340,7 @@ describe("Product routes integration tests", () => {
                 .expect(409)
         })
 
-        test("It should return a 401 error code if the user is not a manager", async () => {
+        test("It should return a 401 error code if the user is customer", async () => {
             customerCookie = await login(customer)
             await request(app)
                 .patch(`${routePath}/products/${product.model}/sell`)
@@ -359,7 +380,14 @@ describe("Product routes integration tests", () => {
     describe("GET /products", () => {
 
         test("It should return a 200 success code and an array of products with catgory=LAPTOP", async () => {
-  
+            // Restore original quantity
+            const newQuantity = 5
+            await request(app)
+                .patch(`${routePath}/products/${product.model}`)
+                .set('Cookie', managerCookie)
+                .send({ quantity:newQuantity, changeDate: "2020-12-13"})
+                .expect(200)
+            
             const products=await request(app)
                 .get(`${routePath}/products?grouping=category&category=${product.category}`)
                 .set('Cookie', managerCookie)

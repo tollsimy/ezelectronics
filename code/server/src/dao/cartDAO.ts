@@ -148,7 +148,7 @@ class CartDAO {
                         })
                         const sql = "UPDATE carts SET paid = 1, paymentDate = ? WHERE customer = ? AND paid = 0"
                         //controll Date format
-                        db.run(sql, [new Date().toISOString(), user.username], (err: Error) => {
+                        db.run(sql, [new Date().toISOString().split('T')[0], user.username], (err: Error) => {
                             if (err) { reject(err); return; }
                             resolve(true)
                         })
