@@ -300,7 +300,13 @@ describe("User routes integration tests", () => {
                 .expect(401)
         })
 
-        
+        test("It should return a 422 error code if requested parameter username is empty", async () => {
+            await request(app)
+                .patch(`${routePath}/users/`)
+                .set("Cookie", adminCookie)
+                .send({ name: "newAdminName", surname: "newAdminSurname", address: "test", birthdate: "2000-01-01" })
+                .expect(422)
+        })        
 
         test("It should return a 422 error code if at least one request body parameter is empty/missing", async () => {
             await request(app)
