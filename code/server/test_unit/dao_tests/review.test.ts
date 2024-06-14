@@ -22,7 +22,7 @@ test("It should resolve if user add a review", async () => {
 test("It should resolve the reviews of a product", async () => {
     const reviewDAO = new ReviewDAO()
     const mockDBGet = jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
-        callback(null, [{ model: "model", user: "user", score: 1, date: "date", comment: "comment" }])
+        callback(null, [{ cod_model: "model", user: "user", score: 1, date: "date", comment: "comment" }])
         return {} as Database
     });
     const result = await reviewDAO.getProductReviews("model")
@@ -33,7 +33,7 @@ test("It should resolve the reviews of a product", async () => {
 test("It should resolve if a review is deleted given a model and a user", async () => {
     const reviewDAO = new ReviewDAO()
     const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-        callback(null, { model: "model", user: "user" })
+        callback(null, { cod_model: "model", user: "user" })
         return {} as Database
     });
     const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -51,7 +51,7 @@ test("It should resolve if a review is deleted given a model and a user", async 
 test("It should resolve if all the reviews of a specific model are deleted", async () => {
     const reviewDAO = new ReviewDAO()
     const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-        callback(null, [{ model: "model", user: "user" }])
+        callback(null, [{ cod_model: "model", user: "user" }])
         return {} as Database
     });
     const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
