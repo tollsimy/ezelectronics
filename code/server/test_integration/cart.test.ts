@@ -4,7 +4,6 @@ import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
 import { Category, Product } from "../src/components/product"
 import { Cart, ProductInCart } from "../src/components/cart"
-import { exit } from "process"
 
 const routePath = "/ezelectronics" //Base route path for the API
 

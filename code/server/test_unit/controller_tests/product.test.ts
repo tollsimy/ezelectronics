@@ -122,7 +122,8 @@ describe("Controller unit test", () => {
             expect(ProductDAO.prototype.addProductQuantity).toHaveBeenCalledTimes(1);
             expect(ProductDAO.prototype.addProductQuantity).toHaveBeenCalledWith(
                 testProduct.model,
-                testProduct.newQuantity
+                testProduct.newQuantity,
+                testProduct.changeDate
             );
             expect(response).toEqual(20);
         });
@@ -146,7 +147,8 @@ describe("Controller unit test", () => {
                 expect(ProductDAO.prototype.addProductQuantity).toHaveBeenCalledTimes(1);
                 expect(ProductDAO.prototype.addProductQuantity).toHaveBeenCalledWith(
                     testProduct.model,
-                    testProduct.newQuantity
+                    testProduct.newQuantity,
+                    testProduct.changeDate
                 );
             }
         });
