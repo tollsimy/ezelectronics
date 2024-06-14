@@ -109,7 +109,7 @@ const login = async (userInfo: any) => {
 }
 
 beforeAll(async () => {
-    //cleanup()
+    await cleanup()
     await postUser(admin)
     await postUser(manager)
     await postUser(customer)
@@ -123,12 +123,12 @@ beforeAll(async () => {
     await sellNProduct(exampleNotAvailableProduct, managerCookie, exampleNotAvailableProduct.quantity)
 })
 
-//After executing tests, we remove everything from our test database
-afterAll(() => {
-    cleanup()
+afterAll(async () => {
+    await cleanup()
 })
 
 describe("Cart routes integration tests", () => {
+
     describe("GET /carts", () => {
         test("It should return a 200 success code and get an empty cart if user is customer and has no products in cart", async () => {
             await request(app)

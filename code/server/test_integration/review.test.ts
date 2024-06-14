@@ -63,8 +63,7 @@ const login = async (userInfo: any) => {
 }
 
 beforeAll(async () => {
-    //cleanup()
-
+    await cleanup()
     await postUser(admin)
     await postUser(manager)
     await postUser(customer)
@@ -76,8 +75,8 @@ beforeAll(async () => {
     await postProduct(myModel, managerCookie)
 })
 
-afterAll(() => {
-    cleanup()
+afterAll(async () => {
+    await cleanup()
 })
 
 describe("Review routes integration tests", () => {

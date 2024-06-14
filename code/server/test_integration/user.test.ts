@@ -46,19 +46,15 @@ const login = async (userInfo: any) => {
     })
 }
 
-//Before executing tests, we remove everything from our test database, create an Admin user and log in as Admin, saving the cookie in the corresponding variable
 beforeAll(async () => {
-    //cleanup()
+    await cleanup()
     await postUser(admin)
     adminCookie = await login(admin)
 })
 
-//After executing tests, we remove everything from our test database
-afterAll(() => {
-    cleanup()
+afterAll(async () => {
+    await cleanup()
 })
-
-
 
 //Inner 'describe' blocks define tests for each route
 describe("User routes integration tests", () => {
