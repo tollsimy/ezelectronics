@@ -50,13 +50,14 @@ test("It should resolve if a review is deleted given a model and a user", async 
 
 test("It should resolve if all the reviews of a specific model are deleted", async () => {
     const reviewDAO = new ReviewDAO()
-    const mockDBGet = jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
+    const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
         callback(null, [{ model: "model", user: "user" }])
         return {} as Database
     });
     const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
+        callback(null)
         return {} as Database
-    })
+    });
     const result = await reviewDAO.deleteReviewsOfProduct("model")
     expect(mockDBGet).toHaveBeenCalled()
     expect(mockDBRun).toHaveBeenCalled()

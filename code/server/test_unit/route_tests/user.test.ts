@@ -246,7 +246,6 @@ describe("Route unit tests", () => {
             }))
             const data = {user: inputUser, name: inputUser.name, surname: inputUser.surname, address: inputUser.address, birthdate: inputUser.birthdate, username: inputUser.username}
             const response = await request(app).patch(baseURL + "/users/test").send(data)
-            console.log(response.body)
             expect(response.status).toBe(200)
             expect(UserController.prototype.updateUserInfo).toHaveBeenCalled()
             expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(inputUser.username, inputUser.name, inputUser.surname, inputUser.address, inputUser.birthdate, inputUser.username)

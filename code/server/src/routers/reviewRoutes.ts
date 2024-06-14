@@ -52,7 +52,6 @@ class ReviewRoutes {
                 )
                     .then(() => res.status(200).send())
                     .catch((err: Error) => {
-                        console.log(err)
                         next(err)
                     })
             }
@@ -89,7 +88,6 @@ class ReviewRoutes {
             (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user.username)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
-                    console.log(err)
                     next(err)
                 })
         )

@@ -20,7 +20,6 @@ class ReviewDAO {
                             (SELECT username from users WHERE username=?))"
                 db.run(sql, [score, date, comment, model, user], (err) => {
                     if (err) {
-                        console.log(err.message)
                         if (err.message.includes('NOT NULL')) {
                             reject(new ProductNotFoundError)
                         } else {
@@ -68,7 +67,6 @@ class ReviewDAO {
 
     async deleteReview(model: string, user: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            console.log(model, user)
             const checkSql = "SELECT * FROM reviews WHERE cod_model = ? AND user = ?"
             db.get(checkSql, [model, user], (err: Error | null, row:any) => {
                 
@@ -93,7 +91,7 @@ class ReviewDAO {
     async deleteReviewsOfProduct(model: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const checkSql = "SELECT * FROM reviews WHERE cod_model = ?";
-            db.get(checkSql, [model], (err, row) => {
+            db.get(checkSql, [model], (err: Error | null, row:any) => {
                 if (err) {
                     reject(err);
                 } else if (!row) {
