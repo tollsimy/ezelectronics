@@ -159,11 +159,13 @@ describe("Review routes integration tests", () => {
                 .expect(200)
                 .then((res) => {
                     const review = res.body[0]
-                    expect(review.user).toBe(myReview.model)
+                    expect(review.model).toBe(myReview.model)
                     expect(review.user).toBe(myReview.user)
                     expect(review.score).toBe(myReview.score)  
                     expect(review.date).toBe(new Date().toISOString().split('T')[0])
                     expect(review.comment).toBe(myReview.comment)
+                    
+
                 })
         })
 

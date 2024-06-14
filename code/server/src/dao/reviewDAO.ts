@@ -48,7 +48,7 @@ class ReviewDAO {
                         let reviews: ProductReview[] = [];
                         for (let row of rows) {
                             reviews.push(new ProductReview(
-                                row.model,
+                                row.cod_model,
                                 row.user,
                                 row.score,
                                 row.date,
