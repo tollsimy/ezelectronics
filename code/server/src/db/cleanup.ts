@@ -9,19 +9,17 @@ import db from "../db/db";
 
 export function cleanup() {
     return new Promise<void>((resolve, reject) => {
-        db.serialize(() => {
-            db.run("DELETE FROM productsInACart", (err) => {
+        db.run("DELETE FROM productsInACart", (err) => {
+            if (err) return reject(new Error("Cleanup error"));
+            db.run("DELETE FROM carts", (err) => {
                 if (err) return reject(new Error("Cleanup error"));
-                db.run("DELETE FROM carts", (err) => {
+                db.run("DELETE FROM reviews", (err) => {
                     if (err) return reject(new Error("Cleanup error"));
-                    db.run("DELETE FROM reviews", (err) => {
+                    db.run("DELETE FROM products", (err) => {
                         if (err) return reject(new Error("Cleanup error"));
-                        db.run("DELETE FROM products", (err) => {
+                        db.run("DELETE FROM users", (err) => {
                             if (err) return reject(new Error("Cleanup error"));
-                            db.run("DELETE FROM users", (err) => {
-                                if (err) return reject(new Error("Cleanup error"));
-                                resolve();
-                            });
+                            resolve();
                         });
                     });
                 });

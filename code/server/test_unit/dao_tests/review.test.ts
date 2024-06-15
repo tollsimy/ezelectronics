@@ -6,6 +6,8 @@ import db from "../../src/db/db"
 import { Database } from "sqlite3"
 import { get } from "http"
 
+jest.mock("../../src/db/db.ts")
+
 //TODO: help 
 test("It should resolve if user add a review", async () => {
     const reviewDAO = new ReviewDAO()

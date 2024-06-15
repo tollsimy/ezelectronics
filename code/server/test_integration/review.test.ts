@@ -167,7 +167,6 @@ describe("Review routes integration tests", () => {
 
     describe("DELETE /reviews/:model", () => {
         test("It should return a 200 success code and delete the review", async () => {
-            console.log(myReview.model)
             await request(app)
                 .delete(`${routePath}/reviews/${myReview.model}`)
                 .set('Cookie', customerCookie)
@@ -177,8 +176,6 @@ describe("Review routes integration tests", () => {
                 .set('Cookie', customerCookie)
                 .expect(200)
                 .then((res) => {
-                    console.log("res.body:")
-                    console.log(res.body)
                     expect(res.body.length).toBe(0)
             })
         })
