@@ -1,11 +1,8 @@
 import { describe, test, expect, beforeAll, afterAll, jest } from "@jest/globals"
-
-import UserController from "../../src/controllers/userController"
 import UserDAO from "../../src/dao/userDAO"
 import crypto from "crypto"
 import db from "../../src/db/db"
 import { Database } from "sqlite3"
-import { get } from "http"
 
 jest.mock("crypto")
 jest.mock("../../src/db/db.ts")
@@ -50,18 +47,7 @@ test("It should resolve the user object if user is retrieved by its username", a
     expect(result).toEqual({ username: "username", name: "name", surname: "surname", role: "role" })
     mockDBGet.mockRestore()
 })
-/* TODO: fix this -> actually not even needed
-test("It should reject a UserNotFoundError if user is not retrieved by its username", async () => {
-    const userDAO = new UserDAO()
-    const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-        callback(null, null)
-        return {} as Database
-    });
-    await expect(userDAO.getUserByUsername("username")).rejects.toThrow("UserNotFoundError")
-    expect(mockDBGet).toHaveBeenCalled()
-    expect(userDAO.getUserByUsername("username")).toHaveBeenCalled()
-    mockDBGet.mockRestore()
-})*/
+
 
 test("It should reject an error if new user is not created", async () => {
     const userDAO = new UserDAO()
@@ -107,16 +93,7 @@ test("It should reject an error if users are not retrieved", async () => {
     await expect(userDAO.getUsers()).rejects.toThrow("Error")
     mockDBAll.mockRestore()
 })
-/*
-test("It should reject an error if user is not retrieved by its username", async () => {
-    const userDAO = new UserDAO()
-    const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-        callback(new Error("Error"), null)
-        return {} as Database
-    });
-    await expect(userDAO.getUserByUsername("username")).rejects.toThrow("Error")
-    mockDBGet.mockRestore
-})*/
+
 
 test("It should resolve an array of user objects if users are retrieved by their role", async () => {
     const userDAO = new UserDAO()
@@ -139,26 +116,3 @@ test("It should resolve a deleted user if its username corresponds", async () =>
     expect(result).toBe(true)
     mockDBRun.mockRestore()
 })
-/*
-//TODO: HELP
-test("It should resolve the deletion of all non-Admin users", async () => {
-    const userDAO = new UserDAO()
-    const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
-        callback(null)
-        return {} as Database
-    });
-    const result = await userDAO.deleteAll()
-    expect(result).toBe(true)
-    mockDBRun.mockRestore()
-})
-//TODO: HELP
-test("It should resolve a promise that resolves to true if user info are updated", async () => {
-    const userDAO = new UserDAO()
-    const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
-        callback(null)
-        return {} as Database
-    });
-    const result = await userDAO.updateUserInfo("username", "name", "surname", "address", "birthdate")
-    expect(result).toBe(true)
-    mockDBRun.mockRestore()
-})*/

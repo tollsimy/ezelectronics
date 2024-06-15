@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeAll, afterAll, beforeEach, jest } from "@jest/globals"
 import request from 'supertest'
 import { app } from "../../index"
-
 import Authenticator from "../../src/routers/auth"
 import { Role, User } from "../../src/components/user"
 import { Product, Category } from "../../src/components/product"

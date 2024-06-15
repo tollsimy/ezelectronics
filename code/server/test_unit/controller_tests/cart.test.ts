@@ -1,6 +1,4 @@
 import { describe, test, expect, beforeAll, afterAll, beforeEach, jest } from "@jest/globals"
-import request from 'supertest'
-import { app } from "../../index"
 import CartController from "../../src/controllers/cartController"
 import { Cart, ProductInCart } from "../../src/components/cart"
 import CartDAO from "../../src/dao/cartDAO"

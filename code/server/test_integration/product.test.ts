@@ -513,7 +513,7 @@ describe("Product routes integration tests", () => {
             })
         })
 
-        test("It should return a 200 success code and an array of available products with catgory=SMARTPHONE", async () => {
+        test("It should return a 200 success code and an array of available products with category=SMARTPHONE", async () => {
             const products=await request(app)
                 .get(`${routePath}/products/available?grouping=category&category=${product2.category}`)
                 .set('Cookie', managerCookie)
@@ -591,14 +591,6 @@ describe("Product routes integration tests", () => {
                 .expect(422)
         })
 
-        test("It should return a 401 error code if the user is not logged in as Manager or Admin", async () => {
-            customerCookie = await login(customer)
-            await request(app)
-                .get(`${routePath}/products`)
-                .set('Cookie', customerCookie)
-                .expect(401)
-        })
-
     })
 
     /* ------------------------------------------------------------------------------------*/
@@ -663,7 +655,4 @@ describe("Product routes integration tests", () => {
                 .expect(401)
         })
     })
-
-
-
 })

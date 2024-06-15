@@ -1,13 +1,9 @@
 import { describe, test, expect, beforeAll, afterAll, beforeEach, jest } from "@jest/globals"
-import request from 'supertest'
-import { app } from "../../index"
 import UserController from "../../src/controllers/userController"
-import Authenticator from "../../src/routers/auth"
 import { Role, User } from "../../src/components/user"
-import ErrorHandler from "../../src/helper"
 import UserDAO from "../../src/dao/userDAO"
-import { UserAlreadyExistsError } from "../../src/errors/userError"
-import { error } from "console"
+import { UserAlreadyExistsError,UserNotFoundError} from "../../src/errors/userError"
+
 
 jest.mock("../../src/dao/userDAO")
 
@@ -305,17 +301,6 @@ describe("Controller unit test", () => {
         let testCustomer = new User("customer", "customer", "customer", Role.CUSTOMER, "", "")
         let testCustomerNew = new User("customer", "customerNew", "customerNew", Role.CUSTOMER, "", "")
 
-        /*test("It should resolve to a user when DAO resolve to a user if a user is updating its own info ", async () => {
-            jest.spyOn(UserDAO.prototype, "updateUserInfo").mockResolvedValueOnce(testCustomerNew); 
-            const controller = new UserController(); //Create a new instance of the controller
-            //Call the updateUserInfo method of the controller with the test user object
-            const response = await controller.updateUserInfo(testCustomer, testCustomerNew.name, testCustomerNew.surname, testCustomerNew.address, testCustomerNew.birthdate, testCustomerNew.username);
-
-            //Check if the updateUserInfo method of the DAO has been called once with the correct parameters
-            expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledTimes(1);
-            expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledWith(testCustomerNew.name, testCustomerNew.surname, testCustomerNew.address, testCustomerNew.birthdate, testCustomerNew.username);
-            expect(response).toEqual(testCustomerNew); //Check if the response is equal to the test user object
-        });*/
         test("It should resolve to a user when DAO resolve to a user if a user is updating its own info ", async () => {
             jest.spyOn(UserDAO.prototype, "updateUserInfo").mockResolvedValueOnce(testAdminNew); 
             const controller = new UserController(); //Create a new instance of the controller
@@ -339,7 +324,7 @@ describe("Controller unit test", () => {
             expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledWith(testCustomerNew.name, testCustomerNew.surname, testCustomerNew.address, testCustomerNew.birthdate, testCustomerNew.username);
             expect(response).toEqual(testCustomerNew); //Check if the response is equal to the test user object
         });
-       /* test("It should reject to err when Admin is updating another Admin info", async () => {
+        test("It should reject to err when Admin is updating another Admin info", async () => {
             jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(testAdmin); 
             const controller = new UserController(); //Create a new instance of the controller
             //Call the updateUserInfo method of the controller with the test user object
@@ -351,7 +336,7 @@ describe("Controller unit test", () => {
             }
         });
         test("It should reject to err when Admin is updating a non-existing user info", async () => {
-            jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(null); 
+            jest.spyOn(UserDAO.prototype, "getUserByUsername").mockRejectedValue(new UserNotFoundError()); 
             const controller = new UserController(); //Create a new instance of the controller
             //Call the updateUserInfo method of the controller with the test user object
             try {
@@ -371,7 +356,7 @@ describe("Controller unit test", () => {
                 expect(UserDAO.prototype.updateUserInfo).not.toHaveBeenCalled();
                 expect(err).toBeInstanceOf(Error);
             }
-        });*/
+        });
             
     })
 })

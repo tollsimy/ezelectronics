@@ -23,8 +23,8 @@ const product: {
     category: Category, 
     arrivalDate: string, 
     details: string, 
-    quantity: number | undefined, 
-    stock: number | undefined
+    quantity: number , 
+    stock: number 
 } = {
     sellingPrice: 100,
     model: "iPhone 10",
@@ -89,16 +89,16 @@ test("It should resolve to new quantity if quantity added to a product", async (
 
 test("It should resolve to new quantity if quantity removed from a product", async () => {
     const productDAO = new ProductDAO()
-    const updatedProduct = { ...product }
+    const updatedProduct = { ...product, stock: 90}
     jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-        callback(null, updatedProduct)
+        callback(null, product)
         return {} as Database
     });
     jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
         callback(null)
         return {} as Database
     });
-    const result = await productDAO.addProductQuantity(product.model, -10, new Date().toISOString().split("T")[0])
+    const result = await productDAO.removeProductQuantity(product.model, 10)
     expect(result).toEqual(updatedProduct.stock)
 })
 
