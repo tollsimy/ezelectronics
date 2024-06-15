@@ -71,8 +71,10 @@ class ReviewDAO {
             db.get(checkSql, [model, user], (err: Error | null, row:any) => {
                 
                 if (err) {
+                    console.log("ciao1")
                     reject(err)
                 } else if (!row) {
+                    console.log("ciao2")
                     reject(new NoReviewProductError())
                 } else {
                     const deleteSql = "DELETE FROM reviews WHERE cod_model = ? AND user = ?"

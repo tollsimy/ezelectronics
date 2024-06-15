@@ -3,6 +3,7 @@ import request from 'supertest'
 import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
 import { afterEach, beforeEach } from "node:test"
+import { exit } from "process"
 
 const routePath = "/ezelectronics" //Base route path for the API
 
@@ -13,7 +14,7 @@ const admin = { username: "admin", name: "admin", surname: "admin", password: "a
 const manager = { username: "manager", name: "manager", surname: "manager", password: "manager", role: "Manager" }
 
 //Default product information.
-const myModel = { model: "iPhone 12", category: "Smartphone", quantity: 1, sellingPrice: 1 }
+const myModel = { model: "iPhone12", category: "Smartphone", quantity: 1, sellingPrice: 1 }
 
 //Default review information.
 const myReview = { model: myModel.model, user: customer.username, score : 5, date: "2024-05-02", comment: "comment" }
@@ -139,7 +140,6 @@ describe("Review routes integration tests", () => {
                 .send(myReview)
                 .expect(409)
         })
-
     })
     
     describe("GET /reviews/:model", () => {
@@ -155,8 +155,6 @@ describe("Review routes integration tests", () => {
                     expect(review.score).toBe(myReview.score)  
                     expect(review.date).toBe(new Date().toISOString().split('T')[0])
                     expect(review.comment).toBe(myReview.comment)
-                    
-
                 })
         })
 
@@ -169,6 +167,7 @@ describe("Review routes integration tests", () => {
 
     describe("DELETE /reviews/:model", () => {
         test("It should return a 200 success code and delete the review", async () => {
+            console.log(myReview.model)
             await request(app)
                 .delete(`${routePath}/reviews/${myReview.model}`)
                 .set('Cookie', customerCookie)
@@ -178,8 +177,10 @@ describe("Review routes integration tests", () => {
                 .set('Cookie', customerCookie)
                 .expect(200)
                 .then((res) => {
+                    console.log("res.body:")
+                    console.log(res.body)
                     expect(res.body.length).toBe(0)
-                })
+            })
         })
 
         test("It should return a 401 if the user is not logged in", async () => {
@@ -219,6 +220,11 @@ describe("Review routes integration tests", () => {
 
     describe("DELETE /reviews/:model/all", () => {
         test("It should return a 200 success code and manager deletes all reviews of the product", async () => {
+            await request(app)
+                .post(`${routePath}/reviews/${myReview.model}`)
+                .set('Cookie', customerCookie)
+                .send(myReview)
+                .expect(200)
             await request(app)
                 .post(`${routePath}/reviews/${myReview.model}`)
                 .set('Cookie', customerCookie)

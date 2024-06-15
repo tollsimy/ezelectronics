@@ -7,7 +7,6 @@ import Authenticator from "../../src/routers/auth"
 import { Role, User } from "../../src/components/user"
 import { Product, Category } from "../../src/components/product"
 import ErrorHandler from "../../src/helper"
-import e from "express"
 import { param } from "express-validator"
 const baseURL = "/ezelectronics"
 
@@ -19,7 +18,7 @@ jest.mock("../../src/routers/auth")
 let testAdmin = new User("admin", "admin", "admin", Role.ADMIN, "", "")
 let testCustomer = new User("customer", "customer", "customer", Role.CUSTOMER, "", "")
 
-describe("Route prouduct unit tests", () => {
+describe("Product Route Unit Tests", () => {
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -32,7 +31,6 @@ describe("Route prouduct unit tests", () => {
                 body: jest.fn().mockImplementation(() => ({
                     isString: () => ({ isLength: () => ({}) }),
                     isInt: () => ({ isLength: () => ({}) }),
-                    
                 })),
             }))
             jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => {
@@ -274,9 +272,4 @@ describe("Route prouduct unit tests", () => {
             expect(ProductController.prototype.deleteAllProducts).toHaveBeenCalled()
         })
     })
-
-
-
-    
-  
 })

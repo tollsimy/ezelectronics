@@ -85,7 +85,7 @@ class ReviewRoutes {
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.authenticator.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.authenticator.isCustomer(req, res, next),
-            (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user.username)
+            (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
                     next(err)
