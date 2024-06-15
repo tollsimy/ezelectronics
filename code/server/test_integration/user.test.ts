@@ -2,7 +2,6 @@ import { describe, test, expect, beforeAll, afterAll } from "@jest/globals"
 import request from 'supertest'
 import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
-import exp from "constants"
 
 const routePath = "/ezelectronics" //Base route path for the API
 
@@ -11,8 +10,6 @@ const customer = { username: "customer", name: "customer", surname: "customer", 
 const admin = { username: "admin", name: "admin", surname: "admin", password: "admin", role: "Admin" }
 const admin2 = { username: "admin2", name: "admin2", surname: "admin2", password: "admin2", role: "Admin" }
 const manager = { username: "manager", name: "manager", surname: "manager", password: "manager", role: "Manager" }
-
-
 
 //Cookies for the users. We use them to keep users logged in. Creating them once and saving them in a variables outside of the tests will make cookies reusable
 let customerCookie: string
