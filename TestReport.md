@@ -11,6 +11,10 @@ In this document, the test cases have been divided into the three main login sec
 - [Dependency graph](#dependency-graph)
 - [Integration approach](#integration-approach)
 - [Tests](#tests)
+  - [User](#user)
+  - [Product](#product)
+  - [Cart](#cart)
+  - [Review](#review)
 - [Coverage](#coverage)
   - [Coverage of FR](#coverage-of-fr)
   - [Coverage white box](#coverage-white-box)
@@ -94,17 +98,20 @@ By following this sequence, we ensured that each component was individually veri
 | 4.9 | success in retrieving a user by username (200) | GET /users/:username       | Integration | Black-Box      |
 | 4.10 | failure in retrieving a user by username without admin rights (401) | GET /users/:username | Integration | Black-Box |
 | 4.11 | failure in retrieving a non-existing user (404) | GET /users/:username     | Integration | Black-Box |
-| 4.12 | success in deleting a user by username (200) | DELETE /users/:username    | Integration | Black-Box      |
-| 4.13 | failure in deleting a non-existing user (404) | DELETE /users/:username   | Integration | Black-Box |
-| 4.14 | failure in deleting a user without admin rights (401) | DELETE /users/:username | Integration | Black-Box |
-| 4.15 | failure in admin deleting another admin (401) | DELETE /users/:username   | Integration | Black-Box |
-| 4.16 | success in deleting all non-admin users (200) | DELETE /users             | Integration | Black-Box      |
-| 4.17 | failure in deleting all users without admin rights (401) | DELETE /users | Integration | Black-Box |
-| 4.18 | success in updating a user by username (200) | PATCH /users/:username     | Integration | Black-Box      |
-| 4.19 | failure in updating a non-existing user (404) | PATCH /users/:username    | Integration | Black-Box |
-| 4.20 | failure in updating a user with future birthdate (422) | PATCH /users/:username | Integration | Black-Box |
-| 4.21 | failure in updating a user without admin rights (401) | PATCH /users/:username | Integration | Black-Box |
-| 4.22 | failure in updating a user with empty/missing fields (422) | PATCH /users/:username | Integration | Black-Box |
+| 4.12 | success in Admin deleting a Customer by username (200) | DELETE /users/:username    | Integration | Black-Box      |
+| 4.13 | success in Customer deleting itself (200) | DELETE /users/:username    | Integration | Black-Box      |
+| 4.14 | success in Manager deleting itself (200) | DELETE /users/:username    | Integration | Black-Box      |
+| 4.15 | success in Admin deleting itself (200) | DELETE /users/:username    | Integration | Black-Box      |
+| 4.16 | failure in deleting a non-existing user (404) | DELETE /users/:username   | Integration | Black-Box |
+| 4.17 | failure in deleting a user without admin rights (401) | DELETE /users/:username | Integration | Black-Box |
+| 4.18 | failure in admin deleting another admin (401) | DELETE /users/:username   | Integration | Black-Box |
+| 4.19 | success in deleting all non-admin users (200) | DELETE /users             | Integration | Black-Box      |
+| 4.20 | failure in deleting all users without admin rights (401) | DELETE /users | Integration | Black-Box |
+| 4.21 | success in updating a user by username (200) | PATCH /users/:username     | Integration | Black-Box      |
+| 4.22 | failure in updating a non-existing user (404) | PATCH /users/:username    | Integration | Black-Box |
+| 4.23 | failure in updating a user with future birthdate (422) | PATCH /users/:username | Integration | Black-Box |
+| 4.24 | failure in updating a user without admin rights (401) | PATCH /users/:username | Integration | Black-Box |
+| 4.25 | failure in updating a user with empty/missing fields (422) | PATCH /users/:username | Integration | Black-Box |
 
 ## Product
 

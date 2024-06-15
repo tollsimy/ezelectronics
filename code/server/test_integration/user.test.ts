@@ -2,6 +2,7 @@ import { describe, test, expect, beforeAll, afterAll } from "@jest/globals"
 import request from 'supertest'
 import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
+import exp from "constants"
 
 const routePath = "/ezelectronics" //Base route path for the API
 
@@ -9,12 +10,15 @@ const routePath = "/ezelectronics" //Base route path for the API
 const customer = { username: "customer", name: "customer", surname: "customer", password: "customer", role: "Customer" }
 const admin = { username: "admin", name: "admin", surname: "admin", password: "admin", role: "Admin" }
 const admin2 = { username: "admin2", name: "admin2", surname: "admin2", password: "admin2", role: "Admin" }
+const manager = { username: "manager", name: "manager", surname: "manager", password: "manager", role: "Manager" }
 
 
 
 //Cookies for the users. We use them to keep users logged in. Creating them once and saving them in a variables outside of the tests will make cookies reusable
 let customerCookie: string
 let adminCookie: string
+let admin2Cookie: string
+let managerCookie: string
 
 //Helper function that creates a new user in the database.
 //Can be used to create a user before the tests or in the tests
@@ -49,7 +53,11 @@ const login = async (userInfo: any) => {
 beforeAll(async () => {
     await cleanup()
     await postUser(admin)
+    await postUser(admin2)
+    await postUser(manager)
     adminCookie = await login(admin)
+    admin2Cookie = await login(admin2)
+    managerCookie = await login(manager)
 })
 
 afterAll(async () => {
@@ -64,14 +72,12 @@ describe("User routes integration tests", () => {
                 .post(`${routePath}/users`) 
                 .send(customer) 
                 .expect(200) 
-
-            
-            
+            customerCookie = await login(customer) //We log in the user to get the cookie
             const users = await request(app) 
                 .get(`${routePath}/users`)
                 .set("Cookie", adminCookie) 
                 .expect(200)
-            expect(users.body).toHaveLength(2) //Should contain 2 users, the Admin and the Customer
+            expect(users.body).toHaveLength(4) //Should contain 3 users, the Admin, the Admin2, the Manager and the Customer
             let cust = users.body.find((user: any) => user.username === customer.username) //We look for the user we created in the array of users
             expect(cust).toBeDefined() //We expect the user we have created to exist in the array. The parameter should also be equal to those we have sent
             expect(cust.name).toBe(customer.name)
@@ -119,7 +125,7 @@ describe("User routes integration tests", () => {
                 .set("Cookie", adminCookie)
                 .expect(200)
             
-            expect(users.body).toHaveLength(2)
+            expect(users.body).toHaveLength(4)
             let cust = users.body.find((user: any) => user.username === customer.username)
             expect(cust).toBeDefined()
             expect(cust.name).toBe(customer.name)
@@ -142,7 +148,7 @@ describe("User routes integration tests", () => {
     describe("GET /users/roles/:role", () => {
         test("It should return an array of users with a specific role", async () => {
             const admins = await request(app).get(`${routePath}/users/roles/Admin`).set("Cookie", adminCookie).expect(200)
-            expect(admins.body).toHaveLength(1) //In this case, we expect only one Admin user to be returned
+            expect(admins.body).toHaveLength(2) //In this case, we expect only one Admin user to be returned
             let adm = admins.body[0]
             expect(adm.username).toBe(admin.username)
             expect(adm.name).toBe(admin.name)
@@ -184,7 +190,7 @@ describe("User routes integration tests", () => {
     })
 
     describe("DELETE /users/:username", () => {
-        test("It should return a 200 success code and delete a user with a specific username", async () => {
+        test("It should return a 200 success code, a Admin is deleting a Customer", async () => {
             await request(app)
                 .delete(`${routePath}/users/${customer.username}`)
                 .set("Cookie", adminCookie).expect(200)
@@ -193,27 +199,78 @@ describe("User routes integration tests", () => {
                 .get(`${routePath}/users`)
                 .set("Cookie", adminCookie)
                 .expect(200)
-            expect(users.body).toHaveLength(1) //We expect only the Admin user to be returned
-            let adm = users.body.find((user: any) => user.username === admin.username)
-            expect(adm).toBeDefined()
-            expect(adm.name).toBe(admin.name)
-            expect(adm.surname).toBe(admin.surname)
-            expect(adm.role).toBe(admin.role)
+            expect(users.body).toHaveLength(3) //We expect only the Admin and Manger to be returned
+            expect(users.body.find((user: any) => user.username === customer.username)).toBeUndefined() //We expect the Customer to be deleted
+            expect(users.body.find((user: any) => user.username === admin.username)).toBeDefined() //We expect the Admin to be returned
+            expect(users.body.find((user: any) => user.username === manager.username)).toBeDefined() //We expect the Manager to be returned
+            expect(users.body.find((user: any) => user.username === admin2.username)).toBeDefined() //We expect the Admin2 to be returned
+        })
+
+        test("It should return a 200 success code, a Customer is deleting himself", async () => {
+            await postUser(customer)
+            customerCookie = await login(customer)
+            await request(app)
+                .delete(`${routePath}/users/${customer.username}`)
+                .set("Cookie", customerCookie).expect(200)
+
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            expect(users.body).toHaveLength(3) //We expect only the Admin and Manger to be returned
+            expect(users.body.find((user: any) => user.username === customer.username)).toBeUndefined() //We expect the Customer to be deleted
+            expect(users.body.find((user: any) => user.username === admin.username)).toBeDefined() //We expect the Admin to be returned
+            expect(users.body.find((user: any) => user.username === manager.username)).toBeDefined() //We expect the Manager to be returned
+            expect(users.body.find((user: any) => user.username === admin2.username)).toBeDefined() //We expect the Admin2 to be returned
+        })
+
+        test("It should return a 200 success code, a Manager is deleting himself", async () => {
+            await request(app)
+            .delete(`${routePath}/users/${manager.username}`)
+            .set("Cookie", managerCookie).expect(200)
+
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", adminCookie)
+                .expect(200)
+            expect(users.body).toHaveLength(2) 
+            expect(users.body.find((user: any) => user.username === manager.username)).toBeUndefined() //We expect the Manager to be deleted
+            expect(users.body.find((user: any) => user.username === admin.username)).toBeDefined() //We expect the Admin to be returned
+            expect(users.body.find((user: any) => user.username === customer.username)).toBeUndefined() //We expect the Customer to be deleted
+            expect(users.body.find((user: any) => user.username === admin2.username)).toBeDefined() //We expect the Admin2 to be returned
+        })
+
+        test("It should return a 200 success code, a Admin is deleting himself", async () => {
+            await request(app)
+            .delete(`${routePath}/users/${admin.username}`)
+            .set("Cookie", adminCookie).expect(200)
+           
+            const users = await request(app)
+                .get(`${routePath}/users`)
+                .set("Cookie", admin2Cookie)
+                .expect(200)
+
+            expect(users.body).toHaveLength(1) //We expect only the Admin and Manger to be returned
+            expect(users.body.find((user: any) => user.username === customer.username)).toBeUndefined() //We expect the Customer to be deleted
+            expect(users.body.find((user: any) => user.username === admin.username)).toBeUndefined() //We expect the Admin to be returned
+            expect(users.body.find((user: any) => user.username === manager.username)).toBeUndefined() //We expect the Manager to be returned
+            expect(users.body.find((user: any) => user.username === admin2.username)).toBeDefined() //We expect the Admin2 to be returned
+
+            await postUser(admin)
+            adminCookie = await login(admin)
         })
 
         test("It should return a 404 error code if the user does not exist", async () => {
             await request(app).delete(`${routePath}/users/Invalid`).set("Cookie", adminCookie).expect(404)
         })
 
-        test("It should return a 401 error code if the user is not an Admin and the usename of the logged in user is not the one requested", async () => {
+        test("It should return a 401 error code if the user is not an Admin and it is not itself", async () => {
             await postUser(customer)
             customerCookie = await login(customer)
             await request(app).delete(`${routePath}/users/${admin.username}`).set("Cookie", customerCookie).expect(401) 
-            await request(app).delete(`${routePath}/users/${customer.username}`).expect(401) 
         })
 
         test("It should return a 401 error code if the user is an Admin and try tu delete another admin user", async () => {
-            await postUser(admin2)
             await request(app).delete(`${routePath}/users/${admin2.username}`).set("Cookie", adminCookie).expect(401) 
         })  
     })
