@@ -173,7 +173,7 @@ class CartDAO {
             try {
                 db.all(sql, [user.username], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
-                    if (!rows || rows.length == 0) { console.log("ok");reject(new CartNotFoundError()); return;}
+                    if (!rows || rows.length == 0) {reject(new CartNotFoundError()); return;}
                     //repete for each cart-> retrive the products in the cart put them in a ProductInCart object and push it to the ProductInCart array -> fiannly create a cart object putting into the cart object the ProductInCart array
                     const carts: Cart[] = []
                     let cart: Cart
