@@ -37,8 +37,8 @@ class ReviewController {
      * @param user The user who made the review to delete
      * @returns A Promise that resolves to nothing
      */
-    async deleteReview(model: string, user: string): Promise<void> {
-        return this.dao.deleteReview(model, user);
+    async deleteReview(model: string, user: User): Promise<void> {
+        return this.dao.deleteReview(model, user.username);
     }
 
     /**

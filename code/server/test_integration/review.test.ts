@@ -18,6 +18,7 @@ const myModel = { model: "iPhone12", category: "Smartphone", quantity: 1, sellin
 
 //Default review information.
 const myReview = { model: myModel.model, user: customer.username, score : 5, date: "2024-05-02", comment: "comment" }
+const myReview2 = { model: myModel.model, user: customer2.username, score : 5, date: "2024-05-02", comment: "comment" }
 
 //Cookies for the users
 let customerCookie: string
@@ -223,14 +224,21 @@ describe("Review routes integration tests", () => {
                 .send(myReview)
                 .expect(200)
             await request(app)
-                .post(`${routePath}/reviews/${myReview.model}`)
-                .set('Cookie', customerCookie)
-                .send(myReview)
+                .post(`${routePath}/reviews/${myReview2.model}`)
+                .set('Cookie', customer2Cookie)
+                .send(myReview2)
                 .expect(200)
             await request(app)
                 .delete(`${routePath}/reviews/${myReview.model}/all`)
                 .set('Cookie', managerCookie)
                 .expect(200)
+            await request(app)
+                .get(`${routePath}/reviews/${myReview.model}`)
+                .set('Cookie', customerCookie)
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.length).toBe(0)
+            })
         })
 
         test("It should return a 200 success code and admin deletes all reviews of the product", async () => {
