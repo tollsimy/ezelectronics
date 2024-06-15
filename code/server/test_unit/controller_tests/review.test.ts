@@ -94,7 +94,7 @@ describe("Controller unit test", () => {
         test("It should resolve to true when DAO resolve to true", async () => {
             const controller = new ReviewController();
             jest.spyOn(ReviewDAO.prototype, "deleteReview").mockResolvedValueOnce();
-            const response = await controller.deleteReview("model", "user");
+            const response = await controller.deleteReview("model", { username: "user" , role: Role.CUSTOMER, name: "name", surname: "surname", address: "", birthdate: ""});
             expect(ReviewDAO.prototype.deleteReview).toHaveBeenCalledTimes(1);
             expect(ReviewDAO.prototype.deleteReview).toHaveBeenCalledWith("model", "user");
             expect(response).resolves
@@ -104,7 +104,7 @@ describe("Controller unit test", () => {
             const error = new Error("Error");
             jest.spyOn(ReviewDAO.prototype, "deleteReview").mockRejectedValueOnce(error);
             try {
-                await controller.deleteReview("model", "user")
+                await controller.deleteReview("model", { username: "user" , role: Role.CUSTOMER, name: "name", surname: "surname", address: "", birthdate: ""})
             } catch (e) {
                 expect(e).toBe(error)
             }
