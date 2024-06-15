@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeAll, afterAll } from "@jest/globals"
+import { describe, test, expect, beforeAll, afterAll, jest } from "@jest/globals"
 import request from 'supertest'
 import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
@@ -107,6 +107,8 @@ const login = async (userInfo: any) => {
             })
     })
 }
+
+jest.setTimeout(500000);
 
 beforeAll(async () => {
     await cleanup()

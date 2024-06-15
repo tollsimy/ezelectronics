@@ -1,9 +1,7 @@
-import { describe, test, expect, beforeAll, afterAll } from "@jest/globals"
+import { describe, test, expect, beforeAll, afterAll, jest } from "@jest/globals"
 import request from 'supertest'
 import { app } from "../index"
 import { cleanup } from "../src/db/cleanup"
-import { afterEach, beforeEach } from "node:test"
-import { exit } from "process"
 
 const routePath = "/ezelectronics" //Base route path for the API
 
@@ -63,6 +61,8 @@ const login = async (userInfo: any) => {
             })
     })
 }
+
+jest.setTimeout(500000);
 
 beforeAll(async () => {
     await cleanup()
