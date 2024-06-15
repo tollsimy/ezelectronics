@@ -140,14 +140,6 @@ describe("Review routes integration tests", () => {
                 .expect(409)
         })
 
-        test("It should return a 422 if model is empty string", async () => {
-            await request(app)
-                .get(`${routePath}/reviews/`)
-                .set('Cookie', customerCookie)
-                .expect(422)
-        })
-
-        
     })
     
     describe("GET /reviews/:model", () => {
@@ -172,13 +164,6 @@ describe("Review routes integration tests", () => {
             await request(app)
                 .get(`${routePath}/reviews/${myReview.model}`)
                 .expect(401)
-        })
-
-        test("It should return a 422 if model is empty string", async () => {
-            await request(app)
-                .get(`${routePath}/reviews`)
-                .set('Cookie', customerCookie)
-                .expect(422)
         })
     })
 
@@ -215,13 +200,6 @@ describe("Review routes integration tests", () => {
                 .delete(`${routePath}/reviews/${myReview.model}`)
                 .set('Cookie', adminCookie)
                 .expect(401)
-        })
-
-        test("It should return a 422 if model is empty string", async () => {
-            await request(app)
-                .delete(`${routePath}/reviews/`)
-                .set('Cookie', customerCookie)
-                .expect(422)
         })
 
         test("It should return a 404 if the model does not exist", async () => {

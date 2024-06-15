@@ -19,7 +19,7 @@ jest.mock("../../src/routers/auth")
 let testAdmin = new User("admin", "admin", "admin", Role.ADMIN, "", "")
 let testCustomer = new User("customer", "customer", "customer", Role.CUSTOMER, "", "")
 
-describe("Route unit tests", () => {
+describe("Route prouduct unit tests", () => {
 
     beforeEach(() => {
         jest.resetAllMocks();
