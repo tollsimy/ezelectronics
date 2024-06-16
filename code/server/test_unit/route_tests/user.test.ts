@@ -251,4 +251,34 @@ describe("Route unit tests", () => {
             expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(inputUser.username, inputUser.name, inputUser.surname, inputUser.address, inputUser.birthdate, inputUser.username)
         })
     })
+
+    describe("POST /sessions", () => {
+        test("It logs in a user", async () => {
+            jest.spyOn(Authenticator.prototype, "login").mockResolvedValueOnce(testCustomer)
+            jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => {
+                return next();
+            })
+            jest.mock('express-validator', () => ({
+                body: jest.fn().mockImplementation(() => ({
+                    isString: () => ({ isLength: () => ({}) }),
+                })),
+            }))
+            const data = {username: testCustomer.username, password: "password"}
+            const response = await request(app).post(baseURL + "/sessions").send(data)
+            expect(response.status).toBe(200)
+            expect(Authenticator.prototype.login).toHaveBeenCalled()
+        })
+    })
+
+    describe("DELETE /sessions/current", () => {
+        test("It logs out a user", async () => {
+            jest.spyOn(Authenticator.prototype, "logout").mockResolvedValueOnce(undefined)
+            jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => {
+                return next();
+            })
+            const response = await request(app).delete(baseURL + "/sessions/current")
+            expect(response.status).toBe(200)
+            expect(Authenticator.prototype.logout).toHaveBeenCalled()
+        })
+    })
 })
