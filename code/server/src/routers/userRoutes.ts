@@ -1,10 +1,9 @@
 import express, { Router } from "express"
 import Authenticator from "./auth"
-import { body, param } from "express-validator"
+import { body, param, check, validationResult} from "express-validator"
 import { User } from "../components/user"
 import ErrorHandler from "../helper"
 import UserController from "../controllers/userController"
-
 /**
  * Represents a class that defines the routes for handling users.
  */
@@ -56,11 +55,16 @@ class UserRoutes {
          */
         this.router.post(
             "/",
-            (req: any, res: any, next: any) => this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
-                .then(() => res.status(200).end())
-                .catch((err) => {
-                    next(err)
-                })
+            body("username").isLength({ min: 1 }),
+            body("name").isLength({ min: 1 }),
+            body("surname").isLength({ min: 1 }),
+            body("password").isLength({ min: 1 }),
+            body("role").isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => 
+                this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
+                    .then(() => res.status(200).end())
+                    .catch((err) => next(err))
         )
 
         /**
@@ -70,10 +74,14 @@ class UserRoutes {
          */
         this.router.get(
             "/",
-            (req: any, res: any, next: any) => this.controller.getUsers()
-                .then((users: any /**User[] */) => res.status(200).json(users))
-                .catch((err) => next(err))
-        )
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
+            (req: any, res: any, next: any) => {
+                this.controller.getUsers()
+                    .then((users: User[]) => res.status(200).json(users))
+                    .catch((err) => next(err));
+            }
+        );
 
         /**
          * Route for retrieving all users of a specific role.
@@ -83,9 +91,15 @@ class UserRoutes {
          */
         this.router.get(
             "/roles/:role",
-            (req: any, res: any, next: any) => this.controller.getUsersByRole(req.params.role)
-                .then((users: any /**User[] */) => res.status(200).json(users))
-                .catch((err) => next(err))
+            param("role").isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
+            (req: any, res: any, next: any) => { 
+                this.controller.getUsersByRole(req.params.role)
+                    .then((users: User[] ) => res.status(200).json(users))
+                    .catch((err) => next(err))
+            }
         )
 
         /**
@@ -96,8 +110,11 @@ class UserRoutes {
          */
         this.router.get(
             "/:username",
+            param("username").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.getUserByUsername(req.user, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
+                .then((user: User ) => res.status(200).json(user))
                 .catch((err) => next(err))
         )
 
@@ -109,6 +126,9 @@ class UserRoutes {
          */
         this.router.delete(
             "/:username",
+            param("username").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteUser(req.user, req.params.username)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -121,6 +141,7 @@ class UserRoutes {
          */
         this.router.delete(
             "/",
+            (req: any, res: any, next: any) => this.authService.isAdmin(req, res, next),
             (req: any, res: any, next: any) => this.controller.deleteAll()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -139,11 +160,27 @@ class UserRoutes {
          */
         this.router.patch(
             "/:username",
-            (req: any, res: any, next: any) => this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
-                .catch((err: any) => next(err))
-        )
+            param("username").isString().isLength({ min: 1 }), // the request parameters must contain an attribute named "username", the attribute must be a non-empty string
+            body("name").isString().isLength({ min: 1 }), // the request body must contain an attribute named "name", the attribute must be a non-empty string
+            body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
+            body("address").isString().isLength({ min: 1 }), // the request body must contain an attribute named "address", the attribute must be a non-empty string
+            // Date must be in format YYYY-MM-DD
+            // Date must be a valid date
 
+            body("birthdate").isString().isLength({ min: 1 }).matches(/^\d{4}-\d{2}-\d{2}$/).custom((value) => {
+                const date = new Date(value);
+                if(date.toString() === "Invalid Date") 
+                    return false;
+                return true;
+            }),
+            this.errorHandler.validateRequest,
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
+            (req: any, res: any, next: any) => {
+                this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
+                    .then((user: User) => res.status(200).json(user))
+                    .catch((err: any) => next(err));
+            }
+        );
     }
 }
 
@@ -190,6 +227,9 @@ class AuthRoutes {
          */
         this.router.post(
             "/",
+            body("username").isLength({ min: 1 }),
+            body("password").isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req, res, next) => this.authService.login(req, res, next)
                 .then((user: User) => res.status(200).json(user))
                 .catch((err: any) => { res.status(401).json(err) })
@@ -202,6 +242,7 @@ class AuthRoutes {
          */
         this.router.delete(
             "/current",
+            (req, res, next) => this.authService.isLoggedIn(req, res, next),
             (req, res, next) => this.authService.logout(req, res, next)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -214,6 +255,7 @@ class AuthRoutes {
          */
         this.router.get(
             "/current",
+            (req, res, next) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any) => res.status(200).json(req.user)
         )
     }

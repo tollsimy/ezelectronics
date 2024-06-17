@@ -47,15 +47,19 @@ class Authenticator {
          */
         passport.use(new LocalStrategy(
             (username: string, password: string, done: any) => {
-                copyThis.dao.getIsUserAuthenticated(username, password).then((authenticated: Boolean) => {
-                    if (authenticated) {
-                        copyThis.dao.getUserByUsername(username).then((user: User) => {
-                            return done(null, user)
-                        })
-                    } else {
-                        return done(null, false, { message: "Incorrect username and/or password" })
-                    }
-                })
+                copyThis.dao.getIsUserAuthenticated(username, password)
+                    .then((authenticated: Boolean) => {
+                        if (authenticated) {
+                            copyThis.dao.getUserByUsername(username)
+                                .then((user: User) => { return done(null, user) })
+                                .catch((err: Error) => { return done(err) })
+                        } else {
+                            return done(null, false, { message: "Incorrect username and/or password" })
+                        }
+                    })
+                    .catch((err: Error) => {
+                        return done(err)
+                    })
             }
         ))
 
