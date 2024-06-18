@@ -16,7 +16,7 @@ class ProductController {
     async isAfterOrTodayDate(date: string, model: string): Promise<boolean> {
         const product = await this.dao.getProductByModel(model);
         if (product[0].arrivalDate) {
-            if (date >= product[0].arrivalDate && date <= new Date().toISOString().split('T')[0]) {
+            if (date >= product[0].arrivalDate) {
                 return true;
             }
         }
@@ -50,16 +50,22 @@ class ProductController {
      * @returns A Promise that resolves to the new available quantity of the product.
      */
     async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null): Promise<number> {
-        if (!changeDate) {
-            changeDate = new Date().toISOString().split('T')[0];
+        try {
+            const product = await this.dao.getProductByModel(model);
+            if (!changeDate) {
+                changeDate = new Date().toISOString().split('T')[0];
+            }
+            else if (changeDate > new Date().toISOString().split('T')[0]) {
+                throw new DateError();
+            }
+            else if (!await this.isAfterOrTodayDate(changeDate, model)) {
+                throw new DateError();
+            }
+            return this.dao.addProductQuantity(model, newQuantity);
+        }catch(error){
+            throw error;
         }
-        else if (changeDate > new Date().toISOString().split('T')[0]) {
-            throw new DateError();
-        }
-        else if (!await this.isAfterOrTodayDate(changeDate, model)) {
-            throw new DateError();
-        }
-        return this.dao.addProductQuantity(model, newQuantity, changeDate);
+        
     }
 
     /**
@@ -113,7 +119,12 @@ class ProductController {
             return this.dao.getAvailableProductsByCategory(category);
         }
         else if (grouping === "model") {
-            return this.dao.getAvailableProductByModel(model);
+            try{
+                const product = await this.dao.getProductByModel(model);
+                return this.dao.getAvailableProductByModel(model);
+            }catch(error){
+                throw error;
+            }
         }
         else {
             return this.dao.getAvailableProducts();

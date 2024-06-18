@@ -8,7 +8,7 @@ import { get } from "http"
 
 jest.mock("../../src/db/db.ts")
 
-//TODO: help 
+
 test("It should resolve if user add a review", async () => {
     const reviewDAO = new ReviewDAO()
     const mockDBGet = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -23,13 +23,18 @@ test("It should resolve if user add a review", async () => {
 
 test("It should resolve the reviews of a product", async () => {
     const reviewDAO = new ReviewDAO()
-    const mockDBGet = jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
+    const mockDBGet = jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
+        callback(null, { model: "model" })
+        return {} as Database
+    })
+    const mockDBAll = jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
         callback(null, [{ cod_model: "model", user: "user", score: 1, date: "date", comment: "comment" }])
         return {} as Database
     });
     const result = await reviewDAO.getProductReviews("model")
     expect(result).toEqual([{ model: "model", user: "user", score: 1, date: "date", comment: "comment" }])
     mockDBGet.mockRestore()
+    mockDBAll.mockRestore()
 })
 
 test("It should resolve if a review is deleted given a model and a user", async () => {

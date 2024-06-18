@@ -39,25 +39,36 @@ class ReviewDAO {
     async getProductReviews(model: string): Promise<ProductReview[]> {
         return new Promise<ProductReview[]>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM reviews WHERE cod_model = ?"
-                db.all(sql, [model], (err: Error | null, rows: any) => {
+                const sql = "SELECT * FROM products WHERE model = ?"
+                db.get(sql, [model], (err: Error | null, row: any) => {
                     if (err) {
                         reject(err);
                         return
-                    } else {
-                        let reviews: ProductReview[] = [];
-                        for (let row of rows) {
-                            reviews.push(new ProductReview(
-                                row.cod_model,
-                                row.user,
-                                row.score,
-                                row.date,
-                                row.comment
-                            ))
-                        }
-                        resolve(reviews)
+                    } else if (!row) {
+                        reject(new ProductNotFoundError())
+                        return
                     }
+                    const sql = "SELECT * FROM reviews WHERE cod_model = ?"
+                    db.all(sql, [model], (err: Error | null, rows: any) => {
+                        if (err) {
+                            reject(err);
+                            return
+                        } else {
+                            let reviews: ProductReview[] = [];
+                            for (let row of rows) {
+                                reviews.push(new ProductReview(
+                                    row.cod_model,
+                                    row.user,
+                                    row.score,
+                                    row.date,
+                                    row.comment
+                                ))
+                            }
+                            resolve(reviews)
+                        }
+                    })
                 })
+                
             } catch (error) {
                 reject(error)
             }

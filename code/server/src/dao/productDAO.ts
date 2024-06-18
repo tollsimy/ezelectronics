@@ -81,16 +81,15 @@ class ProductDAO {
         })
     };
 
-    addProductQuantity(model: string, quantity: number,changeDate:string): Promise<number> {
+    addProductQuantity(model: string, quantity: number): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products SET \
-                            stock = stock + ?, arrivalDate = ? \
-                            WHERE model = ?";
+                             stock = stock + ? \
+                             WHERE model = ?";
                 db.run(sql,
                     [
                         quantity,
-                        changeDate,
                         model
                         
                     ],
@@ -328,7 +327,7 @@ class ProductDAO {
                     }
                     //If there is no product with this model
                     if (!row || row.stock == 0) {
-                        reject(new ProductNotFoundError())
+                        resolve([])
                         return
                     } else {
                         resolve([new Product(

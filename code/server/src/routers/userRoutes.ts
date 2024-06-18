@@ -160,6 +160,7 @@ class UserRoutes {
          */
         this.router.patch(
             "/:username",
+            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             param("username").isString().isLength({ min: 1 }), // the request parameters must contain an attribute named "username", the attribute must be a non-empty string
             body("name").isString().isLength({ min: 1 }), // the request body must contain an attribute named "name", the attribute must be a non-empty string
             body("surname").isString().isLength({ min: 1 }), // the request body must contain an attribute named "surname", the attribute must be a non-empty string
@@ -174,7 +175,6 @@ class UserRoutes {
                 return true;
             }),
             this.errorHandler.validateRequest,
-            (req: any, res: any, next: any) => this.authService.isLoggedIn(req, res, next),
             (req: any, res: any, next: any) => {
                 this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
                     .then((user: User) => res.status(200).json(user))

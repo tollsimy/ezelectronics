@@ -198,7 +198,7 @@ describe("Product routes integration tests", () => {
                 expect(p.category).toBe(product.category)
                 expect(p.quantity).toBe(product.quantity+newQuantity)
                 expect(p.sellingPrice).toBe(product.sellingPrice)
-                expect(p.arrivalDate).toBe("2020-12-13")
+                expect(p.arrivalDate).toBe(product.arrivalDate)
             })
         })
 
@@ -540,7 +540,8 @@ describe("Product routes integration tests", () => {
             const products=await request(app)
                 .get(`${routePath}/products/available?grouping=model&model=${product.model}`)
                 .set('Cookie', managerCookie)
-                .expect(404)
+                .expect(200)
+            expect(products.body.length).toBe(0)
         })
 
         test("It should return a 422 error code if the grouping parameter is null and any of category or model is not null", async () => {

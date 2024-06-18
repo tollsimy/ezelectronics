@@ -83,7 +83,7 @@ test("It should resolve to new quantity if quantity added to a product", async (
         callback(null, updatedProduct)
         return {} as Database
     });
-    const result = await productDAO.addProductQuantity(product.model, 10, new Date().toISOString().split("T")[0])
+    const result = await productDAO.addProductQuantity(product.model, 10)
     expect(result).toEqual(updatedProduct.stock)
 })
 

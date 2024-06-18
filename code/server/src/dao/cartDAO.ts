@@ -134,12 +134,14 @@ class CartDAO {
                         if (err) { reject(err); return; }
                         if (!rows || rows.length === 0) { reject(new EmptyCartError()); return; }
                         let total = 0
+                        let errors=0;
                         rows.forEach((row) => {
-                            if (row.stock === 0) { reject(new EmptyProductStockError()); return; }
-                            if (row.quantity > row.stock) { reject(new LowProductStockError()); return; }
+                            if (row.stock == 0) {errors+=1;reject(new EmptyProductStockError());return; }
+                            if (row.quantity > row.stock) { errors+=1;reject(new LowProductStockError()); return; }
                             total += row.sellingPrice * row.quantity
                         })
                         //update product stock
+                        if(errors){return;}
                         rows.forEach((row) => {
                             const sql = "UPDATE products SET stock = stock - ? WHERE model = ?"
                             db.run(sql, [row.quantity, row.model], (err: Error) => {
@@ -173,7 +175,7 @@ class CartDAO {
             try {
                 db.all(sql, [user.username], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
-                    if (!rows || rows.length == 0) {reject(new CartNotFoundError()); return;}
+                    if (!rows || rows.length == 0) {resolve([]); return;}
                     //repete for each cart-> retrive the products in the cart put them in a ProductInCart object and push it to the ProductInCart array -> fiannly create a cart object putting into the cart object the ProductInCart array
                     const carts: Cart[] = []
                     let cart: Cart
@@ -310,7 +312,7 @@ class CartDAO {
             try {
                 db.all(sql, [], (err: Error | null, rows: any[]) => {
                     if (err) { reject(err); return; }
-                    if (!rows || rows.length===0) { reject(new CartNotFoundError()); return; }
+                    if (!rows || rows.length===0) { resolve([]); return; }
                     const carts: Cart[] = []
                     let cart: Cart
                     let products: ProductInCart[] = []

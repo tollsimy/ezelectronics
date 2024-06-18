@@ -571,10 +571,11 @@ describe("Cart routes integration tests", () => {
                 .delete(`${routePath}/carts`)
                 .set('Cookie', managerCookie)
                 .expect(200)
-            await request(app)
+            const p=await request(app)
                 .get(`${routePath}/carts/all`)
                 .set('Cookie', adminCookie)
-                .expect(404)
+                .expect(200)
+            expect(p.body.length).toBe(0);
         })
         test("It should return a 200 success code and delete all existing carts if the user is admin", async () => {
             await request(app)
@@ -591,10 +592,12 @@ describe("Cart routes integration tests", () => {
                 .delete(`${routePath}/carts`)
                 .set('Cookie', adminCookie)
                 .expect(200)
-            await request(app)
+            const p=await request(app)
                 .get(`${routePath}/carts/all`)
                 .set('Cookie', adminCookie)
-                .expect(404)
+                .expect(200)
+            expect(p.body.length).toBe(0);
+            
         })
         test("It should return a 401 access error if the user is not logged in", async () => {
             await request(app)
